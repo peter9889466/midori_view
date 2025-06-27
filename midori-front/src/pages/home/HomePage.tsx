@@ -76,7 +76,7 @@ export default function HomePage() {
                             <CardTitle>관련뉴스</CardTitle>
                         </div>
                         <CardDescription>
-                            최신 뉴스와 트렌드를 한눈에 확인하세요
+                            친환경 제품에 대한 최신 뉴스와 트렌드를 한눈에 확인하세요
                         </CardDescription>
                     </CardHeader>
                     <CardContent>

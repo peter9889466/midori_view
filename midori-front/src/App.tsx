@@ -8,6 +8,7 @@ import ErrorFallback from "./pages/error/ErrorFallback";
 import { ErrorBoundary } from "react-error-boundary";
 import NewsPage from "./pages/news/NewsPage";
 import { Chatbot } from "./components/chatbot";
+import Footer from "./components/footer";
 
 function App() {
     return (
@@ -33,6 +34,7 @@ function App() {
                     </main>
 
                     {/* Persistent Chatbot */}
+                    <Footer />
                     <Chatbot />
                 </div>
             </Router>

@@ -92,7 +92,7 @@ export default function GraphsPage() {
     );
 
     return (
-        <div className="max-w-3xl mx-auto py-8 space-y-8">
+        <div className="container mx-auto px-4 py-12 space-y-8">
             {/* 품목명과 거래액 */}
             <div className="space-y-1">
                 <h1 className="text-base font-medium text-left text-gray-600">{product}</h1>

@@ -85,7 +85,7 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
     if (!isOpen) return null;
     return (
         <div
-            className="fixed bottom-24 right-6 z-40 w-80 h-[480px] sm:w-96 sm:h-[520px] sm:bottom-28 sm:right-8 max-w-[calc(100vw-3rem)] shadow-2xl bg-white rounded-lg border-2 border-[#9AD970]/20 overflow-hidden"
+            className="fixed bottom-24 right-6 z-40 w-80 h-[480px] sm:w-96 sm:h-[520px] sm:bottom-28 sm:right-8 max-w-[calc(100vw-3rem)] shadow-2xl bg-white rounded-lg border-2 border-[#9AD970]/20 overflow-hidden flex flex-col"
         >
             {/* Fixed Header */}
             <div className="flex-shrink-0 flex flex-row items-center justify-between p-4 bg-[#9AD970] text-white">

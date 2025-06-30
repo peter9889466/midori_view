@@ -27,6 +27,8 @@ import {
     Map,
 } from "lucide-react";
 import Logo from "../../components/logo";
+import CardGrid from "../../components/CardGrid";
+import { countries, products } from "../../components/constants";
 
 interface ChartType {
     id: string;
@@ -52,40 +54,6 @@ export default function GraphsPage() {
         { id: "bar", name: "막대 차트", icon: BarChart3 },
         { id: "line", name: "선형 차트", icon: LineChart },
         { id: "combined", name: "혼합 차트", icon: Layers },
-    ];
-
-    const countries = [
-        "미국",
-        "중국",
-        "일본",
-        "베트남",
-        "영국",
-        "독일",
-        "프랑스",
-        "인도",
-        "대만",
-        "태국",
-        "호주",
-    ];
-
-    const products = [
-        "태양광 패널",
-        "풍력 터빈용 발전기",
-        "전력 변환장치 (인버터)",
-        "태양열 집열기",
-        "전기자동차",
-        "전기 이륜차",
-        "전기차용 리튬이온 배터리",
-        "실리콘 식기/빨대",
-        "금속 빨대",
-        "종이 빨대",
-        "포장재",
-        "천연 성분 세제",
-        "천연 고무 라텍스",
-        "유기농 면화",
-        "천연 비료",
-        "슬래그 울",
-        "단열재",
     ];
 
     // Generate years from 2000 to current year
@@ -306,35 +274,11 @@ export default function GraphsPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="py-3">
-                    <div className="grid grid-cols-3 gap-2">
-                        {chartTypes.map((chart) => {
-                            const IconComponent = chart.icon;
-                            const isSelected = selectedChart === chart.id;
-
-                            return (
-                                <Card
-                                    key={chart.id}
-                                    className={`hover:shadow-md transition-all duration-200 cursor-pointer ${
-                                        isSelected
-                                            ? "ring-2 ring-[#9AD970] bg-[#9AD970]/5"
-                                            : ""
-                                    }`}
-                                    onClick={() => handleChartSelect(chart.id)}
-                                >
-                                    <CardHeader className="pb-1 pt-2 px-3">
-                                        <div className="flex items-center justify-center">
-                                            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-[#9AD970] text-white">
-                                                <IconComponent className="h-3 w-3" />
-                                            </div>
-                                        </div>
-                                        <CardTitle className="text-center text-xs leading-tight">
-                                            {chart.name}
-                                        </CardTitle>
-                                    </CardHeader>
-                                </Card>
-                            );
-                        })}
-                    </div>
+                    <CardGrid
+                        chartTypes={chartTypes}
+                        selectedChart={selectedChart}
+                        onChartSelect={handleChartSelect}
+                    />
                 </CardContent>
             </Card>
 

@@ -1,36 +1,35 @@
 import type { TradeData } from "../types/rankings";
+import { countries, productsWithHS, statCd } from "../components/constants";
 
 export const generateTradeData = (): TradeData[] => {
-    const items = [
-        "반도체",
-        "자동차",
-        "석유화학",
-        "철강",
-        "조선",
-        "디스플레이",
-        "휴대폰",
-        "컴퓨터",
-        "의류",
-        "화장품",
-        "기계류",
-        "전자부품",
-        "플라스틱",
-        "섬유",
-        "식품",
-    ];
-
-    return items.map((item, index) => {
-        const exportAmount = Math.floor(Math.random() * 50000) + 10000;
-        const importAmount = Math.floor(Math.random() * 40000) + 5000;
-        const totalTradeAmount = exportAmount + importAmount;
-
+    const items = productsWithHS;
+    return items.map((item) => {
+        const expDlr = Math.floor(Math.random() * 50000) + 10000;
+        const impDlr = Math.floor(Math.random() * 40000) + 5000;
+        const balPayments = expDlr - impDlr;
+        const impWgt = Math.floor(Math.random() * 100000) + 10000;
+        const expWgt = Math.floor(Math.random() * 100000) + 10000;
+        const year = (() => {
+            const today = new Date();
+            let year = today.getFullYear();
+            let month = today.getMonth();
+            if (month === 0) { year -= 1; month = 12; }
+            return `${year}.${month.toString().padStart(2, "0")}`;
+        })();
+        const countryIdx = Math.floor(Math.random() * countries.length);
+        const statCdCntnKor1 = countries[countryIdx];
+        const statCdVal = statCd[countryIdx % statCd.length] || "ETC";
         return {
-            id: index + 1,
-            rank: index + 1,
-            item,
-            exportAmount,
-            importAmount,
-            totalTradeAmount,
+            statKor: item.name,
+            expDlr,
+            impDlr,
+            year,
+            statCd: statCdVal,
+            statCdCntnKor1,
+            balPayments,
+            impWgt,
+            hsCd: item.hs,
+            expWgt,
         };
     });
 };

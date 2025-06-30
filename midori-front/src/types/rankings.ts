@@ -1,13 +1,17 @@
 export interface TradeData {
-    id: number;
-    rank: number;
-    item: string;
-    exportAmount: number;
-    importAmount: number;
-    totalTradeAmount: number;
+    statKor: string;
+    expDlr: number;
+    impDlr: number;
+    year: string;
+    statCd: string;
+    statCdCntnKor1: string;
+    balPayments: number;
+    impWgt: number;
+    hsCd: string;
+    expWgt: number;
 }
 
-export type SortField = "exportAmount" | "importAmount" | "totalTradeAmount";
+export type SortField = "expDlr" | "impDlr" | "balPayments";
 export type SortOrder = "asc" | "desc";
 
 export interface SortConfig {

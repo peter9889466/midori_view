@@ -7,8 +7,44 @@ import {
 } from "../../components/ui/card";
 import { BarChart3, Newspaper, Trophy } from "lucide-react";
 import Logo from "../../components/logo";
+import CardGrid from "../../components/CardGrid";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+const homeCards = [
+    {
+        id: "visualization",
+        name: "데이터 시각화",
+        icon: BarChart3,
+        description: "데이터를 시각화하기 위한 아름다운 차트와 그래프를 생성하세요",
+        detail: "데이터 패턴을 더 잘 이해하기 위해 강력한 그래프 도구와 대화형 시각화에 액세스하세요."
+    },
+    {
+        id: "ranking",
+        name: "순위",
+        icon: Trophy,
+        description: "종합적인 순위 및 성과 지표를 확인하세요",
+        detail: "다양한 카테고리와 기간에 걸쳐 성과 지표를 추적하고 순위를 비교하세요."
+    },
+    {
+        id: "news",
+        name: "관련뉴스",
+        icon: Newspaper,
+        description: "친환경 제품에 대한 최신 뉴스와 트렌드를 한눈에 확인하세요",
+        detail: "실시간 뉴스와 업계 동향을 통해 빠르게 변화하는 시장 상황을 파악하세요."
+    }
+];
 
 export default function HomePage() {
+    const [selectedCard, setSelectedCard] = React.useState("");
+    const navigate = useNavigate();
+    const handleCardSelect = (cardId: string) => {
+        setSelectedCard(cardId);
+        if (cardId === "visualization") navigate("/graphs");
+        else if (cardId === "ranking") navigate("/rankings");
+        else if (cardId === "news") navigate("/news");
+    };
+
     return (
         <div className="space-y-8">
             <div className="text-center space-y-4">
@@ -25,68 +61,19 @@ export default function HomePage() {
                 </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
-                <Card className="hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                        <div className="flex items-center space-x-2">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#9AD970] text-white">
-                                <BarChart3 className="h-5 w-5" />
-                            </div>
-                            <CardTitle>데이터 시각화</CardTitle>
-                        </div>
-                        <CardDescription>
-                            데이터를 시각화하기 위한 아름다운 차트와 그래프를
-                            생성하세요
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-gray-600">
-                            데이터 패턴을 더 잘 이해하기 위해 강력한 그래프
-                            도구와 대화형 시각화에 액세스하세요.
-                        </p>
-                    </CardContent>
-                </Card>
+            <CardGrid
+                chartTypes={homeCards.map(({ id, name, icon }) => ({ id, name, icon }))}
+                selectedChart={selectedCard}
+                onChartSelect={handleCardSelect}
+            />
 
-                <Card className="hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                        <div className="flex items-center space-x-2">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#9AD970] text-white">
-                                <Trophy className="h-5 w-5" />
-                            </div>
-                            <CardTitle>순위</CardTitle>
-                        </div>
-                        <CardDescription>
-                            종합적인 순위 및 성과 지표를 확인하세요
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-gray-600">
-                            다양한 카테고리와 기간에 걸쳐 성과 지표를 추적하고
-                            순위를 비교하세요.
-                        </p>
-                    </CardContent>
-                </Card>
-
-                <Card className="hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                        <div className="flex items-center space-x-2">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#9AD970] text-white">
-                                <Newspaper className="h-5 w-5" />
-                            </div>
-                            <CardTitle>관련뉴스</CardTitle>
-                        </div>
-                        <CardDescription>
-                            친환경 제품에 대한 최신 뉴스와 트렌드를 한눈에 확인하세요
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-gray-600">
-                            실시간 뉴스와 업계 동향을 통해 빠르게 변화하는 시장
-                            상황을 파악하세요.
-                        </p>
-                    </CardContent>
-                </Card>
+            <div className="mt-6 grid grid-cols-3 gap-4">
+                {homeCards.map((card) => (
+                    <div key={card.id} className="hidden">
+                    </div>
+                ))}
             </div>
+
             <Card>
                 <CardHeader>
                     <CardTitle>메인 페이지 콘텐츠</CardTitle>

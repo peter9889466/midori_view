@@ -21,16 +21,44 @@ import Logo from "../../components/logo";
 import { generateTradeData } from "../../data/tradeData";
 import { useSorting } from "../../hooks/useSorting";
 import type { TradeData } from "../../types/rankings";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
 
 export default function RankingsPage() {
     const [tradeData, setTradeData] = useState<TradeData[]>([]);
+    const [filter, setFilter] = useState({
+        yearMonth: "",
+        category: "",
+        country: "",
+    });
+
+    const getYearMonthOptions = () => {
+        const options = [];
+        const today = new Date();
+        let year = today.getFullYear();
+        let month = today.getMonth(); // 0~11, 현재 월-1
+        for (let i = 0; i < 12; i++) {
+            if (month === 0) {
+                year -= 1;
+                month = 12;
+            }
+            const ym = `${year}.${month.toString().padStart(2, "0")}`;
+            options.push(ym);
+            month--;
+        }
+        return options;
+    };
+    const yearMonthOptions = getYearMonthOptions();
+
+    const handleFilterChange = (key: string, value: string) => {
+        setFilter((prev) => ({ ...prev, [key]: value }));
+    };
 
     useEffect(() => {
         setTradeData(generateTradeData());
     }, []);
 
     const { sortedData, sortConfig, handleSort } = useSorting(tradeData, {
-        field: "exportAmount",
+        field: "expDlr",
         order: "desc",
     });
 
@@ -60,7 +88,24 @@ export default function RankingsPage() {
                 </p>
             </div>
 
-            
+            {/* 필터 영역 */}
+            <div className="flex flex-wrap gap-4 mb-4">
+                {/* 기준년월 */}
+                <div>
+                    <label className="block text-xs font-medium mb-1">기준년월</label>
+                    <Select value={filter.yearMonth} onValueChange={v => handleFilterChange("yearMonth", v)}>
+                        <SelectTrigger className="w-36 h-8">
+                            <SelectValue placeholder="기준년월 선택" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {yearMonthOptions.map((ym) => (
+                                <SelectItem key={ym} value={ym}>{ym}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+
             {/* Main Rankings Table */}
             <Card>
                 <CardHeader>
@@ -76,9 +121,11 @@ export default function RankingsPage() {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead className="w-20">순위</TableHead>
+                                    <TableHead>국가</TableHead>
                                     <TableHead>품목</TableHead>
+                                    <TableHead>HS코드</TableHead>
                                     <SortableTableHeader
-                                        field="exportAmount"
+                                        field="expDlr"
                                         currentSortField={sortConfig.field}
                                         currentSortOrder={sortConfig.order}
                                         onSort={handleSort}
@@ -86,7 +133,7 @@ export default function RankingsPage() {
                                         수출액
                                     </SortableTableHeader>
                                     <SortableTableHeader
-                                        field="importAmount"
+                                        field="impDlr"
                                         currentSortField={sortConfig.field}
                                         currentSortOrder={sortConfig.order}
                                         onSort={handleSort}
@@ -94,42 +141,25 @@ export default function RankingsPage() {
                                         수입액
                                     </SortableTableHeader>
                                     <SortableTableHeader
-                                        field="totalTradeAmount"
+                                        field="balPayments"
                                         currentSortField={sortConfig.field}
                                         currentSortOrder={sortConfig.order}
                                         onSort={handleSort}
                                     >
-                                        총 무역액
+                                        총수출입액
                                     </SortableTableHeader>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {sortedData.map((item) => (
-                                    <TableRow
-                                        key={item.id}
-                                        className="hover:bg-muted/50"
-                                    >
-                                        <TableCell>
-                                            <div className="flex items-center space-x-2">
-                                                <TableCell className="min-w-8 justify-center">
-                                                    {item.rank}
-                                                </TableCell>
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="font-medium">
-                                            {item.item}
-                                        </TableCell>
-                                        <TableCell className="font-mono">
-                                            {formatCurrency(item.exportAmount)}
-                                        </TableCell>
-                                        <TableCell className="font-mono">
-                                            {formatCurrency(item.importAmount)}
-                                        </TableCell>
-                                        <TableCell className="font-mono font-semibold">
-                                            {formatCurrency(
-                                                item.totalTradeAmount
-                                            )}
-                                        </TableCell>
+                                {sortedData.map((item, idx) => (
+                                    <TableRow key={item.hsCd + item.statCd} className="hover:bg-muted/50">
+                                        <TableCell>{idx + 1}</TableCell>
+                                        <TableCell>{item.statCdCntnKor1}</TableCell>
+                                        <TableCell className="font-medium">{item.statKor}</TableCell>
+                                        <TableCell className="font-mono">{item.hsCd}</TableCell>
+                                        <TableCell className="font-mono">{formatCurrency(item.expDlr)}</TableCell>
+                                        <TableCell className="font-mono">{formatCurrency(item.impDlr)}</TableCell>
+                                        <TableCell className="font-mono font-semibold">{formatCurrency(item.expDlr+item.impDlr)}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

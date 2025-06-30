@@ -7,6 +7,7 @@ export const generateTradeData = (): TradeData[] => {
         const expDlr = Math.floor(Math.random() * 50000) + 10000;
         const impDlr = Math.floor(Math.random() * 40000) + 5000;
         const balPayments = expDlr - impDlr;
+        const totalDlr = expDlr + impDlr;
         const impWgt = Math.floor(Math.random() * 100000) + 10000;
         const expWgt = Math.floor(Math.random() * 100000) + 10000;
         const year = (() => {
@@ -30,6 +31,7 @@ export const generateTradeData = (): TradeData[] => {
             impWgt,
             hsCd: item.hs,
             expWgt,
+            totalDlr,
         };
     });
 };

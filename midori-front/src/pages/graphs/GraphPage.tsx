@@ -2,7 +2,8 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { generateTradeData } from "../../data/tradeData";
 
 import {
     Select,
@@ -16,6 +17,8 @@ import {
     LineChart,
     Layers,
     Map,
+    TrendingDown,
+    TrendingUp,
 } from "lucide-react";
 import { countries } from "../../components/constants";
 import { useParams } from "react-router-dom";
@@ -32,6 +35,23 @@ const chartTypes: ChartType[] = [
     { id: "combined", name: "혼합 차트", icon: Layers },
 ];
 
+const formatNumber = (num: number) => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0
+    }).format(num);
+};
+
+const calculatePercentageChange = (current: number, previous: number) => {
+    if (!previous) return { value: 0, isPositive: true };
+    const change = ((current - previous) / previous) * 100;
+    return {
+        value: Math.abs(change),
+        isPositive: change >= 0
+    };
+};
+
 export default function GraphsPage() {
     const { product } = useParams<{ product?: string }>();
     const [selectedChart, setSelectedChart] = useState("bar");
@@ -39,6 +59,24 @@ export default function GraphsPage() {
     const years = Array.from({ length: 10 }, (_, i) => (currentYear - i).toString());
     const [selectedYear, setSelectedYear] = useState(years[0]);
     const [selectedCountry, setSelectedCountry] = useState("");
+    const [currentData, setCurrentData] = useState<{ totalDlr: number, prevTotalDlr: number }>({ totalDlr: 0, prevTotalDlr: 0 });
+
+    useEffect(() => {
+        // 현재 데이터 생성
+        const tradeData = generateTradeData();
+        const productData = tradeData.find(item => item.statKor === product);
+        
+        if (productData) {
+            const currentTotalDlr = productData.expDlr + productData.impDlr;
+            // 이전 달 데이터 생성 (임시로 현재 값의 랜덤 변동으로 설정)
+            const prevTotalDlr = currentTotalDlr * (1 + (Math.random() * 0.2 - 0.1));
+            
+            setCurrentData({
+                totalDlr: currentTotalDlr,
+                prevTotalDlr: prevTotalDlr
+            });
+        }
+    }, [product]);
 
     if (!product) {
         return (
@@ -48,10 +86,36 @@ export default function GraphsPage() {
         );
     }
 
+    const { value: percentChange, isPositive } = calculatePercentageChange(
+        currentData.totalDlr,
+        currentData.prevTotalDlr
+    );
+
     return (
         <div className="max-w-3xl mx-auto py-8 space-y-8">
-            {/* 품목명 */}
-            <h1 className="text-3xl font-bold text-left text-gray-900 mb-6">{product}</h1>
+            {/* 품목명과 거래액 */}
+            <div className="space-y-1">
+                <h1 className="text-base font-medium text-left text-gray-600">{product}</h1>
+                <div className="flex items-center gap-2">
+                    <span className="text-4xl font-bold">{formatNumber(currentData.totalDlr)}</span>
+                    <div className={`flex items-center gap-1 text-lg font-medium ${
+                        currentData.prevTotalDlr === 0
+                            ? 'text-gray-500'
+                            : isPositive
+                                ? 'text-green-500'
+                                : 'text-red-500'
+                    }`}>
+                        {currentData.prevTotalDlr === 0 ? (
+                            <span>0%</span>
+                        ) : (
+                            <>
+                                {isPositive ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
+                                <span>{percentChange.toFixed(1)}%</span>
+                            </>
+                        )}
+                    </div>
+                </div>
+            </div>
 
             {/* 지도 섹션 */}
             <div className="rounded-2xl bg-white flex flex-col items-start py-8 mb-6 w-full">

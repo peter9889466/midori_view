@@ -8,7 +8,6 @@ import {
     CardHeader,
     CardTitle,
 } from "../../components/ui/card";
-import { Badge } from "../../components/ui/badge";
 import {
     Table,
     TableBody,
@@ -62,61 +61,7 @@ export default function RankingsPage() {
                 </p>
             </div>
 
-            {/* Summary Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                <Card className="hover:shadow-lg transition-shadow">
-                    <CardHeader className="pb-3">
-                        <div className="flex items-center justify-center">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#9AD970] text-white">
-                                <TrendingUp className="h-6 w-6" />
-                            </div>
-                        </div>
-                        <CardTitle className="text-center text-sm">
-                            수출 상위
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
-
-                <Card className="hover:shadow-lg transition-shadow">
-                    <CardHeader className="pb-3">
-                        <div className="flex items-center justify-center">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#9AD970] text-white">
-                                <TrendingDown className="h-6 w-6" />
-                            </div>
-                        </div>
-                        <CardTitle className="text-center text-sm">
-                            수입 상위
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
-
-                <Card className="hover:shadow-lg transition-shadow">
-                    <CardHeader className="pb-3">
-                        <div className="flex items-center justify-center">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#9AD970] text-white">
-                                <Trophy className="h-6 w-6" />
-                            </div>
-                        </div>
-                        <CardTitle className="text-center text-sm">
-                            총 무역량
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
-
-                <Card className="hover:shadow-lg transition-shadow">
-                    <CardHeader className="pb-3">
-                        <div className="flex items-center justify-center">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#9AD970] text-white">
-                                <Star className="h-6 w-6" />
-                            </div>
-                        </div>
-                        <CardTitle className="text-center text-sm">
-                            성과 분석
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
-            </div>
-
+            
             {/* Main Rankings Table */}
             <Card>
                 <CardHeader>
@@ -170,19 +115,18 @@ export default function RankingsPage() {
                                                 <TableCell className="min-w-8 justify-center">
                                                     {item.rank}
                                                 </TableCell>
-                                                {item.rank}
                                             </div>
                                         </TableCell>
                                         <TableCell className="font-medium">
                                             {item.item}
                                         </TableCell>
-                                        <TableCell className="text-right font-mono">
+                                        <TableCell className="font-mono">
                                             {formatCurrency(item.exportAmount)}
                                         </TableCell>
-                                        <TableCell className="text-right font-mono">
+                                        <TableCell className="font-mono">
                                             {formatCurrency(item.importAmount)}
                                         </TableCell>
-                                        <TableCell className="text-right font-mono font-semibold">
+                                        <TableCell className="font-mono font-semibold">
                                             {formatCurrency(
                                                 item.totalTradeAmount
                                             )}

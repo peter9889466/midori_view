@@ -17,7 +17,6 @@ import {
     TableRow,
 } from "../../components/ui/table";
 import { SortableTableHeader } from "../../components/sortable-table-header";
-import { Trophy, Star, TrendingUp, TrendingDown } from "lucide-react";
 import Logo from "../../components/logo";
 import { generateTradeData } from "../../data/tradeData";
 import { useSorting } from "../../hooks/useSorting";

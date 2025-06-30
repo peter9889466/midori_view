@@ -1,4 +1,4 @@
-package kr.smhrd.MV.conroller;
+package kr.smhrd.MV.controller;
 
 import java.util.Map;
 

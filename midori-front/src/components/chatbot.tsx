@@ -7,13 +7,8 @@ import { ChatbotWindow } from "./chatbot-window";
 export function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
 
-    const toggleChatbot = () => {
-        setIsOpen(!isOpen);
-    };
-
-    const closeChatbot = () => {
-        setIsOpen(false);
-    };
+    const toggleChatbot = () => setIsOpen((prev) => !prev);
+    const closeChatbot = () => setIsOpen(false);
 
     return (
         <>

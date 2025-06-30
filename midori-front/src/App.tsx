@@ -22,6 +22,7 @@ function App() {
                         <Routes>
                             <Route path="/" element={<HomePage />} />
                             <Route path="/graphs" element={<GraphsPage />} />
+                            <Route path="/graphs/:product" element={<GraphsPage />} />
                             <Route
                                 path="/rankings"
                                 element={<RankingsPage />}

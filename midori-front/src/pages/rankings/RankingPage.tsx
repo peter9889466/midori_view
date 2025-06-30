@@ -22,6 +22,7 @@ import { generateTradeData } from "../../data/tradeData";
 import { useSorting } from "../../hooks/useSorting";
 import type { TradeData } from "../../types/rankings";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
+import { useNavigate } from "react-router-dom";
 
 export default function RankingsPage() {
     const [tradeData, setTradeData] = useState<TradeData[]>([]);
@@ -30,6 +31,7 @@ export default function RankingsPage() {
         category: "",
         country: "",
     });
+    const navigate = useNavigate();
 
     const getYearMonthOptions = () => {
         const options = [];
@@ -152,7 +154,7 @@ export default function RankingsPage() {
                             </TableHeader>
                             <TableBody>
                                 {sortedData.map((item, idx) => (
-                                    <TableRow key={item.hsCd + item.statCd} className="hover:bg-muted/50">
+                                    <TableRow key={item.hsCd + item.statCd} className="hover:bg-muted/50 cursor-pointer" onClick={() => navigate(`/graphs/${encodeURIComponent(item.statKor)}`)}>
                                         <TableCell>{idx + 1}</TableCell>
                                         <TableCell>{item.statCdCntnKor1}</TableCell>
                                         <TableCell className="font-medium">{item.statKor}</TableCell>

@@ -4,7 +4,8 @@ import type React from "react";
 
 import { useState, useEffect, useRef } from "react";
 import { generateTradeData } from "../../data/tradeData";
-
+// CountryMap import에서 경로 오타 수정 및 타입 선언 문제 해결
+import CountryMap from "../../components/map/CountryMap";
 import {
     Select,
     SelectContent,
@@ -25,6 +26,7 @@ import { useParams } from "react-router-dom";
 import MixedChart from '../../chart/MixedChart';
 import BarChart from '../../chart/BarChart';
 import LineChart from '../../chart/LineChart';
+
 
 interface ChartType {
     id: string;
@@ -268,7 +270,7 @@ export default function GraphsPage() {
     const [selectedYear, setSelectedYear] = useState(years[0]);
     const [selectedCountry, setSelectedCountry] = useState("");
     const [currentData, setCurrentData] = useState<{ totalDlr: number, prevTotalDlr: number }>({ totalDlr: 0, prevTotalDlr: 0 });
-    
+
     // 차트 리사이즈 관련 상태
     const chartRef = useRef<any>(null);
     const [chartKey, setChartKey] = useState(0); // 차트 강제 리렌더링용
@@ -288,7 +290,7 @@ export default function GraphsPage() {
 
         const debounceResize = debounce(handleResize, 150);
         window.addEventListener('resize', debounceResize);
-        
+
         return () => window.removeEventListener('resize', debounceResize);
     }, []);
 
@@ -348,13 +350,13 @@ export default function GraphsPage() {
             </div>
 
             {/* 지도 섹션 */}
-            <div className="rounded-2xl bg-white flex flex-col items-start py-8 mb-6 w-full">
-                <div className="flex items-start mb-2">
-                    <Map className="h-8 w-8 text-[#9AD970] mr-2" />
-                    <span className="text-lg font-semibold text-gray-800">지역별 데이터 맵</span>
+            <div className="rounded-2xl bg-white flex flex-col items-start p-4 sm:p-6 shadow-md w-full mt-6">
+                <div className="flex items-center mb-4">
+                    <Map className="h-7 w-7 text-[#9AD970] mr-3" />
+                    <span className="text-xl font-semibold text-gray-800">지역별 데이터 맵</span>
                 </div>
-                <div className="h-56 w-full flex items-center bg-gray-50 rounded-lg border-2 border-dashed border-gray-200 justify-center">
-                    <span className="text-gray-400">지도 컴포넌트가 여기에 표시됩니다</span>
+                <div className="h-[500px] w-full bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
+                    <CountryMap />
                 </div>
             </div>
 
@@ -409,7 +411,7 @@ export default function GraphsPage() {
                             </Select>
                         </div>
                     </div>
-                    
+
                     {/* 그래프 영역 - 반응형 개선 */}
                     <div className="flex items-start gap-6">
                         <div className="w-1/4 min-w-0 flex-shrink-0"> {/* min-w-0과 flex-shrink-0 추가 */}
@@ -424,33 +426,33 @@ export default function GraphsPage() {
                                 </div>
                             </div>
                         </div>
-                        
+
                         {/* 차트 컨테이너 - 반응형 개선 */}
                         <div className="w-3/4 min-w-0 flex-1"> {/* min-w-0과 flex-1 추가 */}
                             <div className="relative w-full" style={{ height: '400px' }}> {/* 고정 높이 설정 */}
                                 {selectedChart === "bar" && (
-                                    <BarChart 
+                                    <BarChart
                                         key={`bar-${chartKey}`} // 강제 리렌더링용 key
 
-                                        className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200" 
-                                        data={generateBarData(selectedYear)} 
-                                        options={sampleOptions} 
+                                        className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+                                        data={generateBarData(selectedYear)}
+                                        options={sampleOptions}
                                     />
                                 )}
                                 {selectedChart === "line" && (
-                                    <LineChart 
+                                    <LineChart
                                         key={`line-${chartKey}`}
-                                        className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200" 
-                                        data={generateLineData(selectedYear)} 
-                                        options={sampleOptions} 
+                                        className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+                                        data={generateLineData(selectedYear)}
+                                        options={sampleOptions}
                                     />
                                 )}
                                 {selectedChart === "combined" && (
-                                    <MixedChart 
+                                    <MixedChart
                                         key={`mixed-${chartKey}`}
-                                        className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200" 
-                                        data={generateMixedData(selectedYear)} 
-                                        options={mixedChartOptions} 
+                                        className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+                                        data={generateMixedData(selectedYear)}
+                                        options={mixedChartOptions}
                                     />
                                 )}
                             </div>

@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 const homeCards = [
     {
         id: "visualization",
-        name: "데이터 시각화",
+        name: "데이터 \n 시각화",
         icon: BarChart3,
         description: "아름다운 차트와 그래프를 생성하세요",
         detail: "강력한 그래프 도구와 대화형 시각화를 통해 데이터 패턴을 더 깊이 이해하고 인사이트를 발견하세요."
@@ -73,11 +73,6 @@ const latestNews = [
 export default function HomePage() {
     const navigate = useNavigate();
 
-    // --- 카드 클릭 시 페이지 이동 핸들러 (기존과 동일) ---
-    const handleCardClick = (path: string) => {
-        navigate(path);
-    };
-
     return (
         <div className="bg-gray-50 min-h-screen">
             <div className="container mx-auto px-4 py-12 space-y-16">
@@ -100,7 +95,7 @@ export default function HomePage() {
 
                 {/* === 2. [신규] 오늘의 주요 지표 (Dashboard Preview) === */}
                 <div className="space-y-6">
-                    <h2 className="text-3xl font-bold text-center text-gray-800">오늘의 주요 지표</h2>
+                    <h2 className="text-3xl font-bold text-center text-gray-800">user의 관심품목</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {previewMetrics.map((metric, index) => (
                             <Card key={index} className="transform hover:-translate-y-1 transition-transform duration-300 shadow-sm hover:shadow-lg border-t-4 border-[#9AD970]">
@@ -126,7 +121,6 @@ export default function HomePage() {
                             <Card
                                 key={card.id}
                                 className="flex flex-col cursor-pointer transform hover:-translate-y-1 transition-transform duration-300 shadow-sm hover:shadow-lg border-t-4 border-[#9AD970]"
-                                onClick={() => handleCardClick(card.id === 'visualization' ? '/graphs' : card.id === 'ranking' ? '/rankings' : `/${card.id}`)}
                             >
                                 <CardHeader className="items-center text-center">
                                     <div className="flex flex-row items-center justify-center p-4 bg-[#E8F5E9] rounded-full gap-6 mb-4">

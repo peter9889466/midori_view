@@ -7,7 +7,7 @@ const Ranking = () => {
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const [selectedCountry, setSelectedCountry] = useState('전체');
   const [rankingType, setRankingType] = useState('exportValue');
-  const [selectedYearMonth, setSelectedYearMonth] = useState('2024.12');
+  const [selectedYearMonth, setSelectedYearMonth] = useState('2025.05');
   const [apiStatus, setApiStatus] = useState(''); // API 상태 메시지
 
   // 백엔드 API로 실제 데이터 요청하는 함수
@@ -41,19 +41,19 @@ const Ranking = () => {
         
         // 백엔드 데이터를 프론트엔드 형식으로 변환
         const transformedData = (apiData.data || []).map(item => ({
-          id: item.id,
-          country: item.country,
-          product: item.product,
-          category: item.category,
-          exportValue: item.export_value || 0,
-          importValue: item.import_value || 0,
-          tradeValue: (item.export_value || 0) + (item.import_value || 0),
-          period: item.period,
+          id: item.RANK_ID,
+          country: item.RANK_COUNTRY,
+          product: item.RANK_PRODUCT,
+          category: item.RANK_CATEGORY,
+          exportValue: item.EXPORT_VALUE || 0,
+          importValue: item.IMPORT_VALUE || 0,
+          tradeValue: (item.EXPORT_VALUE || 0) + (item.IMPORT_VALUE || 0),
+          period: item.RANK_PERIOD,
           // 추가 필드들 (ecoData에서 매칭)
           countryCode: '',
           countryFlag: '',
-          countryName: item.country,
-          productName: item.product,
+          countryName: item.RANK_COUNTRY,
+          productName: item.RANK_PRODUCT,
           productFeature: '',
           hsCode: ''
         }));

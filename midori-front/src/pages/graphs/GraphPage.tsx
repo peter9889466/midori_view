@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { generateTradeData } from "../../data/tradeData";
 
 import {
@@ -37,6 +37,21 @@ const chartTypes: ChartType[] = [
     { id: "line", name: "선형 차트", icon: LineChartIcon },
     { id: "combined", name: "혼합 차트", icon: Layers },
 ];
+
+// 디바운스 함수 (리사이즈 이벤트 최적화)
+function debounce(func: (...args: any[]) => void, wait: number) {
+    let timeout: NodeJS.Timeout;
+    return function executedFunction(...args: any[]) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// 윈도우 리사이즈 감지 훅
 
 const formatNumber = (num: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -179,28 +194,46 @@ const generateMixedData = (selectedYear: string) => {
 
 const sampleOptions = {
     responsive: true,
+    maintainAspectRatio: false, // 컨테이너 크기에 맞춤
+    animation: {
+        duration: 200 // 리사이즈 시 애니메이션 단축
+    },
     plugins: {
         legend: {
             position: 'top' as const,
+            responsive: true,
+            maxWidth: 300,
         },
         title: {
             display: true,
             text: '샘플 혼합 차트',
         },
     },
+    interaction: {
+        intersect: false,
+    },
 };
 
 // 혼합차트용 옵션 (이중 Y축)
 const mixedChartOptions = {
     responsive: true,
+    maintainAspectRatio: false, // 컨테이너 크기에 맞춤
+    animation: {
+        duration: 200 // 리사이즈 시 애니메이션 단축
+    },
     plugins: {
         legend: {
             position: 'top' as const,
+            responsive: true,
+            maxWidth: 300,
         },
         title: {
             display: true,
             text: '수출/수입 및 전년대비증감률',
         },
+    },
+    interaction: {
+        intersect: false,
     },
     scales: {
         y: {
@@ -235,6 +268,29 @@ export default function GraphsPage() {
     const [selectedYear, setSelectedYear] = useState(years[0]);
     const [selectedCountry, setSelectedCountry] = useState("");
     const [currentData, setCurrentData] = useState<{ totalDlr: number, prevTotalDlr: number }>({ totalDlr: 0, prevTotalDlr: 0 });
+    
+    // 차트 리사이즈 관련 상태
+    const chartRef = useRef<any>(null);
+    const [chartKey, setChartKey] = useState(0); // 차트 강제 리렌더링용
+
+    // 윈도우 크기 변경 시 차트 리사이즈
+    useEffect(() => {
+        const handleResize = () => {
+            // 차트 인스턴스가 있으면 리사이즈 호출
+            if (chartRef.current && chartRef.current.chartInstance) {
+                setTimeout(() => {
+                    chartRef.current.chartInstance.resize();
+                }, 100);
+            }
+            // 차트 강제 리렌더링
+            setChartKey(prev => prev + 1);
+        };
+
+        const debounceResize = debounce(handleResize, 150);
+        window.addEventListener('resize', debounceResize);
+        
+        return () => window.removeEventListener('resize', debounceResize);
+    }, []);
 
     useEffect(() => {
         // 현재 데이터 생성
@@ -274,10 +330,10 @@ export default function GraphsPage() {
                 <div className="flex items-center gap-2">
                     <span className="text-4xl font-bold">{formatNumber(currentData.totalDlr)}</span>
                     <div className={`flex items-center gap-1 text-lg font-medium ${currentData.prevTotalDlr === 0
-                            ? 'text-gray-500'
-                            : isPositive
-                                ? 'text-green-500'
-                                : 'text-red-500'
+                        ? 'text-gray-500'
+                        : isPositive
+                            ? 'text-green-500'
+                            : 'text-red-500'
                         }`}>
                         {currentData.prevTotalDlr === 0 ? (
                             <span>0%</span>
@@ -302,9 +358,9 @@ export default function GraphsPage() {
                 </div>
             </div>
 
-            {/* 그래프 영역 (차트 옵션 포함)*/}
+            {/* 그래프 영역 (차트 옵션 포함) - 리사이즈 개선 버전 */}
             <div className="mt-4 rounded-2xl bg-white w-full">
-                <div className=" pt-6 pb-2">
+                <div className="pt-6 pb-2 px-6">
                     <div className="text-base font-semibold mb-4">그래프</div>
                     {/* 차트 옵션 */}
                     <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
@@ -353,26 +409,51 @@ export default function GraphsPage() {
                             </Select>
                         </div>
                     </div>
-                    {/* 그래프 영역 */}
-                    <div className="h-full flex items-center justify-end gap-10">
-                        <div className="w-1/4">
-                            종목 <hr />
-                            일단<hr />
-                            아무<hr />
-                            거나<hr />
-                            텍스트<hr />
-
+                    
+                    {/* 그래프 영역 - 반응형 개선 */}
+                    <div className="flex items-start gap-6">
+                        <div className="w-1/4 min-w-0 flex-shrink-0"> {/* min-w-0과 flex-shrink-0 추가 */}
+                            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                <h3 className="text-sm font-medium text-gray-800 mb-3">종목</h3>
+                                <div className="space-y-2 text-sm text-gray-600">
+                                    <div className="py-1 border-b border-gray-200">일단</div>
+                                    <div className="py-1 border-b border-gray-200">아무</div>
+                                    <div className="py-1 border-b border-gray-200">거나</div>
+                                    <div className="py-1 border-b border-gray-200">텍스트</div>
+                                    <div className="py-1">더보기...</div>
+                                </div>
+                            </div>
                         </div>
-                        <div className="w-3/4 h-full">
-                            {selectedChart === "bar" && (
-                                <BarChart className="h-full w-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200" data={generateBarData(selectedYear)} options={sampleOptions} />
-                            )}
-                            {selectedChart === "line" && (
-                                <LineChart className="h-full w-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200" data={generateLineData(selectedYear)} options={sampleOptions} />
-                            )}
-                            {selectedChart === "combined" && (
-                                <MixedChart className="h-full w-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200" data={generateMixedData(selectedYear)} options={mixedChartOptions} />
-                            )}
+                        
+                        {/* 차트 컨테이너 - 반응형 개선 */}
+                        <div className="w-3/4 min-w-0 flex-1"> {/* min-w-0과 flex-1 추가 */}
+                            <div className="relative w-full" style={{ height: '400px' }}> {/* 고정 높이 설정 */}
+                                {selectedChart === "bar" && (
+                                    <BarChart 
+                                        key={`bar-${chartKey}`} // 강제 리렌더링용 key
+
+                                        className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200" 
+                                        data={generateBarData(selectedYear)} 
+                                        options={sampleOptions} 
+                                    />
+                                )}
+                                {selectedChart === "line" && (
+                                    <LineChart 
+                                        key={`line-${chartKey}`}
+                                        className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200" 
+                                        data={generateLineData(selectedYear)} 
+                                        options={sampleOptions} 
+                                    />
+                                )}
+                                {selectedChart === "combined" && (
+                                    <MixedChart 
+                                        key={`mixed-${chartKey}`}
+                                        className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200" 
+                                        data={generateMixedData(selectedYear)} 
+                                        options={mixedChartOptions} 
+                                    />
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

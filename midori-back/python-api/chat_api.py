@@ -53,7 +53,7 @@ def load_csv_file():
     """CSV 파일 불러오기"""
     global csv_data, csv_loaded, knowledge_base
     
-    csv_file_path = "data/test3.csv"
+    csv_file_path = "data/QA_Refinement.csv"
     
     try:
         if not os.path.exists(csv_file_path):

@@ -6,3 +6,12 @@ python-dotenv
 langchain-openai
 pandas
 openai
+requests
+beautifulsoup4
+feedparser
+selenium
+loguru
+html2text
+aiohttp
+pymysql
+webdriver-manager

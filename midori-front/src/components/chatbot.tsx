@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ChatbotIcon } from "./chatbot-icon";
-import { ChatbotWindow } from "./chatbot-window";
+import { ChatbotWindow } from "./chatbot-test";
 
 export function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);

@@ -1,6 +1,3 @@
-# ================================
-# chat_api.py - GPT-4o mini 챗봇 (깔끔한 버전)
-# ================================
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -27,7 +24,7 @@ app = FastAPI(title="GPT-4o mini CSV ChatBot", version="3.0.0")
 # CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8088", "http://localhost:3000"],
+    allow_origins=["http://localhost:8088", "http://localhost:5174"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -53,7 +50,7 @@ def load_csv_file():
     """CSV 파일 불러오기"""
     global csv_data, csv_loaded, knowledge_base
     
-    csv_file_path = "data/QA_Refinement.csv"
+    csv_file_path = "data/DataSet.csv"
     
     try:
         if not os.path.exists(csv_file_path):
@@ -215,7 +212,7 @@ async def startup_event():
     if load_csv_file():
         print("✅ 시스템 준비 완료!")
     else:
-        print("⚠️ data/test3.csv 파일을 확인하세요.")
+        print("⚠️ data/QA_Refinement.csv 파일을 확인하세요.")
 
 @app.get("/")
 async def root():

@@ -1,8 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import Logo from "./logo";
 import { motion } from "framer-motion";
 import { useRef, useLayoutEffect, useState } from "react";
+import { Menu } from "lucide-react";
 
 interface NavItem {
     name: string;
@@ -12,10 +13,12 @@ interface NavItem {
 
 export default function Header() {
     const location = useLocation();
+    const navigate = useNavigate();
     const navItems: NavItem[] = [
         { name: "Main", href: "/", label: "Main Page" },
         { name: "Rankings", href: "/rankings", label: "Rankings Page" },
         { name: "News", href: "/news", label: "News Page" },
+        { name: "", href: "/login", label: "Login Page" },
     ];
 
     // 각 버튼의 ref 저장
@@ -51,36 +54,57 @@ export default function Header() {
                         </h1>
                     </Link>
 
-                    {/* Navigation */}
-                    <nav ref={navRef} className="relative flex items-center space-x-1">
-                        {/* 슬라이딩 초록색 배경 */}
-                        <motion.div
-                            className="absolute top-0 left-0 h-8 sm:h-10 rounded-lg bg-[#9AD970] z-0"
-                            layout
-                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                            style={{ left: indicator.left, width: indicator.width }}
-                        />
-                        {navItems.map((item, idx) => {
-                            const isActive = location.pathname === item.href;
-                            return (
-                                <Button
-                                    key={item.href}
-                                    asChild
-                                    ref={(el) => { btnRefs.current[idx] = el; }}
-                                    variant="ghost"
-                                    size="sm"
-                                    className={`
-                                        relative z-10
-                                        text-xs sm:text-sm px-2 sm:px-4 h-8 sm:h-10
-                                        ${isActive ? "text-white" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"}
-                                    `}
-                                    data-active={isActive}
-                                >
-                                    <Link to={item.href}>{item.name}</Link>
-                                </Button>
-                            );
-                        })}
-                    </nav>
+                    {/* Navigation + 로그인 버튼을 오른쪽 정렬 */}
+                    <div className="flex items-center justify-end flex-1">
+                        <nav ref={navRef} className="relative flex items-center space-x-1">
+                            {/* 슬라이딩 초록색 배경 */}
+                            <motion.div
+                                className="absolute top-0 left-0 h-8 sm:h-10 rounded-lg bg-[#9AD970] z-0"
+                                layout
+                                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                style={{ left: indicator.left, width: indicator.width }}
+                            />
+                            {navItems.map((item, idx) => {
+                                const isActive = location.pathname === item.href;
+                                if (item.href === "/login") {
+                                    return (
+                                        <Button
+                                            key={item.href}
+                                            asChild
+                                            ref={(el) => { btnRefs.current[idx] = el; }}
+                                            variant="ghost"
+                                            size="sm"
+                                            className={`
+                                                relative z-10
+                                                text-xs sm:text-sm px-2 sm:px-4 h-8 sm:h-10
+                                                ${isActive ? "text-white" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"}
+                                            `}
+                                            data-active={isActive}
+                                        >
+                                            <Link to={item.href}><Menu width={22} height={22} /></Link>
+                                        </Button>
+                                    );
+                                }
+                                return (
+                                    <Button
+                                        key={item.href}
+                                        asChild
+                                        ref={(el) => { btnRefs.current[idx] = el; }}
+                                        variant="ghost"
+                                        size="sm"
+                                        className={`
+                                            relative z-10
+                                            text-xs sm:text-sm px-2 sm:px-4 h-8 sm:h-10
+                                            ${isActive ? "text-white" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"}
+                                        `}
+                                        data-active={isActive}
+                                    >
+                                        <Link to={item.href}>{item.name}</Link>
+                                    </Button>
+                                );
+                            })}
+                        </nav>
+                    </div>
                 </div>
             </div>
         </header>

@@ -92,6 +92,7 @@ const CountryMap = ({ allowedCountries, selectedCountryName, onCountrySelect }: 
         // "영국": "United Kingdom",
         // ...
     // };
+    
 
     // 국가명 매칭 함수: feature의 name_ko(한글)와 allowedCountries(한글) 비교
     const isAllowedCountry = (feature: Feature) => {

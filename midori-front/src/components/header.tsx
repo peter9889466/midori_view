@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
 import Logo from "./logo";
 import { motion } from "framer-motion";
@@ -13,7 +13,6 @@ interface NavItem {
 
 export default function Header() {
     const location = useLocation();
-    const navigate = useNavigate();
     const navItems: NavItem[] = [
         { name: "Main", href: "/", label: "Main Page" },
         { name: "Rankings", href: "/rankings", label: "Rankings Page" },

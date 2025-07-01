@@ -7,6 +7,7 @@ import {
 } from "../../components/ui/card";
 import { BarChart3, Newspaper, Trophy, TrendingUp, Leaf, Building2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 // --- 기존 homeCards 데이터는 유지하되, 상세 설명을 활용할 것입니다. ---
 const homeCards = [
@@ -33,35 +34,6 @@ const homeCards = [
     }
 ];
 
-// --- [신규] 미리보기 섹션을 위한 샘플 데이터 ---
-// 실제로는 API를 통해 동적으로 데이터를 가져와야 합니다.
-const previewMetrics = [
-    {
-        title: "금주 최고 순위 제품",
-        value: "에코클린 세제",
-        Icon: Trophy,
-        trend: "up",
-        change: "+5",
-        description: "세제 카테고리 1위 달성"
-    },
-    {
-        title: "친환경 시장 성장률",
-        value: "12.5%",
-        Icon: TrendingUp,
-        trend: "up",
-        change: "+1.2% MoM",
-        description: "전월 대비 성장 가속화"
-    },
-    {
-        title: "주목할 만한 기업",
-        value: "그린테크 솔루션",
-        Icon: Building2,
-        trend: "neutral",
-        change: "",
-        description: "신규 재활용 기술 특허 출원"
-    }
-];
-
 // --- [신규] 최신 뉴스 샘플 데이터 ---
 const latestNews = [
     { id: 1, title: "정부, 2025년 친환경 포장재 의무 사용 비율 확대 발표", source: "환경일보" },
@@ -69,9 +41,40 @@ const latestNews = [
     { id: 3, title: "소비자 78%, '조금 더 비싸도 친환경 제품 구매 의향 있다'", source: "리서치 기관 A" },
 ];
 
+// 관심품목 3개를 localStorage 또는 예시로 가져오기 (실제 연동 시 수정)
+const getUserProducts = () => {
+    // 실제로는 로그인 유저 정보에서 가져와야 함
+    const saved = localStorage.getItem("userProducts");
+    if (saved) return JSON.parse(saved);
+    // 저장된 값이 없으면 빈 배열 반환
+    return [];
+};
 
 export default function HomePage() {
     const navigate = useNavigate();
+    const [userProducts, setUserProducts] = useState<string[]>([]);
+
+    useEffect(() => {
+        setUserProducts(getUserProducts());
+    }, []);
+
+    // 관심품목 3개를 카드에 매핑
+    const previewMetrics = userProducts.slice(0, 3).map((prod, idx) => {
+        // 카드별 아이콘/타이틀/설명 예시
+        const icons = [Trophy, TrendingUp, Building2];
+        const titles = ["금주 최고 순위 제품", "친환경 시장 성장률", "주목할 만한 기업"];
+        const descriptions = [
+            `${prod} 카테고리 1위 달성`,
+            `${prod}의 친환경 성장률`,
+            `${prod} 관련 특허/기술/기업 소식`,
+        ];
+        return {
+            title: titles[idx] || "관심품목",
+            value: prod,
+            Icon: icons[idx] || Trophy,
+            description: descriptions[idx] || prod,
+        };
+    });
 
     return (
         <div className="bg-gray-50 min-h-screen">

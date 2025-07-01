@@ -111,6 +111,11 @@ export default function ProfilePage() {
         setError("");
     };
 
+    // 관심품목 변경 시 localStorage에 저장
+    useEffect(() => {
+        localStorage.setItem("userProducts", JSON.stringify(products));
+    }, [products]);
+
     // 로그아웃
     const handleLogout = () => {
         // 실제 로그아웃 처리(토큰 삭제 등)는 추후 구현

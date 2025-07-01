@@ -73,8 +73,16 @@ export default function RankingsPage() {
         }).format(amount);
     };
 
+    // 국가명 → 국기 이모지 매핑 함수
+    const getCountryFlag = (country: string) => {
+        const flags: Record<string, string> = {
+            "미국": "🇺🇸", "중국": "🇨🇳", "일본": "🇯🇵", "베트남": "🇻🇳", "영국": "🇬🇧", "독일": "🇩🇪", "프랑스": "🇫🇷", "인도": "🇮🇳", "대만": "🇹🇼", "태국": "🇹🇭", "호주": "🇦🇺",
+        };
+        return flags[country] || "🌐";
+    };
+
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 font-sans text-[15px]">
             {/* Page Header */}
             <div className="text-center space-y-4">
                 <div className="flex justify-center">
@@ -82,14 +90,9 @@ export default function RankingsPage() {
                         <Logo size={40} />
                     </div>
                 </div>
-                <h1 className="text-3xl font-bold text-gray-900">
-                    무역 순위 및 성과
-                </h1>
-                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                    품목별 수출입 데이터를 기반으로 한 무역 성과 순위
-                </p>
+                <h1 className="text-3xl font-bold text-gray-900">무역 순위 및 성과</h1>
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto">품목별 수출입 데이터를 기반으로 한 무역 성과 순위</p>
             </div>
-
             {/* 필터 영역 */}
             <div className="flex flex-wrap gap-4 mb-4">
                 {/* 기준년월 */}
@@ -107,32 +110,28 @@ export default function RankingsPage() {
                     </Select>
                 </div>
             </div>
-
             {/* Main Rankings Table */}
             <Card>
                 <CardHeader>
-                    <CardTitle>무역 품목별 순위</CardTitle>
-                    <CardDescription>
-                        수출액, 수입액, 총 무역액을 기준으로 한 품목별 순위
-                        (단위: USD)
-                    </CardDescription>
+                    <CardTitle className="text-xl font-bold">무역 품목별 순위</CardTitle>
+                    <CardDescription className="text-base text-gray-500">수출액, 수입액, 총 무역액을 기준으로 한 품목별 순위 (단위: USD)</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="overflow-x-auto">
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-20">순위</TableHead>
-                                    <TableHead>국가</TableHead>
-                                    <TableHead>품목</TableHead>
-                                    <TableHead>HS코드</TableHead>
+                                    <TableHead className="w-20 text-base font-semibold">순위</TableHead>
+                                    <TableHead className="text-base font-semibold">국가</TableHead>
+                                    <TableHead className="text-base font-semibold">품목</TableHead>
+                                    <TableHead className="text-base font-semibold">HS코드</TableHead>
                                     <SortableTableHeader
                                         field="expDlr"
                                         currentSortField={sortConfig.field}
                                         currentSortOrder={sortConfig.order}
                                         onSort={handleSort}
                                     >
-                                        수출액
+                                        <span className="text-red-600 font-bold">수출액</span>
                                     </SortableTableHeader>
                                     <SortableTableHeader
                                         field="impDlr"
@@ -140,7 +139,7 @@ export default function RankingsPage() {
                                         currentSortOrder={sortConfig.order}
                                         onSort={handleSort}
                                     >
-                                        수입액
+                                        <span className="text-green-600 font-bold">수입액</span>
                                     </SortableTableHeader>
                                     <SortableTableHeader
                                         field="balPayments"
@@ -148,20 +147,23 @@ export default function RankingsPage() {
                                         currentSortOrder={sortConfig.order}
                                         onSort={handleSort}
                                     >
-                                        총수출입액
+                                        <span className="font-bold">총수출입액</span>
                                     </SortableTableHeader>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {sortedData.map((item, idx) => (
-                                    <TableRow key={item.hsCd + item.statCd} className="hover:bg-muted/50 cursor-pointer" onClick={() => navigate(`/graphs/${encodeURIComponent(item.statKor)}`)}>
-                                        <TableCell>{idx + 1}</TableCell>
-                                        <TableCell>{item.statCdCntnKor1}</TableCell>
-                                        <TableCell className="font-medium">{item.statKor}</TableCell>
-                                        <TableCell className="font-mono">{item.hsCd}</TableCell>
-                                        <TableCell className="font-mono">{formatCurrency(item.expDlr)}</TableCell>
-                                        <TableCell className="font-mono">{formatCurrency(item.impDlr)}</TableCell>
-                                        <TableCell className="font-mono font-semibold">{formatCurrency(item.expDlr+item.impDlr)}</TableCell>
+                                    <TableRow key={item.hsCd + item.statCd} className="hover:bg-muted/50 cursor-pointer text-[15px]" onClick={() => navigate(`/graphs/${encodeURIComponent(item.statKor)}`)}>
+                                        <TableCell className="font-semibold text-base">{idx + 1}</TableCell>
+                                        <TableCell className="font-semibold text-base">
+                                            <span className="mr-2 text-xl">{getCountryFlag(item.statCdCntnKor1)}</span>
+                                            {item.statCdCntnKor1}
+                                        </TableCell>
+                                        <TableCell className="font-medium text-base">{item.statKor}</TableCell>
+                                        <TableCell className="font-mono text-base">{item.hsCd}</TableCell>
+                                        <TableCell className="font-mono text-base font-bold text-red-600">{formatCurrency(item.expDlr)}</TableCell>
+                                        <TableCell className="font-mono text-base font-bold text-green-600">{formatCurrency(item.impDlr)}</TableCell>
+                                        <TableCell className="font-mono text-base font-semibold">{formatCurrency(item.expDlr+item.impDlr)}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

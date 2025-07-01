@@ -9,9 +9,9 @@ import Login from '../components/Login';
 function App() {
   return (
     <div>
-      {/* <SelectCountryMap/> */}
+      <SelectCountryMap/>
       {/* <Ranking/> */}
-      <Login/>
+      {/* <Login/> */}
     </div>
   );
 }

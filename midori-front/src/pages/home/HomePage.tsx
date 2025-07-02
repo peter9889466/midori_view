@@ -286,8 +286,10 @@ export default function HomePage() {
                                 <div className="absolute top-8 right-8 w-4 h-4 bg-[#9AD970]/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                             </Card>
                         ))}
+                        
                     </div>
                 </div>
+
 
                 {/* === 4. [신규] 최신 관련 뉴스 === */}
                 <div className="space-y-6">

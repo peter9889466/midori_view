@@ -12,6 +12,8 @@ import { useCookies } from "react-cookie";
 import { products } from "@/components/constants";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import axios from "axios";
+import Markdown from 'react-markdown';
+
 
 // --- 기존 homeCards 데이터는 유지하되, 상세 설명을 활용할 것입니다. ---
 const homeCards = [
@@ -296,10 +298,6 @@ export default function HomePage() {
 
                                 {/* 하단 장식 요소 */}
                                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#6AAE4A] to-[#9AD970] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-
-                                {/* 코너 장식 */}
-                                <div className="absolute top-6 right-6 w-8 h-8 border-2 border-[#9AD970]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                <div className="absolute top-8 right-8 w-4 h-4 bg-[#9AD970]/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                             </Card>
                         ))}
 
@@ -325,7 +323,9 @@ export default function HomePage() {
                                             rel="noopener noreferrer"
                                             className="text-lg font-semibold text-gray-800 hover:text-[#9AD970] transition"
                                         >
-                                            {item.title}
+                                            <Markdown>
+                                                {item.title}
+                                            </Markdown>
                                         </a>
                                     </li>
                                 ))}

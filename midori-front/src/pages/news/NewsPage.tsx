@@ -173,6 +173,9 @@ const NewsPage = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* 하단 그라데이션 바 */}
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#6AAE4A] to-[#9AD970] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                   </Card>
                 ))
               )}

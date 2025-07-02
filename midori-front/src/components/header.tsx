@@ -3,7 +3,6 @@ import { Button } from "./ui/button";
 import Logo from "./logo";
 import { motion } from "framer-motion";
 import { useRef, useLayoutEffect, useState } from "react";
-import { Menu } from "lucide-react";
 
 interface NavItem {
     name: string;
@@ -80,7 +79,6 @@ export default function Header() {
                                             `}
                                             data-active={isActive}
                                         >
-                                            <Link to={item.href}><Menu width={22} height={22} /></Link>
                                         </Button>
                                     );
                                 }

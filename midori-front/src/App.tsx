@@ -9,9 +9,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import NewsPage from "./pages/news/NewsPage";
 import { Chatbot } from "./components/chatbot";
 import Footer from "./components/footer";
-import LoginPage from "./pages/auth/LoginPage";
-import SignUpPage from "./pages/auth/SignUpPage";
-import ProfilePage from "./pages/auth/ProfilePage";
+
 
 function App() {
     return (
@@ -32,9 +30,6 @@ function App() {
                                 element={<RankingsPage />}
                             />
                             <Route path="/news" element={<NewsPage />} />
-                            <Route path="/login" element={<LoginPage />} />
-                            <Route path="/signup" element={<SignUpPage />} />
-                            <Route path="/profile" element={<ProfilePage />} />
                             <Route path="*" element={<Page404 />} />
                         </Routes>
                     </main>

@@ -2,13 +2,13 @@ import React from 'react';
 import { Download } from 'lucide-react';
 
 // TypeScript 인터페이스 정의
-interface PDFExportOptions {
-    format: 'A4' | 'A3' | 'Letter';
-    orientation: 'portrait' | 'landscape';
-    quality: 'high' | 'medium' | 'low';
-    includeImages: boolean;
-    includeMetadata: boolean;
-}
+// interface PDFExportOptions {
+//     format: 'A4' | 'A3' | 'Letter';
+//     orientation: 'portrait' | 'landscape';
+//     quality: 'high' | 'medium' | 'low';
+//     includeImages: boolean;
+//     includeMetadata: boolean;
+// }
 
 // 1. 간단한 PDF 버튼 컴포넌트
 const SimplePDFButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {

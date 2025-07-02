@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
     Card,
     CardContent,
@@ -18,7 +18,6 @@ import {
 } from "../../components/ui/table";
 import { SortableTableHeader } from "../../components/sortable-table-header";
 import Logo from "../../components/logo";
-import { generateTradeData } from "../../data/tradeData";
 import { useSorting } from "../../hooks/useSorting";
 import type { TradeData } from "../../types/rankings";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
@@ -26,29 +25,23 @@ import { useNavigate } from "react-router-dom";
 
 export default function RankingsPage() {
     const [tradeData, setTradeData] = useState<TradeData[]>([]);
-    const [loading, setLoading] = useState(true);
     const [apiStatus, setApiStatus] = useState('');
     const [ecoData, setEcoData] = useState<any>(null);
     const [filter, setFilter] = useState({
         yearMonth: "2025.05",
-        category: "",
-        country: "",
+        category: "all",
+        country: "all",
     });
     const navigate = useNavigate();
 
-    // 수정된 년월 옵션 (하드코딩)
-    const getYearMonthOptions = () => {
-        return [
-            "2024.07", "2024.08", "2024.09", "2024.10", "2024.11", "2024.12",
-            "2025.01", "2025.02", "2025.03", "2025.04", "2025.05", "2025.06"
-        ];
-    };
-    const yearMonthOptions = getYearMonthOptions();
+    const yearMonthOptions = [
+        "2024.07", "2024.08", "2024.09", "2024.10", "2024.11", "2024.12",
+        "2025.01", "2025.02", "2025.03", "2025.04", "2025.05", "2025.06"
+    ];
 
     // 백엔드 API 호출 함수
     const fetchDataFromBackend = async (yearMonth: string) => {
         try {
-            console.log(`🔄 백엔드 API로 ${yearMonth} 데이터 요청 중...`);
             setApiStatus(`🔄 ${yearMonth} 데이터 요청 중...`);
             
             const apiResponse = await fetch('http://localhost:3001/api/trade/bulk', {
@@ -70,19 +63,31 @@ export default function RankingsPage() {
             const apiData = await apiResponse.json();
             
             if (apiData.success) {
-                console.log('✅ 백엔드 API 데이터 수신 성공:', apiData.count, '개 항목');
                 setApiStatus(`✅ ${yearMonth} 데이터 수신 완료 (${apiData.count}개 항목)`);
                 
                 // 백엔드 데이터를 기존 형식으로 변환
-                const transformedData = (apiData.data || []).map((item: any) => ({
-                    hsCd: item.HS_CODE || '',
-                    statCd: item.RANK_COUNTRY_CODE || '',
-                    statKor: item.RANK_PRODUCT || '',
-                    statCdCntnKor1: item.RANK_COUNTRY || '',
-                    expDlr: item.EXPORT_VALUE || 0,
-                    impDlr: item.IMPORT_VALUE || 0,
-                    balPayments: (item.EXPORT_VALUE || 0) + (item.IMPORT_VALUE || 0),
-                }));
+                const transformedData = (apiData.data || []).map((item: any) => {
+                    // RANK_ID에서 HS코드 추출 (예: "AU-310100-2024.11" -> "310100")
+                    let extractedHsCode = '';
+                    if (item.RANK_ID) {
+                        const parts = item.RANK_ID.split('-');
+                        if (parts.length >= 2) {
+                            extractedHsCode = parts[1];
+                        }
+                    }
+                    
+                    return {
+                        hsCd: extractedHsCode || item.HS_CODE || '',
+                        statCd: item.RANK_COUNTRY_CODE || '',
+                        statKor: item.RANK_PRODUCT || '',
+                        statCdCntnKor1: item.RANK_COUNTRY || '',
+                        expDlr: item.EXPORT_VALUE || 0,
+                        impDlr: item.IMPORT_VALUE || 0,
+                        balPayments: (item.EXPORT_VALUE || 0) + (item.IMPORT_VALUE || 0),
+                        category: item.RANK_CATEGORY || '',
+                        period: item.RANK_PERIOD || '',
+                    };
+                });
                 
                 return transformedData;
             } else {
@@ -90,44 +95,37 @@ export default function RankingsPage() {
             }
             
         } catch (error: any) {
-            console.error('❌ 백엔드 API 호출 실패:', error.message);
             setApiStatus(`❌ API 호출 실패: ${error.message}`);
             return [];
         }
     };
 
-    // 수정된 handleFilterChange - yearMonth 변경시 API 재호출
+    // 필터 변경 핸들러
     const handleFilterChange = (key: string, value: string) => {
         setFilter((prev) => ({ ...prev, [key]: value }));
         
-        // yearMonth가 변경된 경우 데이터 다시 로드
         if (key === 'yearMonth') {
             const reloadData = async () => {
-                setLoading(true);
                 const apiData = await fetchDataFromBackend(value);
                 setTradeData(apiData);
-                setLoading(false);
             };
             reloadData();
         }
     };
 
-    // 수정된 useEffect - 실제 API 데이터 로드
+    // 초기 데이터 로딩
     useEffect(() => {
         const loadInitialData = async () => {
             try {
-                setLoading(true);
-                
                 // ranking.json 로드 (선택사항)
                 try {
                     const jsonResponse = await fetch('/ranking.json');
                     if (jsonResponse.ok) {
                         const data = await jsonResponse.json();
                         setEcoData(data);
-                        console.log('✅ ranking.json 로드 성공');
                     }
                 } catch (error) {
-                    console.log('ranking.json 파일이 없습니다. 기본 설정으로 진행합니다.');
+                    // ranking.json 없어도 계속 진행
                 }
                 
                 // 실제 API 데이터 로드
@@ -135,11 +133,8 @@ export default function RankingsPage() {
                 setTradeData(apiData);
                 
             } catch (error: any) {
-                console.error('❌ 데이터 로딩 실패:', error.message);
                 setApiStatus(`❌ 초기화 실패: ${error.message}`);
                 setTradeData([]);
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -151,6 +146,27 @@ export default function RankingsPage() {
         order: "desc",
     });
 
+    // 필터링된 데이터
+    const filteredData = useMemo(() => {
+        let filtered = sortedData;
+        
+        // 카테고리 필터 적용
+        if (filter.category && filter.category !== "all") {
+            filtered = filtered.filter((item: any) => item.category === filter.category);
+        }
+        
+        // 국가 필터 적용
+        if (filter.country && filter.country !== "all") {
+            filtered = filtered.filter((item: any) => {
+                const directMatch = item.statCd === filter.country;
+                const ecoMatch = ecoData?.countries?.find((c: any) => c.name === item.statCdCntnKor1)?.code === filter.country;
+                return directMatch || ecoMatch;
+            });
+        }
+        
+        return filtered;
+    }, [sortedData, filter.category, filter.country, ecoData]);
+
     const formatCurrency = (amount: number): string => {
         return new Intl.NumberFormat("ko-KR", {
             minimumFractionDigits: 0,
@@ -158,23 +174,14 @@ export default function RankingsPage() {
         }).format(amount) + '$';
     };
 
-    // 국가명 → 국기 이모지 매핑 함수
+    // 국가명 → 국기 이모지 매핑
     const getCountryFlag = (country: string) => {
         const flags: Record<string, string> = {
-            "미국": "🇺🇸", "중국": "🇨🇳", "일본": "🇯🇵", "베트남": "🇻🇳", "영국": "🇬🇧", "독일": "🇩🇪", "프랑스": "🇫🇷", "인도": "🇮🇳", "대만": "🇹🇼", "태국": "🇹🇭", "호주": "🇦🇺",
+            "미국": "🇺🇸", "중국": "🇨🇳", "일본": "🇯🇵", "베트남": "🇻🇳", "영국": "🇬🇧", 
+            "독일": "🇩🇪", "프랑스": "🇫🇷", "인도": "🇮🇳", "대만": "🇹🇼", "태국": "🇹🇭", "호주": "🇦🇺",
         };
         return flags[country] || "🌐";
     };
-
-    // 로딩 상태 처리
-    if (loading) {
-        return (
-            <div className="flex flex-col justify-center items-center h-96 space-y-4">
-                <div className="text-lg">🔄 실제 API 데이터 로딩 중...</div>
-                <div className="text-sm text-gray-600 text-center">{apiStatus}</div>
-            </div>
-        );
-    }
 
     return (
         <div className="space-y-8 font-sans text-[15px]">
@@ -189,13 +196,9 @@ export default function RankingsPage() {
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto">실제 API 데이터를 기반으로 한 무역 성과 순위</p>
             </div>
 
-            {/* API 상태 표시 */}
-            {apiStatus && (
-                <div className={`p-3 rounded-lg text-center text-sm mb-4 ${
-                    apiStatus.includes('❌') ? 'bg-red-50 text-red-700 border border-red-200' :
-                    apiStatus.includes('✅') ? 'bg-green-50 text-green-700 border border-green-200' :
-                    'bg-yellow-50 text-yellow-700 border border-yellow-200'
-                }`}>
+            {/* API 상태 표시 - 에러만 표시 */}
+            {apiStatus && apiStatus.includes('❌') && (
+                <div className="p-3 rounded-lg text-center text-sm mb-4 bg-red-50 text-red-700 border border-red-200">
                     {apiStatus}
                 </div>
             )}
@@ -216,6 +219,50 @@ export default function RankingsPage() {
                         </SelectContent>
                     </Select>
                 </div>
+
+                {/* 국가 필터 */}
+                <div>
+                    <label className="block text-xs font-medium mb-1">국가</label>
+                    <Select value={filter.country} onValueChange={v => handleFilterChange("country", v)}>
+                        <SelectTrigger className="w-40 h-8">
+                            <SelectValue placeholder="국가 선택" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">🌐 전체 국가</SelectItem>
+                            {ecoData?.countries ? (
+                                ecoData.countries.map((country: any) => (
+                                    <SelectItem key={country.code} value={country.code}>
+                                        {country.flag || '🏳️'} {country.name}
+                                    </SelectItem>
+                                ))
+                            ) : (
+                                <SelectItem value="loading" disabled>데이터 로딩 중...</SelectItem>
+                            )}
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                {/* 카테고리 필터 */}
+                <div>
+                    <label className="block text-xs font-medium mb-1">카테고리</label>
+                    <Select value={filter.category} onValueChange={v => handleFilterChange("category", v)}>
+                        <SelectTrigger className="w-40 h-8">
+                            <SelectValue placeholder="카테고리 선택" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">🌐 전체</SelectItem>
+                            {ecoData?.categories ? (
+                                Object.keys(ecoData.categories).map((category) => (
+                                    <SelectItem key={category} value={category}>
+                                        {ecoData.categories[category]?.icon || '📦'} {category}
+                                    </SelectItem>
+                                ))
+                            ) : (
+                                <SelectItem value="loading" disabled>데이터 로딩 중...</SelectItem>
+                            )}
+                        </SelectContent>
+                    </Select>
+                </div>
             </div>
 
             {/* Main Rankings Table */}
@@ -223,7 +270,7 @@ export default function RankingsPage() {
                 <CardHeader>
                     <CardTitle className="text-xl font-bold">무역 품목별 순위</CardTitle>
                     <CardDescription className="text-base text-gray-500">
-                        실제 API 데이터 기반 수출액, 수입액, 총 무역액을 기준으로 한 품목별 순위 (단위: USD)
+                        실제 API 데이터 기반 수출액, 수입액, 총 무역액을 기준으로 한 품목별 순위 (단위: USD) - 상위 50개 표시 (전체: {filteredData.length}개 항목)
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -262,7 +309,7 @@ export default function RankingsPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {sortedData.map((item, idx) => (
+                                {filteredData.slice(0, 50).map((item, idx) => (
                                     <TableRow 
                                         key={`${item.hsCd || 'no-hs'}-${item.statCd || 'no-stat'}-${item.statKor || 'no-product'}-${idx}`} 
                                         className="hover:bg-muted/50 cursor-pointer text-[15px]" 
@@ -293,21 +340,34 @@ export default function RankingsPage() {
                     </div>
 
                     {/* 데이터 없을 때 표시 */}
-                    {sortedData.length === 0 && (
+                    {filteredData.length === 0 && (
                         <div className="text-center py-8 text-gray-500">
-                            <div className="mb-2">
-                                📡 백엔드 API에서 데이터를 가져오는 중이거나 해당 기간에 데이터가 없습니다.
-                            </div>
-                            <div className="text-sm">
-                                백엔드 서버가 실행 중인지 확인해주세요: http://localhost:3001
-                            </div>
+                            {tradeData.length === 0 ? (
+                                <div>
+                                    <div className="mb-2">
+                                        📡 백엔드 API에서 데이터를 가져오는 중이거나 해당 기간에 데이터가 없습니다.
+                                    </div>
+                                    <div className="text-sm">
+                                        백엔드 서버가 실행 중인지 확인해주세요: http://localhost:3001
+                                    </div>
+                                </div>
+                            ) : (
+                                <div>
+                                    <div className="mb-2">
+                                        🔍 선택한 필터 조건에 맞는 데이터가 없습니다.
+                                    </div>
+                                    <div className="text-sm">
+                                        다른 카테고리나 국가를 선택해보세요.
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
                 </CardContent>
             </Card>
 
             {/* 백엔드 연결 안내 */}
-            {sortedData.length === 0 && (
+            {tradeData.length === 0 && (
                 <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg text-center">
                     <h4 className="font-semibold text-yellow-800 mb-2">
                         💡 백엔드 서버 실행 안내

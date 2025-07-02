@@ -66,11 +66,9 @@ export default function RankingsPage() {
 
     const formatCurrency = (amount: number): string => {
         return new Intl.NumberFormat("ko-KR", {
-            style: "currency",
-            currency: "USD",
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
-        }).format(amount);
+        }).format(amount) + '$';
     };
 
     // 국가명 → 국기 이모지 매핑 함수

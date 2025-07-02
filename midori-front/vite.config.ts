@@ -10,4 +10,12 @@ export default defineConfig({
             "@": path.resolve(__dirname, "./src"),
         },
     },
+    server: {
+        proxy: {
+            '/MV/api': {
+            target: 'http://localhost:8088',
+            changeOrigin: true,
+            },
+        },
+    },
 });

@@ -24,7 +24,7 @@ app = FastAPI(title="GPT-4o mini CSV ChatBot", version="3.0.0")
 # CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8088", "http://localhost:5174"],
+    allow_origins=["http://localhost:8088", "http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -50,7 +50,7 @@ def load_csv_file():
     """CSV 파일 불러오기"""
     global csv_data, csv_loaded, knowledge_base
     
-    csv_file_path = "data/DataSet.csv"
+    csv_file_path = "data/Merged_DataSet.csv"
     
     try:
         if not os.path.exists(csv_file_path):
@@ -115,9 +115,7 @@ def ask_gpt4_mini(user_question):
 아래는 모든 CSV 데이터입니다:
 
 {knowledge_base}
-
-사용자 질문에 대해 위 데이터를 종합 분석해서 답변해주세요.
-
+사용자의 질문에 대해 위 데이터를 종합 분석해서 답변해주세요.
 
 답변 규칙:
 1. 데이터에 있는 정보를 정확히 분석
@@ -125,9 +123,7 @@ def ask_gpt4_mini(user_question):
 3. 여러 데이터를 비교하여 인사이트 제공
 4. 없는 정보는 "해당 정보 없음"이라고 명시
 5. 친근하고 이해하기 쉽게 설명
-6. 사용자가 데이터에 대해 묻지 않는 경우, 스스로 데이터 개요나 수치를 소개하지 마세요.
-7. "안녕", "반가워요", "고마워요" 등 인사나 잡담에는 간단하고 자연스러운 응답만을 표하세요.
-8. 주어진 데이터와 상관이 없는 질문이라고 생각될 때는 범위 밖의 질문이라고 답하세요.
+6. 주어진 데이터와 상관이 없는 질문이라고 생각될 때는 범위 밖의 질문이라고 대답.
 """
 
         print("🤖 GPT-4.1 분석 중...")
@@ -141,7 +137,8 @@ def ask_gpt4_mini(user_question):
             temperature=0.2,
             top_p=1.0,
             frequency_penalty=0.4,
-            presence_penalty=0.3
+            presence_penalty=0.3,
+            max_tokens=1000
         )
         
         answer = response.choices[0].message.content.strip()

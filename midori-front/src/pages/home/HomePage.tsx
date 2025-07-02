@@ -5,9 +5,12 @@ import {
     CardHeader,
     CardTitle,
 } from "../../components/ui/card";
-import { BarChart3, Newspaper, Trophy, TrendingUp, Leaf, Building2 } from "lucide-react";
+import { BarChart3, Newspaper, Trophy, TrendingUp, Leaf, Building2, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { products } from "@/components/constants";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 
 // --- 기존 homeCards 데이터는 유지하되, 상세 설명을 활용할 것입니다. ---
 const homeCards = [
@@ -41,40 +44,36 @@ const latestNews = [
     { id: 3, title: "소비자 78%, '조금 더 비싸도 친환경 제품 구매 의향 있다'", source: "리서치 기관 A" },
 ];
 
-// 관심품목 3개를 localStorage 또는 예시로 가져오기 (실제 연동 시 수정)
-const getUserProducts = () => {
-    // 실제로는 로그인 유저 정보에서 가져와야 함
-    const saved = localStorage.getItem("userProducts");
-    if (saved) return JSON.parse(saved);
-    // 저장된 값이 없으면 빈 배열 반환
-    return [];
-};
-
 export default function HomePage() {
     const navigate = useNavigate();
-    const [userProducts, setUserProducts] = useState<string[]>([]);
+    const [cookies, setCookie] = useCookies(["userProducts"]);
+    // 관심품목 3개를 쿠키에서 가져오고, 없으면 빈 값 3개
+    const [selectedProducts, setSelectedProducts] = useState<string[]>(
+        Array.isArray(cookies.userProducts) && cookies.userProducts.length === 3
+            ? cookies.userProducts
+            : ["", "", ""]
+    );
+    const [editingIdx, setEditingIdx] = useState<number | null>(null);
 
+    // 쿠키에 저장
     useEffect(() => {
-        setUserProducts(getUserProducts());
-    }, []);
+        setCookie("userProducts", selectedProducts, { path: "/", maxAge: 60 * 60 * 24 * 30 }); // 30일
+    }, [selectedProducts, setCookie]);
 
-    // 관심품목 3개를 카드에 매핑
-    const previewMetrics = userProducts.slice(0, 3).map((prod, idx) => {
-        // 카드별 아이콘/타이틀/설명 예시
-        const icons = [Trophy, TrendingUp, Building2];
-        const titles = ["금주 최고 순위 제품", "친환경 시장 성장률", "주목할 만한 기업"];
-        const descriptions = [
-            `${prod} 카테고리 1위 달성`,
-            `${prod}의 친환경 성장률`,
-            `${prod} 관련 특허/기술/기업 소식`,
-        ];
-        return {
-            title: titles[idx] || "관심품목",
-            value: prod,
-            Icon: icons[idx] || Trophy,
-            description: descriptions[idx] || prod,
-        };
-    });
+    // 중복 방지: 이미 선택된 값은 다른 Select에서 비활성화
+    const getAvailableOptions = (idx: number) =>
+        products.filter(
+            (item) => !selectedProducts.includes(item) || selectedProducts[idx] === item
+        );
+
+    const handleSelectChange = (idx: number, value: string) => {
+        setSelectedProducts((prev) => {
+            const copy = [...prev];
+            copy[idx] = value;
+            return copy;
+        });
+        setEditingIdx(null);
+    };
 
     return (
         <div className="bg-gray-50 min-h-screen">
@@ -99,17 +98,41 @@ export default function HomePage() {
                 {/* === 2. [신규] 오늘의 주요 지표 (Dashboard Preview) === */}
                 <div className="space-y-6">
                     <h2 className="text-3xl font-bold text-center text-gray-800">user의 관심품목</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {previewMetrics.map((metric, index) => (
-                            <Card key={index} className="transform hover:-translate-y-1 transition-transform duration-300 shadow-sm hover:shadow-lg border-t-4 border-[#9AD970]">
-                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                    <CardTitle className="text-sm font-medium text-gray-500">{metric.title}</CardTitle>
-                                    <metric.Icon className="h-5 w-5 text-gray-400" />
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-3xl ">
+                        {[0, 1, 2].map((idx) => (
+                            <Card
+                                key={idx}
+                                className="flex flex-col items-center justify-center h-48 cursor-pointer transform hover:-translate-y-1 transition-transform duration-300 shadow-sm hover:shadow-lg border-t-4 border-[#9AD970] hover:border-[#9AD970] bg-white"
+                                onClick={() => setEditingIdx(idx)}
+                            >
+                                <CardHeader className="flex flex-col items-center justify-center h-full w-full p-0">
+                                    {editingIdx === idx ? (
+                                        <div className="w-full flex flex-col items-center justify-center p-4">
+                                            <Select
+                                                value={selectedProducts[idx]}
+                                                onValueChange={(value) => handleSelectChange(idx, value)}
+                                            >
+                                                <SelectTrigger className="w-44 mx-auto">
+                                                    <SelectValue placeholder="관심품목 선택" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {getAvailableOptions(idx).map((item) => (
+                                                        <SelectItem key={item} value={item} disabled={selectedProducts.includes(item) && selectedProducts[idx] !== item}>
+                                                            {item}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                    ) : selectedProducts[idx] ? (
+                                        <CardTitle className="text-xl text-center text-[#7bbd3b]">{selectedProducts[idx]}</CardTitle>
+                                    ) : (
+                                        <div className="flex flex-col items-center justify-center h-full w-full">
+                                            <Plus className="w-12 h-12 text-gray-400 mb-2" />
+                                            <span className="text-gray-800 text-3xl font-bold"></span>
+                                        </div>
+                                    )}
                                 </CardHeader>
-                                <CardContent>
-                                    <div className="text-2xl font-bold text-gray-900">{metric.value}</div>
-                                    <p className="text-xs text-gray-500 mt-1">{metric.description}</p>
-                                </CardContent>
                             </Card>
                         ))}
                     </div>

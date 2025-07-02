@@ -7,10 +7,11 @@ import {
 } from "../../components/ui/card";
 import { BarChart3, Newspaper, Trophy, Leaf, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { products } from "@/components/constants";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import axios from "axios";
 
 // --- 기존 homeCards 데이터는 유지하되, 상세 설명을 활용할 것입니다. ---
 const homeCards = [
@@ -37,13 +38,6 @@ const homeCards = [
     }
 ];
 
-// --- [신규] 최신 뉴스 샘플 데이터 ---
-const latestNews = [
-    { id: 1, title: "정부, 2025년 친환경 포장재 의무 사용 비율 확대 발표", source: "환경일보" },
-    { id: 2, title: "글로벌 컨설팅 그룹, 'ESG 경영'이 기업 가치에 미치는 영향 보고서 공개", source: "비즈니스위크" },
-    { id: 3, title: "소비자 78%, '조금 더 비싸도 친환경 제품 구매 의향 있다'", source: "리서치 기관 A" },
-];
-
 export default function HomePage() {
     const navigate = useNavigate();
     const [cookies, setCookie] = useCookies(["userProducts"]);
@@ -53,25 +47,34 @@ export default function HomePage() {
             ? cookies.userProducts
             : ["", "", ""]
     );
-    const [editingIdx, setEditingIdx] = useState<number | null>(null);
-    const selectRef = useRef<HTMLDivElement | null>(null);
-
-    // 바깥 클릭 시 Select 닫기
-    useEffect(() => {
-        if (editingIdx === null) return;
-        function handleClickOutside(event: MouseEvent) {
-            if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
-                setEditingIdx(null);
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [editingIdx]);
-
     // 쿠키에 저장
     useEffect(() => {
         setCookie("userProducts", selectedProducts, { path: "/", maxAge: 60 * 60 * 24 * 30 }); // 30일
     }, [selectedProducts, setCookie]);
+
+
+    const [editingIdx, setEditingIdx] = useState<number | null>(null);
+    // 뉴스 상태 추가
+    const [news, setNews] = useState<{ title: string; originallink: string }[]>([]);
+    const [newsLoading, setNewsLoading] = useState(false);
+    const [newsError, setNewsError] = useState<string | null>(null);
+
+
+    useEffect(() => {
+        setNewsLoading(true);
+        axios.get("/MV/api/news")
+            .then(res => {
+                const items = res.data.items ?? [];
+                setNews(
+                    items.slice(0, 3).map((item: any) => ({
+                        title: item.title.replace(/<[^>]+>/g, ""),
+                        originallink: item.originallink
+                    }))
+                );
+            })
+            .catch(() => setNewsError("뉴스를 불러오는 데 실패했습니다."))
+            .finally(() => setNewsLoading(false));
+    }, []);
 
     // 중복 방지: 이미 선택된 값은 다른 Select에서 비활성화
     const getAvailableOptions = (idx: number) =>
@@ -140,7 +143,6 @@ export default function HomePage() {
                                     {editingIdx === idx ? (
                                         // --- 수정 모드 ---
                                         <div
-                                            ref={selectRef}
                                             className="flex items-center justify-center bg-gradient-to-r from-[#E8F5E9] to-[#F1F8E9] rounded-xl p-4 border border-[#9AD970]/20"
                                             onClick={(e) => {
                                                 e.stopPropagation();
@@ -309,16 +311,26 @@ export default function HomePage() {
                 <div className="space-y-6">
                     <h2 className="text-3xl font-bold text-center text-gray-800">최신 관련 뉴스</h2>
                     <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-sm">
-                        <ul className="space-y-4">
-                            {latestNews.map(news => (
-                                <li key={news.id} className="border-b pb-3 last:border-b-0 last:pb-0">
-                                    <a href="#" className="group">
-                                        <h3 className="text-lg font-semibold text-gray-800 group-hover:text-[#6AAE4A] transition-colors">{news.title}</h3>
-                                        <p className="text-sm text-gray-500">{news.source}</p>
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
+                        {newsLoading ? (
+                            <div className="text-center text-gray-500">뉴스를 불러오는 중...</div>
+                        ) : newsError ? (
+                            <div className="text-center text-red-500">{newsError}</div>
+                        ) : (
+                            <ul className="space-y-4">
+                                {news.map((item, idx) => (
+                                    <li key={idx} className="border-b pb-3 last:border-b-0 last:pb-0">
+                                        <a
+                                            href={item.originallink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-lg font-semibold text-gray-800 hover:text-[#9AD970] transition"
+                                        >
+                                            {item.title}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                         <div className="text-center mt-6">
                             <button
                                 onClick={() => navigate('/news')}

@@ -336,7 +336,7 @@ export default function RankingsPage() {
                 <CardHeader>
                     <CardTitle className="text-xl font-bold">무역 품목별 순위</CardTitle>
                     <CardDescription className="text-base text-gray-500">
-                        실제 API 데이터 기반 수출액, 수입액, 총 무역액을 기준으로 한 품목별 순위 (단위: USD) - 총 {filteredData.length}개 항목
+                        실제 API 데이터 기반 수출액, 수입액, 총 무역액을 기준으로 한 품목별 순위 (단위: USD) - 상위 50개 표시 (전체: {filteredData.length}개 항목)
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -375,7 +375,7 @@ export default function RankingsPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {filteredData.map((item, idx) => (
+                                {filteredData.slice(0, 50).map((item, idx) => (
                                     <TableRow 
                                         key={`${item.hsCd || 'no-hs'}-${item.statCd || 'no-stat'}-${item.statKor || 'no-product'}-${idx}`} 
                                         className="hover:bg-muted/50 cursor-pointer text-[15px]" 

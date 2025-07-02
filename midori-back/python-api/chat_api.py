@@ -118,23 +118,30 @@ def ask_gpt4_mini(user_question):
 
 사용자 질문에 대해 위 데이터를 종합 분석해서 답변해주세요.
 
+
 답변 규칙:
 1. 데이터에 있는 정보를 정확히 분석
 2. 수치나 국가명은 정확히 인용
 3. 여러 데이터를 비교하여 인사이트 제공
 4. 없는 정보는 "해당 정보 없음"이라고 명시
-5. 친근하고 이해하기 쉽게 설명"""
+5. 친근하고 이해하기 쉽게 설명
+6. 사용자가 데이터에 대해 묻지 않는 경우, 스스로 데이터 개요나 수치를 소개하지 마세요.
+7. "안녕", "반가워요", "고마워요" 등 인사나 잡담에는 간단하고 자연스러운 응답만을 표하세요.
+8. 주어진 데이터와 상관이 없는 질문이라고 생각될 때는 범위 밖의 질문이라고 답하세요.
+"""
 
-        print("🤖 GPT-4o mini 분석 중...")
+        print("🤖 GPT-4.1 분석 중...")
         
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_question}
             ],
-            max_tokens=2000,
-            temperature=0.3
+            temperature=0.2,
+            top_p=1.0,
+            frequency_penalty=0.4,
+            presence_penalty=0.3
         )
         
         answer = response.choices[0].message.content.strip()
@@ -154,10 +161,12 @@ def simple_chat(message):
         if csv_loaded:
             return f"""안녕하세요! 😊
 
-GPT-4o mini를 사용하는 친환경 제품 수출입 데이터 분석 챗봇입니다.
-현재 {len(csv_data)}개의 질문-답변 데이터를 모두 분석할 수 있어요.
+친환경 제품 수출입 데이터 분석 챗봇입니다.
 
-자유롭게 질문해주세요!
+현재 2024년 6월부터 2025년 5월까지의 데이터를 보유하고 있습니다.
+
+해당 범위 내에서 자유롭게 질문해주세요!
+
 예: "세제 수출 현황은?"
    "수출액이 가장 큰 제품은?"
    "베트남에 수출하는 제품들 비교해줘" """
@@ -167,8 +176,9 @@ GPT-4o mini를 사용하는 친환경 제품 수출입 데이터 분석 챗봇�
     elif "도움" in message_lower or "help" in message_lower:
         return f"""📚 사용법 안내
 
-🤖 GPT-4o mini 기반 데이터 분석 챗봇
+🤖 GPT-4.1 기반 데이터 분석 챗봇
 📊 현재 {len(csv_data) if csv_loaded else 0}개 데이터 분석 가능
+데이터 범위 : 2024년 6월 ~ 2025년 5월
 
 💡 이런 질문들을 해보세요:
 • "○○ 제품 수출 현황은?"
@@ -182,7 +192,7 @@ GPT-4o mini를 사용하는 친환경 제품 수출입 데이터 분석 챗봇�
         return "천만에요! 😊 다른 궁금한 것이 있으면 언제든 말씀해주세요."
     
     elif "테스트" in message_lower:
-        return "테스트 성공! 🎉 GPT-4o mini 시스템이 정상 작동하고 있습니다."
+        return "테스트 성공! 🎉 GPT-4.1 시스템이 정상 작동하고 있습니다."
     
     elif any(word in message_lower for word in ["데이터", "정보", "확인"]):
         if csv_loaded:
@@ -190,7 +200,7 @@ GPT-4o mini를 사용하는 친환경 제품 수출입 데이터 분석 챗봇�
 
 • 총 {len(csv_data)}개 질문-답변 쌍
 • 컬럼: {', '.join(csv_data.columns)}
-• 모델: GPT-4o mini (128K 토큰)
+• 모델: GPT-4.1 (128K 토큰)
 • 상태: 전체 데이터 분석 준비 완료 ✅
 
 구체적인 질문을 해주시면 전체 데이터를 분석해서 답변드려요!"""
@@ -217,9 +227,9 @@ async def startup_event():
 @app.get("/")
 async def root():
     return {
-        "message": "GPT-4o mini CSV 분석 챗봇",
+        "message": "GPT-4.1 CSV 분석 챗봇",
         "version": "3.0.0",
-        "model": "GPT-4o mini",
+        "model": "GPT-4.1",
         "csv_loaded": csv_loaded,
         "data_rows": len(csv_data) if csv_loaded else 0
     }
@@ -228,11 +238,11 @@ async def root():
 async def health_check():
     return {
         "status": "healthy",
-        "model": "GPT-4o mini",
+        "model": "GPT-4.1",
         "csv_loaded": csv_loaded,
         "data_rows": len(csv_data) if csv_loaded else 0,
         "ai_ready": bool(os.getenv("OPENAI_API_KEY")),
-        "message": "GPT-4o mini 시스템 정상"
+        "message": "GPT-4.1 시스템 정상"
     }
 
 @app.post("/chat", response_model=ChatResponse)
@@ -278,7 +288,7 @@ async def get_data_info():
         return {"error": "데이터가 로드되지 않았습니다"}
     
     return {
-        "model": "GPT-4o mini",
+        "model": "GPT-4.1",
         "total_rows": len(csv_data),
         "columns": list(csv_data.columns),
         "knowledge_base_size": len(knowledge_base),
@@ -294,7 +304,7 @@ async def get_data_info():
 async def get_model_info():
     """모델 정보"""
     return {
-        "model": "GPT-4o mini",
+        "model": "GPT-4.1",
         "context_window": "128K tokens",
         "max_output": "2000 tokens",
         "temperature": 0.3,
@@ -311,7 +321,7 @@ async def get_model_info():
 # ================================
 if __name__ == "__main__":
     print("=" * 60)
-    print("🚀 GPT-4o mini CSV 챗봇 시작")
+    print("🚀 GPT-4.1 CSV 챗봇 시작")
     print("📡 포트: 8000")
     print("🧠 GPT-4o mini (128K 토큰)")
     print("📊 전체 데이터 동시 분석")

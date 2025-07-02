@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { useState, useEffect, useRef } from "react";
-import { generateTradeData } from "../../data/tradeData";
+import { generateTradeData, hsDescriptions } from "../../data/tradeData";
 // CountryMap import에서 경로 오타 수정 및 타입 선언 문제 해결
 import CountryMap from "../../components/map/CountryMap";
 import {
@@ -324,39 +324,42 @@ export default function GraphsPage() {
         currentData.prevTotalDlr
     );
 
+    // 지도와 Select의 나라 선택 연동
+    const handleCountrySelect = (countryName: string) => {
+        setSelectedCountry(countryName);
+    };
+
+    // 현재 품목에 대한 상세설명
+    const productDescription = product ? hsDescriptions[product] || "설명 없음" : "설명 없음";
+
+    // 현재 품목의 tradeData
+    const tradeData = generateTradeData();
+    const productData = tradeData.find(item => item.statKor === product);
+    // 현재 그래프 데이터의 월 개수
+    const currentYearNum = parseInt(selectedYear);
+    const now = new Date();
+    const isCurrentYear = currentYearNum === now.getFullYear();
+    const currentMonth = now.getMonth() + 1;
+    const dataLength = isCurrentYear ? currentMonth : 12;
+    // 기간표현: '2025년 1월~7월 누적' 등
+    const 기간표현 = `${selectedYear}년 1월~${dataLength}월 누적`;
+
     return (
-        <div className="container mx-auto px-4 py-12 space-y-8">
-            {/* 품목명과 거래액 */}
-            <div className="space-y-1">
-                <h1 className="text-base font-medium text-left text-gray-600">{product}</h1>
-                <div className="flex items-center gap-2">
-                    <span className="text-4xl font-bold">{formatNumber(currentData.totalDlr)}</span>
-                    <div className={`flex items-center gap-1 text-lg font-medium ${currentData.prevTotalDlr === 0
-                        ? 'text-gray-500'
-                        : isPositive
-                            ? 'text-green-500'
-                            : 'text-red-500'
-                        }`}>
-                        {currentData.prevTotalDlr === 0 ? (
-                            <span>0%</span>
-                        ) : (
-                            <>
-                                {isPositive ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
-                                <span>{percentChange.toFixed(1)}%</span>
-                            </>
-                        )}
-                    </div>
-                </div>
-            </div>
+        <div className="container mx-auto px-4 py-12 space-y-8 pt-0">
+
 
             {/* 지도 섹션 */}
-            <div className="rounded-2xl bg-white flex flex-col items-start p-4 sm:p-6 shadow-md w-full mt-6">
+            <div className="rounded-2xl bg-white flex flex-col items-start p-4 sm:p-6 shadow-md w-full mt-0 pt-0 ">
                 <div className="flex items-center mb-4">
                     <Map className="h-7 w-7 text-[#9AD970] mr-3" />
                     <span className="text-xl font-semibold text-gray-800">지역별 데이터 맵</span>
                 </div>
-                <div className="h-[500px] w-full bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
-                    <CountryMap />
+                <div className="h-[500px] w-full bg-gray-50 rounded-lg border border-gray-200 z-0 overflow-hidden">
+                    <CountryMap
+                        allowedCountries={countries}
+                        selectedCountryName={selectedCountry}
+                        onCountrySelect={handleCountrySelect}
+                    />
                 </div>
             </div>
 
@@ -414,26 +417,40 @@ export default function GraphsPage() {
 
                     {/* 그래프 영역 - 반응형 개선 */}
                     <div className="flex items-start gap-6">
-                        <div className="w-1/4 min-w-0 flex-shrink-0"> {/* min-w-0과 flex-shrink-0 추가 */}
-                            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                                <h3 className="text-sm font-medium text-gray-800 mb-3">종목</h3>
-                                <div className="space-y-2 text-sm text-gray-600">
-                                    <div className="py-1 border-b border-gray-200">일단</div>
-                                    <div className="py-1 border-b border-gray-200">아무</div>
-                                    <div className="py-1 border-b border-gray-200">거나</div>
-                                    <div className="py-1 border-b border-gray-200">텍스트</div>
-                                    <div className="py-1">더보기...</div>
+
+                        <div className="w-1/4 min-w-0 flex-shrink-0">
+                            <div className="bg-white rounded-lg p-4 border border-gray-200 flex flex-col justify-between h-full" style={{ height: '400px' }}>
+                                <div className="flex flex-col gap-2">
+                                    <span className="text-sm font-bold">총 수출입액</span>
+                                    <span className="text-4xl font-bold">{formatNumber(currentData.totalDlr)}</span>
+                                    <div className={`flex items-center gap-1 text-lg font-medium ${currentData.prevTotalDlr === 0
+                                        ? 'text-gray-500'
+                                        : isPositive
+                                            ? 'text-green-500'
+                                            : 'text-red-500'
+                                        }`}>
+                                        {currentData.prevTotalDlr === 0 ? (
+                                            <span>0%</span>
+                                        ) : (
+                                            <>
+                                                {isPositive ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
+                                                <span>{percentChange.toFixed(1)}%</span>
+                                            </>
+                                        )}
+                                    </div>
+                                    <div className="text-sm">수출액 {formatNumber(productData?.expDlr ?? 0)}</div>
+                                    <div className="text-sm">수입액 {formatNumber(productData?.impDlr ?? 0)}</div>
+                                    <div className="text-sm">평균액 {(currentData.totalDlr / (dataLength || 1)).toLocaleString()}$</div>
+                                    <div className="text-sm">그래프 기간: {기간표현}</div>
+                                    <div className="text-sm text-gray-500 mt-2">{productDescription}</div>
                                 </div>
                             </div>
                         </div>
-
-                        {/* 차트 컨테이너 - 반응형 개선 */}
-                        <div className="w-3/4 min-w-0 flex-1"> {/* min-w-0과 flex-1 추가 */}
-                            <div className="relative w-full" style={{ height: '400px' }}> {/* 고정 높이 설정 */}
+                        <div className="w-3/4 min-w-0 flex-1">
+                            <div className="relative w-full" style={{ height: '400px' }}>
                                 {selectedChart === "bar" && (
                                     <BarChart
-                                        key={`bar-${chartKey}`} // 강제 리렌더링용 key
-
+                                        key={`bar-${chartKey}`}
                                         className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
                                         data={generateBarData(selectedYear)}
                                         options={sampleOptions}
@@ -460,6 +477,8 @@ export default function GraphsPage() {
                     </div>
                 </div>
             </div>
+
+
         </div>
     );
 }

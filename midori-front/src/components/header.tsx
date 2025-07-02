@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import Logo from "./logo";
 import { motion } from "framer-motion";
 import { useRef, useLayoutEffect, useState } from "react";
+import { Menu } from "lucide-react";
 
 interface NavItem {
     name: string;
@@ -16,6 +17,7 @@ export default function Header() {
         { name: "Main", href: "/", label: "Main Page" },
         { name: "Rankings", href: "/rankings", label: "Rankings Page" },
         { name: "News", href: "/news", label: "News Page" },
+        { name: "", href: "/login", label: "Login Page" },
     ];
 
     // 각 버튼의 ref 저장
@@ -35,7 +37,7 @@ export default function Header() {
     }, [location.pathname]);
 
     return (
-        <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/95 backdrop-blur-sm shadow-sm">
+        <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm shadow-sm">
             <div className="container mx-auto px-4">
                 <div className="flex h-16 items-center justify-between">
                     {/* Logo and Project Name */}
@@ -51,36 +53,57 @@ export default function Header() {
                         </h1>
                     </Link>
 
-                    {/* Navigation */}
-                    <nav ref={navRef} className="relative flex items-center space-x-1">
-                        {/* 슬라이딩 초록색 배경 */}
-                        <motion.div
-                            className="absolute top-0 left-0 h-8 sm:h-10 rounded-lg bg-[#9AD970] z-0"
-                            layout
-                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                            style={{ left: indicator.left, width: indicator.width }}
-                        />
-                        {navItems.map((item, idx) => {
-                            const isActive = location.pathname === item.href;
-                            return (
-                                <Button
-                                    key={item.href}
-                                    asChild
-                                    ref={(el) => { btnRefs.current[idx] = el; }}
-                                    variant="ghost"
-                                    size="sm"
-                                    className={`
-                                        relative z-10
-                                        text-xs sm:text-sm px-2 sm:px-4 h-8 sm:h-10
-                                        ${isActive ? "text-white" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"}
-                                    `}
-                                    data-active={isActive}
-                                >
-                                    <Link to={item.href}>{item.name}</Link>
-                                </Button>
-                            );
-                        })}
-                    </nav>
+                    {/* Navigation + 로그인 버튼을 오른쪽 정렬 */}
+                    <div className="flex items-center justify-end flex-1">
+                        <nav ref={navRef} className="relative flex items-center space-x-1">
+                            {/* 슬라이딩 초록색 배경 */}
+                            <motion.div
+                                className="absolute top-0 left-0 h-8 sm:h-10 rounded-lg bg-[#9AD970] z-0"
+                                layout
+                                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                style={{ left: indicator.left, width: indicator.width }}
+                            />
+                            {navItems.map((item, idx) => {
+                                const isActive = location.pathname === item.href;
+                                if (item.href === "/login") {
+                                    return (
+                                        <Button
+                                            key={item.href}
+                                            asChild
+                                            ref={(el) => { btnRefs.current[idx] = el; }}
+                                            variant="ghost"
+                                            size="sm"
+                                            className={`
+                                                relative z-10
+                                                text-xs sm:text-sm px-2 sm:px-4 h-8 sm:h-10
+                                                ${isActive ? "text-white" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"}
+                                            `}
+                                            data-active={isActive}
+                                        >
+                                            <Link to={item.href}><Menu width={22} height={22} /></Link>
+                                        </Button>
+                                    );
+                                }
+                                return (
+                                    <Button
+                                        key={item.href}
+                                        asChild
+                                        ref={(el) => { btnRefs.current[idx] = el; }}
+                                        variant="ghost"
+                                        size="sm"
+                                        className={`
+                                            relative z-10
+                                            text-xs sm:text-sm px-2 sm:px-4 h-8 sm:h-10
+                                            ${isActive ? "text-white" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"}
+                                        `}
+                                        data-active={isActive}
+                                    >
+                                        <Link to={item.href}>{item.name}</Link>
+                                    </Button>
+                                );
+                            })}
+                        </nav>
+                    </div>
                 </div>
             </div>
         </header>

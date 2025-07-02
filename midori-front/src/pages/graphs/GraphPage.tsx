@@ -26,6 +26,7 @@ import { useParams } from "react-router-dom";
 import MixedChart from '../../chart/MixedChart';
 import BarChart from '../../chart/BarChart';
 import LineChart from '../../chart/LineChart';
+import SimplePDFButton from '../../components/PDFbutton';
 
 
 interface ChartType {
@@ -443,6 +444,13 @@ export default function GraphsPage() {
                                     <div className="text-sm">평균액 {(currentData.totalDlr / (dataLength || 1)).toLocaleString()}$</div>
                                     <div className="text-sm">그래프 기간: {기간표현}</div>
                                     <div className="text-sm text-gray-500 mt-2">{productDescription}</div>
+                                    {/* pdf파일버튼 들어갈 곳 */}
+                                    <div className="mt-4">
+                                        <SimplePDFButton onClick={() => {
+                                            // PDF 다운로드 로직 (추후 구현)
+                                            alert("PDF 다운로드 기능이 준비 중입니다.");
+                                        }} />
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -28,6 +28,9 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
         },
     ]);
     const [inputValue, setInputValue] = useState("");
+    const [isTyping, setIsTyping] = useState(false);
+    const [typingMessage, setTypingMessage] = useState("답변을 작성중입니다...");
+    const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -45,7 +48,7 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
         }
     }, [messages, isOpen]);
 
-    // ✅ [추가됨] 백엔드에 메시지 보내고 응답 받는 함수
+    // API 호출 함수
     const fetchBotResponse = async (userInput: string): Promise<string> => {
         try {
             const response = await fetch("http://localhost:8088/MV/api/chat/message", {
@@ -68,7 +71,7 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
         }
     };
 
-    // ✅ [수정됨] 하드코딩된 응답 제거 & 실제 API 연동
+    // 메시지 전송 함수
     const handleSendMessage = async () => {
         if (!inputValue.trim()) return;
 
@@ -80,8 +83,16 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
         };
         setMessages((prev) => [...prev, userMessage]);
         setInputValue("");
+        setIsTyping(true);
+        setTypingMessage("답변을 작성중입니다...");
 
-        const aiReply = await fetchBotResponse(inputValue); // ✅ 수정됨
+        // 20초 뒤 안내 메시지 변경
+        if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+        typingTimeoutRef.current = setTimeout(() => {
+            setTypingMessage("데이터를 분석하는데 시간이 추가로 필요합니다. 조금만 기다려주세요...");
+        }, 20000);
+
+        const aiReply = await fetchBotResponse(userMessage.text);
 
         const botMessage: Message = {
             id: (Date.now() + 1).toString(),
@@ -90,6 +101,11 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
             timestamp: new Date(),
         };
         setMessages((prev) => [...prev, botMessage]);
+        setIsTyping(false);
+
+        // 타이머 초기화
+        if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+        setTypingMessage("답변을 작성중입니다...");
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -151,12 +167,25 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
                                     ? "bg-blue-500 text-white rounded-br-none"
                                     : "bg-gray-100 text-gray-900 rounded-bl-none"
                             }`}
-                            style={{ whiteSpace: "pre-wrap" }} // ✅ 줄바꿈 처리
+                            style={{ whiteSpace: "pre-wrap" }}
                         >
                             {message.text}
                         </div>
                     </div>
                 ))}
+
+                {/* 답변 작성중 메시지 */}
+                {isTyping && (
+                    <div className="flex items-start gap-2 flex-row">
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-[#9AD970]">
+                            <Bot className="h-4 w-4 text-white" />
+                        </div>
+                        <div className="max-w-[70%] p-3 rounded-lg text-sm bg-gray-100 text-gray-900 rounded-bl-none italic animate-pulse">
+                            {typingMessage}
+                        </div>
+                    </div>
+                )}
+
                 <div ref={messagesEndRef} />
             </div>
 
@@ -170,10 +199,11 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
                         onKeyPress={handleKeyPress}
                         placeholder="메시지를 입력하세요..."
                         className="flex-1 text-sm"
+                        disabled={isTyping}
                     />
                     <Button
                         onClick={handleSendMessage}
-                        disabled={!inputValue.trim()}
+                        disabled={!inputValue.trim() || isTyping}
                         size="icon"
                         className="bg-[#9AD970] hover:bg-[#8BC766] flex-shrink-0"
                     >

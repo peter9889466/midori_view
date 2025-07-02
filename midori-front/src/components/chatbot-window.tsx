@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState, useRef, useEffect } from "react";
 import { X, Send, Bot, User } from "lucide-react";
 import { Button } from "./ui/button";
@@ -29,6 +28,7 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
         },
     ]);
     const [inputValue, setInputValue] = useState("");
+    const [isTyping, setIsTyping] = useState(false); // ✅ 추가
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -56,6 +56,8 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
         };
         setMessages((prev) => [...prev, userMessage]);
         setInputValue("");
+        setIsTyping(true); // ✅ 시작
+
         setTimeout(() => {
             const botMessage: Message = {
                 id: (Date.now() + 1).toString(),
@@ -64,8 +66,10 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
                 timestamp: new Date(),
             };
             setMessages((prev) => [...prev, botMessage]);
+            setIsTyping(false); // ✅ 끝
         }, 1000);
     };
+
     const getBotResponse = (userInput: string): string => {
         const input = userInput.toLowerCase();
         if (input.includes("안녕") || input.includes("hello")) {
@@ -76,18 +80,19 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
             return "죄송합니다. 잘 이해하지 못했습니다. 다시 말씀해주시거나 '도움'이라고 입력해주세요.";
         }
     };
+
     const handleKeyPress = (e: React.KeyboardEvent) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             handleSendMessage();
         }
     };
+
     if (!isOpen) return null;
+
     return (
-        <div
-            className="fixed bottom-24 right-6 z-40 w-80 h-[480px] sm:w-96 sm:h-[520px] sm:bottom-28 sm:right-8 max-w-[calc(100vw-3rem)] shadow-2xl bg-white rounded-lg border-2 border-[#9AD970]/20 overflow-hidden flex flex-col"
-        >
-            {/* Fixed Header */}
+        <div className="fixed bottom-24 right-6 z-40 w-80 h-[480px] sm:w-96 sm:h-[520px] sm:bottom-28 sm:right-8 max-w-[calc(100vw-3rem)] shadow-2xl bg-white rounded-lg border-2 border-[#9AD970]/20 overflow-hidden flex flex-col">
+            {/* Header */}
             <div className="flex-shrink-0 flex flex-row items-center justify-between p-4 bg-[#9AD970] text-white">
                 <div className="text-lg font-semibold flex items-center gap-2">
                     <Bot className="h-5 w-5" />
@@ -103,7 +108,8 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
                     <X className="h-4 w-4" />
                 </Button>
             </div>
-            {/* Scrollable Messages Container */}
+
+            {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0 chatbot-scroll bg-white">
                 {messages.map((message) => (
                     <div
@@ -115,7 +121,11 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
                         }`}
                     >
                         <div
-                            className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${message.sender === "user" ? "bg-blue-500" : "bg-[#9AD970]"}`}
+                            className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                                message.sender === "user"
+                                    ? "bg-blue-500"
+                                    : "bg-[#9AD970]"
+                            }`}
                         >
                             {message.sender === "user" ? (
                                 <User className="h-4 w-4 text-white" />
@@ -124,15 +134,33 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
                             )}
                         </div>
                         <div
-                            className={`max-w-[70%] p-3 rounded-lg text-sm ${message.sender === "user" ? "bg-blue-500 text-white rounded-br-none" : "bg-gray-100 text-gray-900 rounded-bl-none"}`}
+                            className={`max-w-[70%] p-3 rounded-lg text-sm ${
+                                message.sender === "user"
+                                    ? "bg-blue-500 text-white rounded-br-none"
+                                    : "bg-gray-100 text-gray-900 rounded-bl-none"
+                            }`}
                         >
                             {message.text}
                         </div>
                     </div>
                 ))}
+
+                {/* ✅ 답변중... 메시지 */}
+                {isTyping && (
+                    <div className="flex items-start gap-2 flex-row">
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-[#9AD970]">
+                            <Bot className="h-4 w-4 text-white" />
+                        </div>
+                        <div className="max-w-[70%] p-3 rounded-lg text-sm bg-gray-100 text-gray-900 rounded-bl-none italic">
+                            답변중...
+                        </div>
+                    </div>
+                )}
+
                 <div ref={messagesEndRef} />
             </div>
-            {/* Fixed Input Area */}
+
+            {/* Input */}
             <div className="flex-shrink-0 border-t p-4 bg-white">
                 <div className="flex gap-2">
                     <Input

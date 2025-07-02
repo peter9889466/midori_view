@@ -25,7 +25,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function RankingsPage() {
     const [tradeData, setTradeData] = useState<TradeData[]>([]);
-    const [loading, setLoading] = useState(true);
     const [apiStatus, setApiStatus] = useState('');
     const [ecoData, setEcoData] = useState<any>(null);
     const [filter, setFilter] = useState({
@@ -35,19 +34,14 @@ export default function RankingsPage() {
     });
     const navigate = useNavigate();
 
-    // 수정된 년월 옵션 (하드코딩)
-    const getYearMonthOptions = () => {
-        return [
-            "2024.07", "2024.08", "2024.09", "2024.10", "2024.11", "2024.12",
-            "2025.01", "2025.02", "2025.03", "2025.04", "2025.05", "2025.06"
-        ];
-    };
-    const yearMonthOptions = getYearMonthOptions();
+    const yearMonthOptions = [
+        "2024.07", "2024.08", "2024.09", "2024.10", "2024.11", "2024.12",
+        "2025.01", "2025.02", "2025.03", "2025.04", "2025.05", "2025.06"
+    ];
 
     // 백엔드 API 호출 함수
     const fetchDataFromBackend = async (yearMonth: string) => {
         try {
-            console.log(`🔄 백엔드 API로 ${yearMonth} 데이터 요청 중...`);
             setApiStatus(`🔄 ${yearMonth} 데이터 요청 중...`);
             
             const apiResponse = await fetch('http://localhost:3001/api/trade/bulk', {
@@ -69,14 +63,6 @@ export default function RankingsPage() {
             const apiData = await apiResponse.json();
             
             if (apiData.success) {
-                console.log('✅ 백엔드 API 데이터 수신 성공:', apiData.count, '개 항목');
-                
-                // 디버깅: 첫 번째 데이터 항목의 구조 확인
-                if (apiData.data && apiData.data.length > 0) {
-                    console.log('🔍 첫 번째 데이터 항목 구조:', apiData.data[0]);
-                    console.log('🔍 데이터 키들:', Object.keys(apiData.data[0]));
-                }
-                
                 setApiStatus(`✅ ${yearMonth} 데이터 수신 완료 (${apiData.count}개 항목)`);
                 
                 // 백엔드 데이터를 기존 형식으로 변환
@@ -86,24 +72,20 @@ export default function RankingsPage() {
                     if (item.RANK_ID) {
                         const parts = item.RANK_ID.split('-');
                         if (parts.length >= 2) {
-                            extractedHsCode = parts[1]; // 두 번째 부분이 HS코드
+                            extractedHsCode = parts[1];
                         }
                     }
                     
-                    // 디버깅: HS코드 추출 과정 로그
-                    console.log(`🔍 RANK_ID: ${item.RANK_ID} -> HS코드: ${extractedHsCode}`);
-                    
                     return {
-                        hsCd: extractedHsCode || item.HS_CODE || '',    // RANK_ID에서 추출한 HS코드 우선 사용
-                        statCd: item.RANK_COUNTRY_CODE || '',           // DB의 RANK_COUNTRY_CODE 필드
-                        statKor: item.RANK_PRODUCT || '',               // DB의 RANK_PRODUCT 필드
-                        statCdCntnKor1: item.RANK_COUNTRY || '',        // DB의 RANK_COUNTRY 필드
-                        expDlr: item.EXPORT_VALUE || 0,                 // DB의 EXPORT_VALUE 필드
-                        impDlr: item.IMPORT_VALUE || 0,                 // DB의 IMPORT_VALUE 필드
+                        hsCd: extractedHsCode || item.HS_CODE || '',
+                        statCd: item.RANK_COUNTRY_CODE || '',
+                        statKor: item.RANK_PRODUCT || '',
+                        statCdCntnKor1: item.RANK_COUNTRY || '',
+                        expDlr: item.EXPORT_VALUE || 0,
+                        impDlr: item.IMPORT_VALUE || 0,
                         balPayments: (item.EXPORT_VALUE || 0) + (item.IMPORT_VALUE || 0),
-                        // 누락된 필드들 추가
-                        category: item.RANK_CATEGORY || '',             // DB의 RANK_CATEGORY 필드
-                        period: item.RANK_PERIOD || '',                 // DB의 RANK_PERIOD 필드
+                        category: item.RANK_CATEGORY || '',
+                        period: item.RANK_PERIOD || '',
                     };
                 });
                 
@@ -113,48 +95,37 @@ export default function RankingsPage() {
             }
             
         } catch (error: any) {
-            console.error('❌ 백엔드 API 호출 실패:', error.message);
             setApiStatus(`❌ API 호출 실패: ${error.message}`);
             return [];
         }
     };
 
-    // 수정된 handleFilterChange - yearMonth 변경시 API 재호출
+    // 필터 변경 핸들러
     const handleFilterChange = (key: string, value: string) => {
         setFilter((prev) => ({ ...prev, [key]: value }));
         
-        // yearMonth가 변경된 경우 데이터 다시 로드
         if (key === 'yearMonth') {
             const reloadData = async () => {
-                setLoading(true);
                 const apiData = await fetchDataFromBackend(value);
                 setTradeData(apiData);
-                setLoading(false);
             };
             reloadData();
         }
     };
 
-    // 수정된 useEffect - 실제 API 데이터 로드
+    // 초기 데이터 로딩
     useEffect(() => {
         const loadInitialData = async () => {
             try {
-                setLoading(true);
-                
                 // ranking.json 로드 (선택사항)
                 try {
                     const jsonResponse = await fetch('/ranking.json');
                     if (jsonResponse.ok) {
                         const data = await jsonResponse.json();
                         setEcoData(data);
-                        console.log('✅ ranking.json 로드 성공');
-                        console.log('🔍 ecoData 구조:', data);
-                        console.log('🔍 categories 키:', Object.keys(data.categories || {}));
-                        console.log('🔍 countries 개수:', data.countries?.length || 0);
                     }
                 } catch (error) {
-                    console.log('ranking.json 파일이 없습니다. 기본 설정으로 진행합니다.');
-                    console.log('❌ ranking.json 로드 에러:', error);
+                    // ranking.json 없어도 계속 진행
                 }
                 
                 // 실제 API 데이터 로드
@@ -162,11 +133,8 @@ export default function RankingsPage() {
                 setTradeData(apiData);
                 
             } catch (error: any) {
-                console.error('❌ 데이터 로딩 실패:', error.message);
                 setApiStatus(`❌ 초기화 실패: ${error.message}`);
                 setTradeData([]);
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -178,49 +146,24 @@ export default function RankingsPage() {
         order: "desc",
     });
 
-    // 필터링된 데이터 (카테고리와 국가 필터 적용)
+    // 필터링된 데이터
     const filteredData = useMemo(() => {
         let filtered = sortedData;
         
-        // 디버깅: 필터링 과정 로그
-        console.log('🔍 필터링 시작:', { 
-            totalData: filtered.length, 
-            categoryFilter: filter.category, 
-            countryFilter: filter.country 
-        });
-        
         // 카테고리 필터 적용
         if (filter.category && filter.category !== "all") {
-            const beforeCount = filtered.length;
-            filtered = filtered.filter((item: any) => {
-                // DB의 RANK_CATEGORY와 직접 비교
-                const matches = item.category === filter.category;
-                if (matches) {
-                    console.log('✅ 카테고리 매칭:', item.statKor, 'category:', item.category);
-                }
-                return matches;
-            });
-            console.log(`📂 카테고리 필터 적용: ${beforeCount} → ${filtered.length}개`);
+            filtered = filtered.filter((item: any) => item.category === filter.category);
         }
         
         // 국가 필터 적용
         if (filter.country && filter.country !== "all") {
-            const beforeCount = filtered.length;
             filtered = filtered.filter((item: any) => {
-                // DB의 RANK_COUNTRY_CODE와 직접 비교하거나 ecoData에서 매칭
                 const directMatch = item.statCd === filter.country;
                 const ecoMatch = ecoData?.countries?.find((c: any) => c.name === item.statCdCntnKor1)?.code === filter.country;
-                const matches = directMatch || ecoMatch;
-                
-                if (matches) {
-                    console.log('✅ 국가 매칭:', item.statCdCntnKor1, 'code:', item.statCd);
-                }
-                return matches;
+                return directMatch || ecoMatch;
             });
-            console.log(`🌍 국가 필터 적용: ${beforeCount} → ${filtered.length}개`);
         }
         
-        console.log('🎯 최종 필터링 결과:', filtered.length, '개');
         return filtered;
     }, [sortedData, filter.category, filter.country, ecoData]);
 
@@ -231,23 +174,14 @@ export default function RankingsPage() {
         }).format(amount) + '$';
     };
 
-    // 국가명 → 국기 이모지 매핑 함수
+    // 국가명 → 국기 이모지 매핑
     const getCountryFlag = (country: string) => {
         const flags: Record<string, string> = {
-            "미국": "🇺🇸", "중국": "🇨🇳", "일본": "🇯🇵", "베트남": "🇻🇳", "영국": "🇬🇧", "독일": "🇩🇪", "프랑스": "🇫🇷", "인도": "🇮🇳", "대만": "🇹🇼", "태국": "🇹🇭", "호주": "🇦🇺",
+            "미국": "🇺🇸", "중국": "🇨🇳", "일본": "🇯🇵", "베트남": "🇻🇳", "영국": "🇬🇧", 
+            "독일": "🇩🇪", "프랑스": "🇫🇷", "인도": "🇮🇳", "대만": "🇹🇼", "태국": "🇹🇭", "호주": "🇦🇺",
         };
         return flags[country] || "🌐";
     };
-
-    // 로딩 상태 처리 제거 - 바로 렌더링
-    // if (loading) {
-    //     return (
-    //         <div className="flex flex-col justify-center items-center h-96 space-y-4">
-    //             <div className="text-lg">🔄 실제 API 데이터 로딩 중...</div>
-    //             <div className="text-sm text-gray-600 text-center">{apiStatus}</div>
-    //         </div>
-    //     );
-    // }
 
     return (
         <div className="space-y-8 font-sans text-[15px]">
@@ -262,7 +196,7 @@ export default function RankingsPage() {
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto">실제 API 데이터를 기반으로 한 무역 성과 순위</p>
             </div>
 
-            {/* API 상태 표시 - 로딩/성공 상태는 숨김, 에러만 표시 */}
+            {/* API 상태 표시 - 에러만 표시 */}
             {apiStatus && apiStatus.includes('❌') && (
                 <div className="p-3 rounded-lg text-center text-sm mb-4 bg-red-50 text-red-700 border border-red-200">
                     {apiStatus}

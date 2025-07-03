@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { useState, useEffect, useRef } from "react";
-import { hsDescriptions } from "../../data/tradeData";
+
 // CountryMap import에서 경로 오타 수정 및 타입 선언 문제 해결
 import CountryMap from "../../components/map/CountryMap";
 import {

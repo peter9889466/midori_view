@@ -313,7 +313,7 @@ export default function RankingsPage() {
                                             <TableHead className="font-semibold text-gray-700 py-4">품목</TableHead>
                                             <TableHead className="font-semibold text-gray-700 py-4">HS코드</TableHead>
                                             <TableHead
-                                                className="font-semibold text-red-600 py-4 cursor-pointer hover:bg-red-50 transition-colors select-none"
+                                                className="w-36 font-semibold text-red-600 py-4 cursor-pointer hover:bg-red-50 transition-colors select-none"
                                                 onClick={() => handleSort('expDlr')}
                                             >
                                                 <div className="flex items-center space-x-1">
@@ -325,7 +325,7 @@ export default function RankingsPage() {
                                                 </div>
                                             </TableHead>
                                             <TableHead
-                                                className="font-semibold text-green-600 py-4 cursor-pointer hover:bg-green-50 transition-colors select-none"
+                                                className="w-36 font-semibold text-green-600 py-4 cursor-pointer hover:bg-green-50 transition-colors select-none"
                                                 onClick={() => handleSort('impDlr')}
                                             >
                                                 <div className="flex items-center space-x-1">
@@ -337,7 +337,7 @@ export default function RankingsPage() {
                                                 </div>
                                             </TableHead>
                                             <TableHead
-                                                className="font-semibold text-blue-600 py-4 cursor-pointer hover:bg-blue-50 transition-colors select-none"
+                                                className="w-36 font-semibold text-blue-600 py-4 cursor-pointer hover:bg-blue-50 transition-colors select-none"
                                                 onClick={() => handleSort('balPayments')}
                                             >
                                                 <div className="flex items-center space-x-1">
@@ -388,17 +388,17 @@ export default function RankingsPage() {
                                                         {item.hsCd}
                                                     </span>
                                                 </TableCell>
-                                                <TableCell className="py-4">
+                                                <TableCell className="w-36 py-4">
                                                     <span className="font-mono font-semibold text-red-600">
                                                         {formatCurrency(item.expDlr)}
                                                     </span>
                                                 </TableCell>
-                                                <TableCell className="py-4">
+                                                <TableCell className="w-36 py-4">
                                                     <span className="font-mono font-semibold text-green-600">
                                                         {formatCurrency(item.impDlr)}
                                                     </span>
                                                 </TableCell>
-                                                <TableCell className="py-4">
+                                                <TableCell className="w-36 py-4">
                                                     <span className="font-mono font-semibold text-blue-600">
                                                         {formatCurrency(item.expDlr + item.impDlr)}
                                                     </span>

@@ -1,12 +1,11 @@
 "use client";
 
-import type React from "react";
 import { useState, useEffect } from "react";
-import { hsDescriptions } from "../../data/tradeData";
+import { hsDescriptions } from "../../data/TradeData";
 import axios from 'axios';
 import CountryMap from "../../components/map/CountryMap";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
-import { BarChart3, LineChart as LineChartIcon, Layers, Map, TrendingDown, TrendingUp } from "lucide-react";
+import { BarChart3, LineChart as LineChartIcon, Layers, Map } from "lucide-react";
 import { useParams } from "react-router-dom";
 import MixedChart from '../../chart/MixedChart';
 import BarChart from '../../chart/BarChart';

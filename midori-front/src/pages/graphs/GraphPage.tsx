@@ -80,20 +80,6 @@ const productDescriptions: { [key: string]: string } = {
 // --- 유틸리티 함수들 ---
 const formatNumber = (num: number): string => num.toLocaleString();
 
-const calculatePercentageChange = (current: number, previous: number) => {
-    if (previous === 0) return { value: 0, isPositive: true };
-    const change = ((current - previous) / previous) * 100;
-    return { value: change, isPositive: change >= 0 };
-};
-
-const generateMonthLabels = (year: string, dataLength: number): string[] => {
-    const labels = [];
-    for (let i = 1; i <= dataLength; i++) {
-        labels.push(`${year}.${i < 10 ? '0' + i : i}`);
-    }
-    return labels;
-};
-
 const generateChartData = (apiTradeData: ApiTradeData[], selectedYear: string) => {
     const currentYearNum = parseInt(selectedYear);
     const now = new Date();
@@ -101,7 +87,11 @@ const generateChartData = (apiTradeData: ApiTradeData[], selectedYear: string) =
     const currentMonth = now.getMonth() + 1;
     const dataLength = isCurrentYear ? currentMonth : 12;
 
-    const labels = generateMonthLabels(selectedYear, dataLength);
+    const labels = [];
+    for (let i = 1; i <= dataLength; i++) {
+        labels.push(`${selectedYear}.${i < 10 ? '0' + i : i}`);
+    }
+
     const exportData = new Array(dataLength).fill(0);
     const importData = new Array(dataLength).fill(0);
 
@@ -294,11 +284,6 @@ const fetchTradeDataByHsCode = async (hsCodeParam: string, country: string, year
 // --- 메인 컴포넌트 ---
 export default function GraphsPage() {
     const { hsCode } = useParams<{ hsCode?: string }>();
-    
-    // 디버깅을 위한 콘솔 로그
-    console.log('Current hsCode from URL:', hsCode);
-    console.log('Current URL:', window.location.href);
-    
     const [selectedChart, setSelectedChart] = useState("bar");
     const currentYear = new Date().getFullYear();
     const years = Array.from({ length: 10 }, (_, i) => (currentYear - i).toString());
@@ -408,14 +393,7 @@ export default function GraphsPage() {
             {/* 그래프 섹션 */}
             <div className="rounded-2xl bg-white w-full">
                 <div className="pt-6 pb-2 px-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <span className="text-base font-semibold">그래프</span>
-                        {apiTradeData.length > 0 && (
-                            <span className="text-sm text-green-600 bg-green-50 px-2 py-1 rounded">
-                                API 데이터 {apiTradeData.length}건
-                            </span>
-                        )}
-                    </div>
+                    <div className="text-base font-semibold mb-4">그래프</div>
                     
                     {/* 컨트롤 패널 */}
                     <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">

@@ -7,7 +7,6 @@ import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 // 타입 임포트
 import type { Layer } from 'leaflet';
 import type { Feature, FeatureCollection } from 'geojson';
-import { countries as allowedCountryList } from "../../data/tradeData";
 
 type SelectedCountry = Feature | null;
 
@@ -53,11 +52,6 @@ const CountryMap = ({ allowedCountries, selectedCountryName, onCountrySelect }: 
                 // 1. GeoJSON의 모든 국가명(admin) 리스트 출력
                 const geoAdminList = data.features.map(f => f.properties?.admin);
                 console.log('[GeoJSON 국가명(admin) 전체]', geoAdminList);
-                // 2. constants.countries와 매칭 안 되는 국가명 출력
-                if (allowedCountryList) {
-                    const notMatched = allowedCountryList.filter(c => !geoAdminList.includes(c));
-                    console.log('[매칭 안 되는 국가명]', notMatched);
-                }
                 // 3. 매핑 테이블 예시(실제 프로젝트에서는 수동으로 보정 필요)
                 // const countryNameMap = { "미국": "United States of America", ... };
             })

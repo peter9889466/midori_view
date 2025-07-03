@@ -9,7 +9,6 @@ import { BarChart3, Newspaper, Trophy, Leaf, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { products } from "@/data/tradeData";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import axios from "axios";
 
@@ -75,6 +74,24 @@ export default function HomePage() {
             .catch(() => setNewsError("뉴스를 불러오는 데 실패했습니다."))
             .finally(() => setNewsLoading(false));
     }, []);
+
+    const products = [
+        "태양광 패널",
+        "풍력 터빈용 발전기",
+        "전력 변환장치 (인버터)",
+        "태양열 집열기",
+        "전기자동차",
+        "전기 이륜차",
+        "전기차용 리튬이온 배터리",
+        "실리콘 식기/빨대",
+        "금속 빨대",
+        "종이 빨대, 포장재",
+        "천연 성분 세제",
+        "천연 고무 라텍스",
+        "유기농 면화",
+        "천연 비료",
+        "슬래그 울, 단열재"
+    ];
 
     // 중복 방지: 이미 선택된 값은 다른 Select에서 비활성화
     const getAvailableOptions = (idx: number) =>

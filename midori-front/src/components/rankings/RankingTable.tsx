@@ -90,7 +90,7 @@ const RankingTable: React.FC<RankingTableProps> = ({
                                 <TableRow
                                     key={`${item.hsCd || 'no-hs'}-${item.statCd || 'no-stat'}-${item.statKor || 'no-product'}-${idx}`}
                                     className="hover:bg-blue-50 cursor-pointer transition-colors duration-200 border-b border-gray-100 group"
-                                    onClick={() => navigate(`/graphs/${encodeURIComponent(item.statKor)}`)}
+                                    onClick={() => navigate(`/graphs/${item.hsCd}`)}
                                 >
                                     <TableCell className="text-center py-4">
                                         {idx < 3 ? (

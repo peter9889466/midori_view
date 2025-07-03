@@ -9,11 +9,9 @@ import { BarChart3, Newspaper, Trophy, Leaf, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { products } from "@/components/constants";
+import { products } from "@/data/tradeData";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import axios from "axios";
-import Markdown from 'react-markdown';
-
 
 // --- 기존 homeCards 데이터는 유지하되, 상세 설명을 활용할 것입니다. ---
 const homeCards = [
@@ -184,12 +182,14 @@ export default function HomePage() {
                                             }}
                                         >
                                             <div className="text-center space-y-2">
-                                                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-[#6AAE4A] to-[#9AD970] rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                                                    <span className="text-2xl font-bold text-white">
+                                                {/* hover 효과 제거됨 */}
+                                                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-[#6AAE4A] to-[#9AD970] rounded-full flex items-center justify-center mb-3">
+                                                    <span className="text-lg font-bold font-sans text-white transition-colors duration-300">
                                                         {selectedProducts[idx].charAt(0)}
                                                     </span>
                                                 </div>
-                                                <CardTitle className="text-2xl font-bold text-gray-800 group-hover:text-[#6AAE4A] transition-colors duration-300">
+                                                {/* 폰트 조절: text-base, font-bold (카드 타이틀, 사이즈 축소) */}
+                                                <CardTitle className="text-[1.4rem] font-semibold text-gray-800 group-hover:text-[#6AAE4A] transition-colors duration-300">
                                                     {selectedProducts[idx]}
                                                 </CardTitle>
                                             </div>
@@ -277,7 +277,7 @@ export default function HomePage() {
                                         </div>
 
                                         {/* 제목 */}
-                                        <CardTitle className="text-2xl font-bold text-gray-800 group-hover:text-[#6AAE4A] transition-colors duration-300">
+                                        <CardTitle className="text-[1.4rem] font-bold text-gray-800 group-hover:text-[#6AAE4A] transition-colors duration-300">
                                             {card.name}
                                         </CardTitle>
 
@@ -298,6 +298,10 @@ export default function HomePage() {
 
                                 {/* 하단 장식 요소 */}
                                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#6AAE4A] to-[#9AD970] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+
+                                {/* 코너 장식 */}
+                                <div className="absolute top-6 right-6 w-8 h-8 border-2 border-[#9AD970]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="absolute top-8 right-8 w-4 h-4 bg-[#9AD970]/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                             </Card>
                         ))}
 
@@ -323,9 +327,7 @@ export default function HomePage() {
                                             rel="noopener noreferrer"
                                             className="text-lg font-semibold text-gray-800 hover:text-[#9AD970] transition"
                                         >
-                                            <Markdown>
-                                                {item.title}
-                                            </Markdown>
+                                            {item.title}
                                         </a>
                                     </li>
                                 ))}

@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { useState, useEffect, useRef } from "react";
-import { generateTradeData, hsDescriptions } from "../../data/tradeData";
+import { hsDescriptions } from "../../data/tradeData";
 // CountryMap import에서 경로 오타 수정 및 타입 선언 문제 해결
 import CountryMap from "../../components/map/CountryMap";
 import {
@@ -21,7 +21,6 @@ import {
     TrendingDown,
     TrendingUp,
 } from "lucide-react";
-import { countries } from "../../components/constants";
 import { useParams } from "react-router-dom";
 import MixedChart from '../../chart/MixedChart';
 import BarChart from '../../chart/BarChart';
@@ -195,69 +194,65 @@ const generateMixedData = (selectedYear: string) => {
     };
 };
 
-const sampleOptions = {
+// Bar/Line 차트 옵션 (y축 0~250, 단위 백만달러)
+const chartYAxisOptions = {
     responsive: true,
-    maintainAspectRatio: false, // 컨테이너 크기에 맞춤
-    animation: {
-        duration: 200 // 리사이즈 시 애니메이션 단축
-    },
+    maintainAspectRatio: false,
+    animation: { duration: 200 },
     plugins: {
-        legend: {
-            position: 'top' as const,
-            responsive: true,
-            maxWidth: 300,
-        },
-        title: {
-            display: true,
-            text: '샘플 혼합 차트',
-        },
+        legend: { position: 'top' as const, responsive: true, maxWidth: 300 },
+        title: { display: true, text: '' },
     },
-    interaction: {
-        intersect: false,
+    interaction: { intersect: false },
+    scales: {
+        y: {
+            min: 0,
+            max: 250,
+            title: { display: true, text: '금액 (백만달러)' },
+            ticks: {
+                callback(this: any, value: string | number) {
+                    return `${value}M`;
+                },
+            },
+        },
     },
 };
-
-// 혼합차트용 옵션 (이중 Y축)
+// 혼합차트 옵션 (왼쪽: 0~250 백만달러, 오른쪽: -100~100 %)
 const mixedChartOptions = {
     responsive: true,
-    maintainAspectRatio: false, // 컨테이너 크기에 맞춤
-    animation: {
-        duration: 200 // 리사이즈 시 애니메이션 단축
-    },
+    maintainAspectRatio: false,
+    animation: { duration: 200 },
     plugins: {
-        legend: {
-            position: 'top' as const,
-            responsive: true,
-            maxWidth: 300,
-        },
-        title: {
-            display: true,
-            text: '수출/수입 및 전년대비증감률',
-        },
+        legend: { position: 'top' as const, responsive: true, maxWidth: 300 },
+        title: { display: true, text: '수출/수입 및 전년대비증감률' },
     },
-    interaction: {
-        intersect: false,
-    },
+    interaction: { intersect: false },
     scales: {
         y: {
             type: 'linear' as const,
             display: true,
             position: 'left' as const,
-            title: {
-                display: true,
-                text: '수출/수입 금액 (USD)',
+            min: 0,
+            max: 250,
+            title: { display: true, text: '금액 (백만달러)' },
+            ticks: {
+                callback(this: any, value: string | number) {
+                    return `${value}M`;
+                },
             },
         },
         y1: {
             type: 'linear' as const,
             display: true,
             position: 'right' as const,
-            title: {
-                display: true,
-                text: '전년대비증감률 (%)',
-            },
-            grid: {
-                drawOnChartArea: false,
+            min: -100,
+            max: 100,
+            title: { display: true, text: '전년대비동월증감률 (%)' },
+            grid: { drawOnChartArea: false },
+            ticks: {
+                callback(this: any, value: string | number) {
+                    return `${value}%`;
+                },
             },
         },
     },
@@ -295,22 +290,46 @@ export default function GraphsPage() {
         return () => window.removeEventListener('resize', debounceResize);
     }, []);
 
-    useEffect(() => {
-        // 현재 데이터 생성
-        const tradeData = generateTradeData();
-        const productData = tradeData.find(item => item.statKor === product);
+    const [tradeData, setTradeData] = useState<any[]>([]);
+    const [countries, setCountries] = useState<string[]>([]);
 
+    useEffect(() => {
+        // API에서 무역 데이터와 국가 목록을 받아옴
+        const fetchTradeData = async () => {
+            try {
+                const res = await fetch('http://localhost:3001/api/trade/bulk', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ yearMonth: selectedYear })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    setTradeData(data.data || []);
+                    if (data.countries) setCountries(data.countries);
+                }
+            } catch (e) {
+                setTradeData([]);
+            }
+        };
+        fetchTradeData();
+    }, [selectedYear]);
+
+    // 현재 품목의 tradeData
+    const productData = tradeData.find((item: any) => item.statKor === product);
+    // productData가 바뀔 때 currentData를 계산
+    useEffect(() => {
         if (productData) {
             const currentTotalDlr = productData.expDlr + productData.impDlr;
             // 이전 달 데이터 생성 (임시로 현재 값의 랜덤 변동으로 설정)
             const prevTotalDlr = currentTotalDlr * (1 + (Math.random() * 0.2 - 0.1));
-
             setCurrentData({
                 totalDlr: currentTotalDlr,
                 prevTotalDlr: prevTotalDlr
             });
+        } else {
+            setCurrentData({ totalDlr: 0, prevTotalDlr: 0 });
         }
-    }, [product]);
+    }, [productData]);
 
     if (!product) {
         return (
@@ -333,9 +352,6 @@ export default function GraphsPage() {
     // 현재 품목에 대한 상세설명
     const productDescription = product ? hsDescriptions[product] || "설명 없음" : "설명 없음";
 
-    // 현재 품목의 tradeData
-    const tradeData = generateTradeData();
-    const productData = tradeData.find(item => item.statKor === product);
     // 현재 그래프 데이터의 월 개수
     const currentYearNum = parseInt(selectedYear);
     const now = new Date();
@@ -344,6 +360,44 @@ export default function GraphsPage() {
     const dataLength = isCurrentYear ? currentMonth : 12;
     // 기간표현: '2025년 1월~7월 누적' 등
     const 기간표현 = `${selectedYear}년 1월~${dataLength}월 누적`;
+
+    // 월별 라벨 생성
+    const monthLabels = Array.from({ length: dataLength }, (_, i) => `${i + 1}월`);
+    // 월별 데이터 추출 함수
+    function getMonthlyData(type: 'expDlr' | 'impDlr') {
+        return monthLabels.map((_, idx) => {
+            const monthStr = (idx + 1).toString().padStart(2, '0');
+            const found = tradeData.find(d => d.statKor === product && d.year.endsWith(`.${monthStr}`));
+            return found ? found[type] : 0;
+        });
+    }
+    const monthlyExport = getMonthlyData('expDlr');
+    const monthlyImport = getMonthlyData('impDlr');
+    // BarChart 데이터
+    const barChartData = {
+        labels: monthLabels,
+        datasets: [
+            { label: '수출', data: monthlyExport, backgroundColor: 'rgba(16, 185, 129, 0.7)', borderRadius: 6 },
+            { label: '수입', data: monthlyImport, backgroundColor: 'rgba(59, 130, 246, 0.7)', borderRadius: 6 }
+        ]
+    };
+    // LineChart 데이터
+    const lineChartData = {
+        labels: monthLabels,
+        datasets: [
+            { label: '수출', data: monthlyExport, borderColor: 'rgba(16, 185, 129, 1)', backgroundColor: 'rgba(16, 185, 129, 0.2)', tension: 0.0, fill: false },
+            { label: '수입', data: monthlyImport, borderColor: 'rgba(59, 130, 246, 1)', backgroundColor: 'rgba(59, 130, 246, 0.2)', tension: 0.0, fill: false }
+        ]
+    };
+    // 혼합차트: 전년대비동월증감률은 임시로 0으로 채움(추후 필요시 계산)
+    const mixedChartData = {
+        labels: monthLabels,
+        datasets: [
+            { type: 'bar' as const, label: '수출', data: monthlyExport, backgroundColor: 'rgba(16, 185, 129, 0.7)', borderRadius: 6, yAxisID: 'y' },
+            { type: 'bar' as const, label: '수입', data: monthlyImport, backgroundColor: 'rgba(59, 130, 246, 0.7)', borderRadius: 6, yAxisID: 'y' },
+            { type: 'line' as const, label: '전년대비동월증감률(%)', data: Array(monthLabels.length).fill(0), borderColor: 'rgba(239, 68, 68, 1)', backgroundColor: 'rgba(239, 68, 68, 0.2)', tension: 0.0, fill: false, yAxisID: 'y1', borderWidth: 3, pointRadius: 4, pointBackgroundColor: 'rgba(239, 68, 68, 1)' }
+        ]
+    };
 
     return (
         <div className="container mx-auto px-4 py-12 space-y-8 pt-0">
@@ -463,23 +517,23 @@ export default function GraphsPage() {
                                     <BarChart
                                         key={`bar-${chartKey}`}
                                         className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
-                                        data={generateBarData(selectedYear)}
-                                        options={sampleOptions}
+                                        data={barChartData}
+                                        options={chartYAxisOptions}
                                     />
                                 )}
                                 {selectedChart === "line" && (
                                     <LineChart
                                         key={`line-${chartKey}`}
                                         className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
-                                        data={generateLineData(selectedYear)}
-                                        options={sampleOptions}
+                                        data={lineChartData}
+                                        options={chartYAxisOptions}
                                     />
                                 )}
                                 {selectedChart === "combined" && (
                                     <MixedChart
                                         key={`mixed-${chartKey}`}
                                         className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
-                                        data={generateMixedData(selectedYear)}
+                                        data={mixedChartData}
                                         options={mixedChartOptions}
                                     />
                                 )}

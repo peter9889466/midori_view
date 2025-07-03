@@ -7,7 +7,7 @@ import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 // 타입 임포트
 import type { Layer } from 'leaflet';
 import type { Feature, FeatureCollection } from 'geojson';
-import { countries as allowedCountryList } from "../../components/constants";
+import { countries as allowedCountryList } from "../../data/tradeData";
 
 type SelectedCountry = Feature | null;
 

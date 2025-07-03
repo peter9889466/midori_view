@@ -1,46 +1,63 @@
-import type { TradeData } from "../types/rankings";
-import { countries, productsWithHS, statCd } from "../components/constants";
+// 품목
+export const products = [
+    "태양광 패널",
+    "풍력 터빈용 발전기",
+    "전력 변환장치 (인버터)",
+    "태양열 집열기",
+    "전기자동차",
+    "전기 이륜차",
+    "전기차용 리튬이온 배터리",
+    "실리콘 식기/빨대",
+    "금속 빨대",
+    "종이 빨대",
+    "포장재",
+    "천연 성분 세제",
+    "천연 고무 라텍스",
+    "유기농 면화",
+    "천연 비료",
+    "슬래그 울",
+    "단열재",
+];
 
-export const generateTradeData = (): TradeData[] => {
-    const items = productsWithHS;
-    return items.map((item) => {
-        const expDlr = Math.floor(Math.random() * 50000) + 10000;
-        const impDlr = Math.floor(Math.random() * 40000) + 5000;
-        const balPayments = expDlr - impDlr;
-        const totalDlr = expDlr + impDlr;
-        const impWgt = Math.floor(Math.random() * 100000) + 10000;
-        const expWgt = Math.floor(Math.random() * 100000) + 10000;
-        const year = (() => {
-            const today = new Date();
-            let year = today.getFullYear();
-            let month = today.getMonth();
-            if (month === 0) { year -= 1; month = 12; }
-            return `${year}.${month.toString().padStart(2, "0")}`;
-        })();
-        const countryIdx = Math.floor(Math.random() * countries.length);
-        const statCdCntnKor1 = countries[countryIdx];
-        const statCdVal = statCd[countryIdx % statCd.length] || "ETC";
-        return {
-            statKor: item.name,
-            expDlr,
-            impDlr,
-            year,
-            statCd: statCdVal,
-            statCdCntnKor1,
-            balPayments,
-            impWgt,
-            hsCd: item.hs,
-            expWgt,
-            totalDlr,
-        };
-    });
-};
+// 나라
+export const countries = [
+    "미국",
+    "중국",
+    "일본",
+    "베트남",
+    "영국",
+    "독일",
+    "프랑스",
+    "인도",
+    "대만",
+    "태국",
+    "호주",
+];
 
-// 품목별 상세설명(가상 데이터)
+// 품목별 상세설명
 export const hsDescriptions: Record<string, string> = {
-    "태양광 패널": "태양광 에너지를 전기로 변환하는 장치로, 친환경 에너지 생산의 핵심 품목입니다.",
-    "전기자동차": "배출가스가 없는 친환경 이동수단으로, 전기 배터리를 동력원으로 사용합니다.",
-    "천연 성분 세제": "화학성분을 최소화하고 자연 유래 성분으로 만든 친환경 세제입니다.",
-    "유기농 면화": "화학 비료와 농약을 사용하지 않고 재배한 친환경 섬유 원료입니다.",
-    // ... 필요시 추가
+    "천연 비료": "화학 성분이 포함되지 않은 저탄소 농업용 비료로, 유기농 인증 농산물 생산에 필수적인 품목입니다.",
+    "천연 성분 세제": "저자극성과 생분해성을 갖춘 친환경 세정제로, 환경성 질환 증가로 수요가 급증하고 있습니다.",
+    "실리콘 식기/빨대": "재사용이 가능하여 생활 폐기물을 줄일 수 있는 친환경 제품으로, 제로웨이스트 문화 확산과 함께 인기를 끌고 있습니다.",
+    "천연 고무 라텍스": "생분해 가능한 생물 유래 소재로, 탄소중립에 기여할 수 있는 친환경 원료입니다.",
+    "종이 빨대, 포장재": "생분해 가능한 친환경 대체재로, 플라스틱 사용 규제로 인해 시장이 급성장하고 있습니다.",
+    "유기농 면화": "생분해성이 뛰어난 천연 섬유로, 농약 없이 재배되어 지속가능 패션 수요에 대응하고 있습니다.",
+    "슬래그 울, 단열재": "폐철강 부산물을 재활용한 단열 성능이 우수한 친환경 건축 자재입니다.",
+    "금속 빨대": "일회용품 대체용으로 반복 사용 가능한 스테인리스 빨대 등 친환경 식기입니다.",
+    "태양열 집열기": "태양 에너지를 열에너지로 변환하는 장비로, 친환경 난방·급탕 시설에 활용됩니다.",
+    "풍력 터빈용 발전기": "풍력 자원을 활용한 재생에너지 발전 장비로, 해상풍력 확대에 따라 시장이 성장 중입니다.",
+    "전력 변환장치 (인버터)": "신재생 에너지를 효율적으로 운용하기 위한 핵심 장치로, ESS 연계 기술과 함께 중요성이 커지고 있습니다.",
+    "전기차용 리튬이온 배터리": "무공해 전기차에 사용되는 에너지 저장 장치로, 미래 핵심 산업으로 주목받고 있습니다.",
+    "태양광 패널": "태양 에너지를 전기로 변환하는 핵심 장비로, 탄소세 도입과 함께 설치가 급속히 확산되고 있습니다.",
+    "전기자동차": "배출가스가 없는 무공해 운송 수단으로, 전 세계적으로 보급 확대가 추진되고 있습니다.",
+    "전기 이륜차": "전기 구동 방식의 친환경 이륜차로, 도심 배송과 마이크로 모빌리티 수요로 급성장 중입니다."
 };
+
+export const productsWithHS = products.map((name, idx) => ({
+    name,
+    hs: (100000 + idx + 1).toString(), // 예시: 100001, 100002, ...
+}));
+
+export const statCd = [
+    "US", "CN", "JP", "VN", "GB", "DE", "FR", "IN", "TW", "TH", "AU"
+]; 

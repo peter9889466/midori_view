@@ -104,7 +104,7 @@ def create_knowledge_base():
     return "\n".join(kb_parts)
 
 def ask_gpt4_mini(user_question):
-    """GPT-4o mini로 전체 데이터 분석"""
+    """GPT-4.1 mini로 전체 데이터 분석"""
     
     if not os.getenv("OPENAI_API_KEY"):
         return "OpenAI API 키가 설정되지 않았습니다."

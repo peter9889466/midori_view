@@ -26,6 +26,7 @@ import MixedChart from '../../chart/MixedChart';
 import BarChart from '../../chart/BarChart';
 import LineChart from '../../chart/LineChart';
 import SimplePDFButton from '../../components/PDFbutton';
+import { hsDescriptions } from "@/data/data";
 
 
 interface ChartType {

@@ -231,8 +231,8 @@ export default function HomePage() {
                                                         {/* 선택 해제 옵션 */}
                                                         <button
                                                             className={`w-[96%] text-left px-6 py-4 rounded-xl font-medium transition-all duration-200 transform hover:scale-[1.02] border-2 ${!selectedProducts[idx]
-                                                                ? 'bg-gradient-to-r from-red-500 to-red-600 text-white border-red-400 shadow-lg shadow-red-200 hover:bg-red-600 hover:border-red-500'
-                                                                : 'bg-gray-50 text-gray-700 border-transparent hover:bg-red-50 hover:border-red-200 hover:text-red-700'
+                                                                ? 'bg-red-400 text-white border-red-400 shadow-lg shadow-red-200 hover:bg-red-400 hover:border-red-500'
+                                                                : 'bg-gray-50 text-gray-700 border-transparent hover:bg-red-50 hover:border-red-200 hover:text-red-300'
                                                                 }`}
                                                             onClick={() => {
                                                                 handleSelectChange(idx, "");

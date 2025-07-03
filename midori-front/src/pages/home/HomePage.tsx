@@ -424,7 +424,7 @@ export default function HomePage() {
 
                 {/* === 4. [신규] 최신 관련 뉴스 === */}
                 <div className="space-y-6">
-                    <h2 className="text-3xl font-bold text-center text-gray-800">최신 관련 뉴스</h2>
+                    <h2 className="text-center text-4xl font-bold bg-gradient-to-r from-[#6AAE4A] to-[#9AD970] bg-clip-text text-transparent">최신 관련 뉴스</h2>
                     <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-sm">
                         {newsLoading ? (
                             <div className="text-center text-gray-500">뉴스를 불러오는 중...</div>

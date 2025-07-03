@@ -18,25 +18,17 @@ function App() {
             <ErrorBoundary FallbackComponent={ErrorFallback}>
                 <Router>
                     <div className="min-h-screen bg-background">
-                        {/* Sticky Header */}
                         <Header />
-
-                        {/* Main Content with proper spacing for sticky header */}
                         <main className="container mx-auto px-4 py-4 sm:py-8 min-h-[calc(100vh-4rem)]">
                             <Routes>
                                 <Route path="/" element={<HomePage />} />
                                 <Route path="/graphs" element={<GraphsPage />} />
-                                <Route path="/graphs/:product" element={<GraphsPage />} />
-                                <Route
-                                    path="/rankings"
-                                    element={<RankingsPage />}
-                                />
+                                <Route path="/graphs/:hsCode" element={<GraphsPage />} />  {/* 여기를 수정 */}
+                                <Route path="/rankings" element={<RankingsPage />} />
                                 <Route path="/news" element={<NewsPage />} />
                                 <Route path="*" element={<Page404 />} />
                             </Routes>
                         </main>
-
-                        {/* Persistent Chatbot */}
                         <Footer />
                         <Chatbot />
                     </div>

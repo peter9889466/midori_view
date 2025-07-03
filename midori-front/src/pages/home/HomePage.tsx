@@ -9,9 +9,8 @@ import { BarChart3, Newspaper, Trophy, Leaf, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import axios from "axios";
-
+import ReactModal from "react-modal";
 // --- 기존 homeCards 데이터는 유지하되, 상세 설명을 활용할 것입니다. ---
 const homeCards = [
     {
@@ -58,6 +57,7 @@ export default function HomePage() {
     const [newsLoading, setNewsLoading] = useState(false);
     const [newsError, setNewsError] = useState<string | null>(null);
 
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     useEffect(() => {
         setNewsLoading(true);
@@ -145,6 +145,7 @@ export default function HomePage() {
                                 key={idx}
                                 className="group relative flex flex-col cursor-pointer overflow-hidden bg-white border-0 shadow-md hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 rounded-2xl"
                                 onClick={() => {
+                                    if (modalIsOpen) return;
                                     if (selectedProducts[idx]) {
                                         navigate(`/graphs/${encodeURIComponent(selectedProducts[idx])}`);
                                     }
@@ -158,54 +159,148 @@ export default function HomePage() {
 
                                 <CardHeader className="relative z-10 p-8 pb-4">
                                     {editingIdx === idx ? (
-                                        // --- 수정 모드 ---
-                                        <div
-                                            className="flex items-center justify-center bg-gradient-to-r from-[#E8F5E9] to-[#F1F8E9] rounded-xl p-4 border border-[#9AD970]/20"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setEditingIdx(idx);
-                                            }}
-                                        >
-                                            <Select
-                                                value={selectedProducts[idx] || "__EMPTY__"}
-                                                onValueChange={(value) => handleSelectChange(idx, value === "__EMPTY__" ? "" : value)}
-                                                open
+                                        // --- 수정 모드 (모달 오픈 트리거) ---
+                                        <>
+                                            <div
+                                                className="flex items-center justify-center bg-gradient-to-r from-[#E8F5E9] to-[#F1F8E9] rounded-xl p-4 border border-[#9AD970]/20 cursor-pointer"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setEditingIdx(idx);
+                                                    setModalIsOpen(true);
+                                                }}
                                             >
-                                                <SelectTrigger className="w-full border-0 bg-transparent focus:ring-2 focus:ring-[#6AAE4A] text-lg">
-                                                    <SelectValue placeholder="관심품목 선택" />
-                                                </SelectTrigger>
-                                                <SelectContent className="border-[#9AD970]/20 shadow-xl rounded-xl">
-                                                    <SelectItem value="__EMPTY__" className="text-gray-500">선택 해제</SelectItem>
-                                                    {getAvailableOptions(idx).map((item) => (
-                                                        <SelectItem
-                                                            key={item}
-                                                            value={item}
-                                                            disabled={selectedProducts.includes(item) && selectedProducts[idx] !== item}
-                                                            className="hover:bg-[#E8F5E9] focus:bg-[#E8F5E9]"
+                                                <span className="text-lg font-semibold">품목 선택</span>
+                                            </div>
+                                            <ReactModal
+                                                isOpen={modalIsOpen && editingIdx === idx}
+                                                onRequestClose={() => setModalIsOpen(false)}
+                                                ariaHideApp={false}
+                                                className="fixed inset-0 flex items-center justify-center z-50 outline-none p-4 "
+                                                overlayClassName="fixed inset-0 z-40 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-300"
+                                                style={{
+                                                    overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
+                                                    content: {
+                                                        background: 'transparent',
+                                                        border: 'none',
+                                                        padding: 0,
+                                                        overflow: 'visible',
+                                                        borderRadius: 0
+                                                    }
+                                                }}
+                                            >
+                                                <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md mx-auto transform transition-all duration-300 scale-100 animate-in fade-in-0 zoom-in-95">
+                                                    {/* 헤더 */}
+                                                    <div className="flex items-center justify-between mb-6">
+                                                        <h2 className="text-xl font-bold text-gray-800">관심품목 선택</h2>
+                                                        <button
+                                                            onClick={() => {
+                                                                setModalIsOpen(false);
+                                                                setEditingIdx(null);
+                                                            }}
+                                                            className="w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors duration-200"
                                                         >
-                                                            {item}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
+                                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+
+                                                    {/* 옵션 목록 */}
+                                                    <div className="space-y-3 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                                                        {/* 선택 해제 옵션 */}
+                                                        <button
+                                                            className={`w-[96%] text-left px-6 py-4 rounded-xl font-medium transition-all duration-200 transform hover:scale-[1.02] border-2 ${!selectedProducts[idx]
+                                                                    ? 'bg-gradient-to-r from-red-500 to-red-600 text-white border-red-400 shadow-lg shadow-red-200 hover:bg-red-600 hover:border-red-500'
+                                                                    : 'bg-gray-50 text-gray-700 border-transparent hover:bg-red-50 hover:border-red-200 hover:text-red-700'
+                                                                }`}
+                                                            onClick={() => {
+                                                                handleSelectChange(idx, "");
+                                                                setModalIsOpen(false);
+                                                            }}
+                                                        >
+                                                            <div className="flex items-center justify-between">
+                                                                <div className="flex items-center">
+                                                                    <div className={`w-2 h-2 rounded-full mr-3 ${!selectedProducts[idx]
+                                                                            ? 'bg-white'
+                                                                            : 'bg-red-400'
+                                                                        }`}></div>
+                                                                    선택 해제
+                                                                </div>
+                                                                {!selectedProducts[idx] && (
+                                                                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                                                    </svg>
+                                                                )}
+                                                            </div>
+                                                        </button>
+
+                                                        {/* 품목 옵션들 */}
+                                                        {getAvailableOptions(idx).map((item) => (
+                                                            <button
+                                                                key={item}
+                                                                className={`w-[96%] text-left px-6 py-4 rounded-xl font-medium transition-all duration-200 transform hover:scale-[1.02] border-2 ${selectedProducts[idx] === item
+                                                                    ? 'bg-[#9AD970] text-white #9AD970 shadow-lg shadow-green-200'
+                                                                    : selectedProducts.includes(item) && selectedProducts[idx] !== item
+                                                                        ? 'bg-gray-100 text-gray-400 border-gray-200 opacity-50 cursor-not-allowed'
+                                                                        : 'bg-gray-50 text-gray-700 border-transparent hover:bg-green-50 hover:border-green-200'
+                                                                    }`}
+                                                                disabled={selectedProducts.includes(item) && selectedProducts[idx] !== item}
+                                                                onClick={() => {
+                                                                    handleSelectChange(idx, item);
+                                                                    setModalIsOpen(false);
+                                                                }}
+                                                            >
+                                                                <div className="flex items-center justify-between">
+                                                                    <div className="flex items-center">
+                                                                        <div className={`w-2 h-2 rounded-full mr-3 ${selectedProducts[idx] === item
+                                                                            ? 'bg-white'
+                                                                            : selectedProducts.includes(item) && selectedProducts[idx] !== item
+                                                                                ? 'bg-gray-400'
+                                                                                : 'bg-[#9AD970]'
+                                                                            }`}></div>
+                                                                        {item}
+                                                                    </div>
+                                                                    {selectedProducts[idx] === item && (
+                                                                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                                                        </svg>
+                                                                    )}
+                                                                </div>
+                                                            </button>
+                                                        ))}
+                                                    </div>
+
+                                                    {/* 푸터 */}
+                                                    <div className="mt-6 pt-4 border-t border-gray-100">
+                                                        <button
+                                                            className="w-full py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
+                                                            onClick={() => {
+                                                                setModalIsOpen(false);
+                                                                setEditingIdx(null);
+                                                            }}
+                                                        >
+                                                            닫기
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </ReactModal>
+                                        </>
                                     ) : selectedProducts[idx] ? (
                                         // --- 품목 선택 완료 ---
                                         <div
-                                            className="flex items-center justify-center bg-gradient-to-r from-[#E8F5E9] to-[#F1F8E9] rounded-xl p-6 border border-[#9AD970]/20 group-hover:border-[#6AAE4A]/40 transition-colors duration-300"
+                                            className="flex items-center justify-center bg-gradient-to-r from-[#E8F5E9] to-[#F1F8E9] rounded-xl p-6 border border-[#9AD970]/20 group-hover:border-[#6AAE4A]/40 transition-colors duration-300 cursor-pointer"
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setEditingIdx(idx);
+                                                setModalIsOpen(true);
                                             }}
                                         >
                                             <div className="text-center space-y-2">
-                                                {/* hover 효과 제거됨 */}
                                                 <div className="w-16 h-16 mx-auto bg-gradient-to-br from-[#6AAE4A] to-[#9AD970] rounded-full flex items-center justify-center mb-3">
                                                     <span className="text-lg font-bold font-sans text-white transition-colors duration-300">
                                                         {selectedProducts[idx].charAt(0)}
                                                     </span>
                                                 </div>
-                                                {/* 폰트 조절: text-base, font-bold (카드 타이틀, 사이즈 축소) */}
                                                 <CardTitle className="text-[1.4rem] font-semibold text-gray-800 group-hover:text-[#6AAE4A] transition-colors duration-300">
                                                     {selectedProducts[idx]}
                                                 </CardTitle>
@@ -214,10 +309,11 @@ export default function HomePage() {
                                     ) : (
                                         // --- 초기 상태 ---
                                         <div
-                                            className="flex items-center justify-center bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 border-2 border-dashed border-gray-300 group-hover:border-[#9AD970] group-hover:bg-gradient-to-r group-hover:from-[#E8F5E9]/50 group-hover:to-[#F1F8E9]/50 transition-all duration-300"
+                                            className="flex items-center justify-center bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 border-2 border-dashed border-gray-300 group-hover:border-[#9AD970] group-hover:bg-gradient-to-r group-hover:from-[#E8F5E9]/50 group-hover:to-[#F1F8E9]/50 transition-all duration-300 cursor-pointer"
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setEditingIdx(idx);
+                                                setModalIsOpen(true);
                                             }}
                                         >
                                             <div className="text-center space-y-3">

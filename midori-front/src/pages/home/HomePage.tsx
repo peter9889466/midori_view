@@ -36,6 +36,24 @@ const homeCards = [
     }
 ];
 
+const productToHscode: { [key: string]: string } = {
+    "태양광 패널": "854140",
+    "풍력 터빈용 발전기": "850231",
+    "전력 변환장치 (인버터)": "850440",
+    "태양열 집열기": "841919",
+    "전기자동차": "870380",
+    "전기 이륜차": "871160",
+    "전기차용 리튬이온 배터리": "850760",
+    "실리콘 식기/빨대": "392490",
+    "금속 빨대": "821599",
+    "종이 빨대, 포장재": "482390",
+    "천연 성분 세제": "340290",
+    "천연 고무 라텍스": "400110",
+    "유기농 면화": "520100",
+    "천연 비료": "310100",
+    "슬래그 울, 단열재": "680610"
+}
+
 export default function HomePage() {
     const navigate = useNavigate();
     const [cookies, setCookie] = useCookies(["userProducts"]);
@@ -147,7 +165,10 @@ export default function HomePage() {
                                 onClick={() => {
                                     if (modalIsOpen) return;
                                     if (selectedProducts[idx]) {
-                                        navigate(`/graphs/${encodeURIComponent(selectedProducts[idx])}`);
+                                        const hscode = productToHscode[selectedProducts[idx]];
+                                        if (hscode) {
+                                            navigate(`/graphs/${hscode}`);
+                                        }
                                     }
                                 }}
                             >
@@ -210,8 +231,8 @@ export default function HomePage() {
                                                         {/* 선택 해제 옵션 */}
                                                         <button
                                                             className={`w-[96%] text-left px-6 py-4 rounded-xl font-medium transition-all duration-200 transform hover:scale-[1.02] border-2 ${!selectedProducts[idx]
-                                                                    ? 'bg-gradient-to-r from-red-500 to-red-600 text-white border-red-400 shadow-lg shadow-red-200 hover:bg-red-600 hover:border-red-500'
-                                                                    : 'bg-gray-50 text-gray-700 border-transparent hover:bg-red-50 hover:border-red-200 hover:text-red-700'
+                                                                ? 'bg-gradient-to-r from-red-500 to-red-600 text-white border-red-400 shadow-lg shadow-red-200 hover:bg-red-600 hover:border-red-500'
+                                                                : 'bg-gray-50 text-gray-700 border-transparent hover:bg-red-50 hover:border-red-200 hover:text-red-700'
                                                                 }`}
                                                             onClick={() => {
                                                                 handleSelectChange(idx, "");
@@ -221,8 +242,8 @@ export default function HomePage() {
                                                             <div className="flex items-center justify-between">
                                                                 <div className="flex items-center">
                                                                     <div className={`w-2 h-2 rounded-full mr-3 ${!selectedProducts[idx]
-                                                                            ? 'bg-white'
-                                                                            : 'bg-red-400'
+                                                                        ? 'bg-white'
+                                                                        : 'bg-red-400'
                                                                         }`}></div>
                                                                     선택 해제
                                                                 </div>

@@ -80,12 +80,13 @@ const productDescriptions: { [key: string]: string } = {
 // --- 유틸리티 함수들 ---
 const formatNumber = (num: number): string => num.toLocaleString();
 
+
 const generateChartData = (apiTradeData: ApiTradeData[], selectedYear: string) => {
     const currentYearNum = parseInt(selectedYear);
     const now = new Date();
-    const isCurrentYear = currentYearNum === now.getFullYear();
-    const currentMonth = now.getMonth() + 1;
-    const dataLength = isCurrentYear ? currentMonth : 12;
+    // 2025년이면 6월까지만
+    //====================================
+    const dataLength = currentYearNum === 2025 ? 6 : (currentYearNum === now.getFullYear() ? now.getMonth() + 1 : 12);
 
     const labels = [];
     for (let i = 1; i <= dataLength; i++) {

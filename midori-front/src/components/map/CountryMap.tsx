@@ -147,8 +147,8 @@ const CountryMap = ({ allowedCountries, selectedCountryName, onCountrySelect }: 
             minZoom={2}
             maxBounds={[[-85, -180], [85, 180]]}
             maxBoundsViscosity={1.0}
-            className="w-full h-full"
-            style={{ height: '100%', width: '100%' }}
+            className="w-full h-[400px]"
+            style={{ height: '400px', width: '100%', zIndex: 0 }}
         >
             <TileLayer url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png" />
             {geoData && (

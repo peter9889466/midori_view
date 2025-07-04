@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import { X, Send, Bot, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import ReactMarkdown from "react-markdown";
 
 interface Message {
     id: string;
@@ -169,7 +170,7 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
                             }`}
                             style={{ whiteSpace: "pre-wrap" }}
                         >
-                            {message.text}
+                            <ReactMarkdown>{message.text}</ReactMarkdown>
                         </div>
                     </div>
                 ))}

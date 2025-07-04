@@ -9,7 +9,7 @@ import DataSummary from "./DataSummary";
 import SimplePDFButton from '../PDFbutton';
 import { useState } from 'react';
 import { productDescriptions, hsCodeMap } from '../../data/constants';
-import { formatNumber } from '../../lib/graphs/utils';
+import { formatNumber, calculateGrowthRate } from '../../lib/graphs/utils'; // calculateGrowthRate import
 
 interface ChartSectionProps {
     selectedChart: string;
@@ -46,28 +46,41 @@ export default function ChartSection({
     const dataLength = isCurrentYear ? apiTradeData.length : 12;
 
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-    const handlePDFDownload = () => {
-        if (!apiTradeData || apiTradeData.length === 0) {
-            alert('데이터가 없습니다.');
-            return;
-        }
-        setIsGeneratingPDF(true);
+
+    const initiatePDFPrint = (
+        data: ApiTradeData[],
+        prevData: ApiTradeData[],
+        exportTotal: number,
+        importTotal: number,
+        tradeAmount: number,
+        len: number,
+        year: string,
+        country: string,
+        code: string
+    ) => {
         const printWindow = window.open('', '_blank');
         if (!printWindow) {
-            alert('팝업이 차단되었습니다.');
+            alert('팝업이 차단되었습니다. 팝업 차단을 해제해주세요.');
             setIsGeneratingPDF(false);
             return;
         }
-        // PDF HTML 생성 코드 (DataSummary에서 복사)
-        const currentProductInfo = Object.values(hsCodeMap).find(item => item.code === hsCode);
+
+        const currentProductInfo = Object.values(hsCodeMap).find(item => item.code === code);
         const displayProductName = currentProductInfo?.statKorName || 
-            Object.keys(hsCodeMap).find(key => hsCodeMap[key].code === hsCode) || 
-            (hsCode ? `HS코드 ${hsCode}` : "품목");
-        const productDescription = productDescriptions[Object.keys(hsCodeMap).find(key => hsCodeMap[key].code === hsCode) || ''] || 
-            productDescriptions[hsCode || ''] || 
+            Object.keys(hsCodeMap).find(key => hsCodeMap[key].code === code) || 
+            (code ? `HS코드 ${code}` : "품목");
+        const productDescription = productDescriptions[Object.keys(hsCodeMap).find(key => hsCodeMap[key].code === code) || ''] || 
+            productDescriptions[code || ''] || 
             `${displayProductName}의 무역 데이터를 분석하고 있습니다.`;
-        const 기간표현 = `${selectedYear}년 1월~${dataLength}월 누적`;
-        const tradeBalance = apiExportTotal - apiImportTotal;
+        const 기간표현 = `${year}년 1월~${len}월 누적`;
+        const tradeBalance = exportTotal - importTotal;
+
+        const prevYearExportTotal = prevData.slice(0, len).reduce((sum, item) => sum + item.exportValue, 0);
+        const prevYearImportTotal = prevData.slice(0, len).reduce((sum, item) => sum + item.importValue, 0);
+        const prevYearTotalAmount = prevYearExportTotal + prevYearImportTotal;
+
+        const overallGrowthRate = calculateGrowthRate(tradeAmount, prevYearTotalAmount);
+
         const printHTML = `
             <!DOCTYPE html>
             <html lang="ko">
@@ -89,6 +102,9 @@ export default function ChartSection({
                     .export h3, .export p { color: #1565c0; }
                     .import h3, .import p { color: #ef6c00; }
                     .balance h3, .balance p { color: ${tradeBalance >= 0 ? '#2e7d32' : '#c62828'}; }
+                    .growth-rate { font-size: 12px; margin-top: 5px; }
+                    .growth-positive { color: #2e7d32; }
+                    .growth-negative { color: #c62828; }
                     table { width: 100%; border-collapse: collapse; margin: 20px 0; }
                     th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
                     th { background-color: #f5f5f5; font-weight: bold; }
@@ -101,7 +117,7 @@ export default function ChartSection({
                 <div class="header">
                     <h1>${displayProductName} 무역통계 보고서</h1>
                     <div class="header-info">
-                        <div style="font-size: 13px;"><strong>대상 국가:</strong> ${selectedCountry} | <strong>분석 기간:</strong> ${기간표현} | <strong>HS 코드:</strong> ${hsCode} | <strong>생성일:</strong> ${new Date().toLocaleDateString('ko-KR')}</div>
+                        <div style="font-size: 13px;"><strong>대상 국가:</strong> ${country} | <strong>분석 기간:</strong> ${기간표현} | <strong>HS 코드:</strong> ${code} | <strong>생성일:</strong> ${new Date().toLocaleDateString('ko-KR')}</div>
                     </div>
                 </div>
 
@@ -109,11 +125,17 @@ export default function ChartSection({
                 <div class="summary">
                     <div class="summary-item export">
                         <h3>총 수출액</h3>
-                        <p>$${formatNumber(apiExportTotal)}</p>
+                        <p>$${formatNumber(exportTotal)}</p>
+                        <div class="growth-rate ${calculateGrowthRate(exportTotal, prevYearExportTotal) >= 0 ? 'growth-positive' : 'growth-negative'}">
+                            전년 대비: ${calculateGrowthRate(exportTotal, prevYearExportTotal).toFixed(1)}%
+                        </div>
                     </div>
                     <div class="summary-item import">
                         <h3>총 수입액</h3>
-                        <p>$${formatNumber(apiImportTotal)}</p>
+                        <p>$${formatNumber(importTotal)}</p>
+                        <div class="growth-rate ${calculateGrowthRate(importTotal, prevYearImportTotal) >= 0 ? 'growth-positive' : 'growth-negative'}">
+                            전년 대비: ${calculateGrowthRate(importTotal, prevYearImportTotal).toFixed(1)}%
+                        </div>
                     </div>
                     <div class="summary-item balance">
                         <h3>무역수지</h3>
@@ -121,7 +143,10 @@ export default function ChartSection({
                     </div>
                     <div class="summary-item total">
                         <h3>총 수출입액</h3>
-                        <p>$${formatNumber(totalTradeAmount)}</p>
+                        <p>$${formatNumber(tradeAmount)}</p>
+                        <div class="growth-rate ${overallGrowthRate >= 0 ? 'growth-positive' : 'growth-negative'}">
+                            전년 대비: ${overallGrowthRate.toFixed(1)}%
+                        </div>
                     </div>
                 </div>
 
@@ -133,22 +158,28 @@ export default function ChartSection({
                             <th>수출액 ($)</th>
                             <th>수입액 ($)</th>
                             <th>무역수지 ($)</th>
-                            <th>증감률 (%)</th>
+                            <th style="background-color: #e0f2f7;">증감률 (%)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${apiTradeData.slice(0, dataLength).map((item, index) => {
+                        ${data.slice(0, len).map((item, index) => {
                             const exportValue = item.exportValue || 0;
                             const importValue = item.importValue || 0;
                             const monthBalance = exportValue - importValue;
-                            const growthRate = item.growthRate || 0;
+                            
+                            const prevYearItemForMonth = prevData.find(prev => prev.month === item.month) || { exportValue: 0, importValue: 0 };
+                            
+                            const importGrowthRate = calculateGrowthRate(importValue, prevYearItemForMonth.importValue);
+                            
                             return `
                                 <tr>
                                     <td>${item.month || (index + 1)}월</td>
                                     <td style="color: #1565c0; font-weight: bold;">${formatNumber(exportValue)}</td>
                                     <td style="color: #ef6c00; font-weight: bold;">${formatNumber(importValue)}</td>
                                     <td style="color: ${monthBalance >= 0 ? '#2e7d32' : '#c62828'}; font-weight: bold;">${formatNumber(monthBalance)}</td>
-                                    <td>${growthRate.toFixed(1)}%</td>
+                                    <td style="color: ${importGrowthRate >= 0 ? '#2e7d32' : '#c62828'}; font-weight: bold; background-color: #f0f8ff;">
+                                        ${importGrowthRate === Infinity ? 'N/A' : importGrowthRate.toFixed(1) + '%'}
+                                    </td>
                                 </tr>
                             `;
                         }).join('')}
@@ -158,6 +189,7 @@ export default function ChartSection({
                 <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #ddd; font-size: 11px; color: #666;">
                     <p>※ 본 보고서는 무역통계 시스템을 통해 생성되었습니다.</p>
                     <p>※ 모든 금액은 미화(USD) 기준입니다.</p>
+                    <p>※ 증감률은 전년 동기 대비 기준입니다.</p>
                     <p>※ ${productDescription}</p>
                 </div>
 
@@ -177,7 +209,26 @@ export default function ChartSection({
         setIsGeneratingPDF(false);
     };
 
-    // 품목(HS코드) 선택 상태 및 옵션
+    // 🐛 수정: handlePDFDownload 함수 간소화 (디버그 모달 로직 제거)
+    const handlePDFDownload = () => {
+        if (!apiTradeData || apiTradeData.length === 0) {
+            alert('데이터가 없습니다.');
+            return;
+        }
+        setIsGeneratingPDF(true); // 로딩 상태 시작
+        initiatePDFPrint(
+            apiTradeData,
+            prevYearData,
+            apiExportTotal,
+            apiImportTotal,
+            totalTradeAmount,
+            dataLength,
+            selectedYear,
+            selectedCountry,
+            hsCode
+        );
+    };
+
     const productOptions = Object.keys(hsCodeMap).map(label => ({ label, value: hsCodeMap[label].code }));
     const currentProductLabel = Object.keys(hsCodeMap).find(label => hsCodeMap[label].code === hsCode) || '';
     const [selectedProduct, setSelectedProduct] = useState(currentProductLabel);
@@ -231,7 +282,7 @@ export default function ChartSection({
                                     options={chartOptions}
                                 />
                             )}
-                            {selectedChart === "line" && (          <LineChart
+                            {selectedChart === "line" && (         <LineChart
                                     className="absolute inset-0 w-full h-full bg-[#e9ecef]  rounded-xl"
                                     data={generateLineData(apiTradeData, selectedYear)}
                                     options={chartOptions}

@@ -2,9 +2,18 @@ import type { ApiTradeData } from "../../types/types";
 
 export const formatNumber = (num: number): string => num.toLocaleString();
 
+// 🐛 수정: calculateGrowthRate 함수를 export 하여 외부에서 사용 가능하도록 함
+export const calculateGrowthRate = (currentValue: number, prevValue: number): number => {
+    if (!prevValue || prevValue === 0) {
+        return currentValue === 0 ? 0 : Infinity;
+    }
+    return ((currentValue - prevValue) / prevValue) * 100;
+};
+
 export const generateChartData = (apiTradeData: ApiTradeData[], selectedYear: string) => {
     const currentYearNum = parseInt(selectedYear);
     const now = new Date();
+    // 2025년 6월까지의 데이터만 있다고 가정 (예시)
     const dataLength = currentYearNum === 2025 ? 6 : (currentYearNum === now.getFullYear() ? now.getMonth() + 1 : 12);
 
     const labels = [];
@@ -83,11 +92,19 @@ export const generateMixedData = (
 ) => {
     const { labels, exportData, importData } = generateChartData(apiTradeData, selectedYear);
 
-    // 실제 전년대비동월증감률 계산
-    const growthRateData = apiTradeData.map((item, idx) => {
-        const prev = prevYearData[idx];
-        if (!prev || !prev.exportValue) return 0;
-        return Math.round(((item.exportValue - prev.exportValue) / prev.exportValue) * 1000) / 10;
+    // 🐛 calculateGrowthRate 함수를 export 했으므로 여기서는 더 이상 내부 정의가 필요 없음
+    // const calculateGrowthRate = (currentValue: number, prevValue: number): number => {
+    //     if (!prevValue || prevValue === 0) {
+    //         return currentValue === 0 ? 0 : Infinity;
+    //     }
+    //     return ((currentValue - prevValue) / prevValue) * 100;
+    // };
+
+    // 🐛 수정: 전년동월대비 수입 증감률을 올바르게 계산
+    const importGrowthRateData = apiTradeData.map((item, idx) => {
+        const prev = prevYearData.find(prevItem => prevItem.month === item.month); // 월을 기준으로 정확히 찾기
+        const prevImportValue = prev ? prev.importValue : 0;
+        return calculateGrowthRate(item.importValue, prevImportValue);
     });
 
     return {
@@ -118,7 +135,7 @@ export const generateMixedData = (
                 backgroundColor: 'rgba(255, 159, 64, 0.2)',
                 fill: false,
                 tension: 0.1,
-                data: growthRateData,
+                data: importGrowthRateData.map(rate => (rate === Infinity ? NaN : parseFloat(rate.toFixed(1)))), // Infinity 처리 및 소수점 첫째 자리까지 반올림
                 yAxisID: 'y1',
                 borderWidth: 3,
                 pointRadius: 4,
@@ -126,4 +143,4 @@ export const generateMixedData = (
             },
         ],
     };
-}; 
+};

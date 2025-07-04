@@ -11,7 +11,6 @@ import {
     ErrorState 
 } from "../../components/graphs";
 
-// --- 메인 컴포넌트 ---
 export default function GraphsPage() {
     const { hsCode } = useParams<{ hsCode?: string }>();
     const [selectedChart, setSelectedChart] = useState("bar");
@@ -20,11 +19,10 @@ export default function GraphsPage() {
     const [selectedYear, setSelectedYear] = useState(years[0]);
     const [selectedCountry, setSelectedCountry] = useState("미국");
     const [apiTradeData, setApiTradeData] = useState<ApiTradeData[]>([]);
-    const [prevYearData, setPrevYearData] = useState<ApiTradeData[]>([]);
+    const [, setPrevYearData] = useState<ApiTradeData[]>([]);
     const [loading, setLoading] = useState(false);
     const [apiError, setApiError] = useState('');
 
-    // API 데이터 로드
     useEffect(() => {
         let ignore = false;
 
@@ -40,11 +38,10 @@ export default function GraphsPage() {
             setPrevYearData([]);
 
             try {
-                // 올해 데이터
                 const data = await fetchTradeDataByHsCode(hsCode, selectedCountry, selectedYear);
-                // 전년도 데이터
                 const prevYear = (parseInt(selectedYear) - 1).toString();
                 const prevData = await fetchTradeDataByHsCode(hsCode, selectedCountry, prevYear);
+                
                 if (!ignore) {
                     setApiTradeData(data);
                     setPrevYearData(prevData);
@@ -69,8 +66,6 @@ export default function GraphsPage() {
         return () => { ignore = true; };
     }, [hsCode, selectedCountry, selectedYear]);
 
-
-
     if (!hsCode) {
         return (
             <div className="flex flex-col items-center justify-center h-full">
@@ -85,13 +80,11 @@ export default function GraphsPage() {
             
             {apiError && <ErrorState message={apiError} />}
 
-            {/* 지역별 데이터 맵 */}
             <CountryMapSection
                 selectedCountry={selectedCountry}
                 onCountrySelect={setSelectedCountry}
             />
 
-            {/* 그래프 섹션 */}
             <ChartSection
                 selectedChart={selectedChart}
                 setSelectedChart={setSelectedChart}
@@ -101,7 +94,6 @@ export default function GraphsPage() {
                 setSelectedYear={setSelectedYear}
                 years={years}
                 apiTradeData={apiTradeData}
-                prevYearData={prevYearData}
                 hsCode={hsCode}
             />
         </div>

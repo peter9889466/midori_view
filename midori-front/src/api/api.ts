@@ -59,14 +59,18 @@ export const fetchTradeDataByHsCode = async (hsCodeParam: string, country: strin
                     const monthStr = yearStr.slice(dotIndex + 1);
                     let parsedMonth = parseInt(monthStr, 10);
                     
-                    // 한 자리 숫자이면서 실제로는 10, 11, 12월인 경우 처리
-                    // (데이터 순서를 보고 판단 - 이 부분은 실제 데이터에 따라 조정 필요)
-                    if (monthStr.length === 1 && parsedMonth >= 1 && parsedMonth <= 3) {
-                        // 10, 11, 12월 처리 로직이 필요하다면 여기에 추가
-                        // 예: 순서상 10월 이후라면 parsedMonth += 9
-                    }
-                    
-                    if (!isNaN(parsedMonth) && parsedMonth >= 1 && parsedMonth <= 12) {
+                    // 한 자리 숫자 처리 - 실제로는 10, 11, 12월
+                    if (monthStr.length === 1) {
+                        if (parsedMonth === 1) {
+                            monthExtracted = 10;  // 2024.1 → 10월
+                        } else if (parsedMonth === 2) {
+                            monthExtracted = 11;  // 2024.2 → 11월  
+                        } else if (parsedMonth === 3) {
+                            monthExtracted = 12;  // 2024.3 → 12월
+                        } else {
+                            monthExtracted = parsedMonth;
+                        }
+                    } else if (!isNaN(parsedMonth) && parsedMonth >= 1 && parsedMonth <= 12) {
                         monthExtracted = parsedMonth;
                     }
                 }

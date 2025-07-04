@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import MixedChart from '../../chart/MixedChart';
 import BarChart from '../../chart/BarChart';
 import LineChart from '../../chart/LineChart';
@@ -17,7 +16,6 @@ interface ChartSectionProps {
     setSelectedYear: (year: string) => void;
     years: string[];
     apiTradeData: ApiTradeData[];
-    prevYearData: ApiTradeData[];
     hsCode: string;
 }
 
@@ -30,11 +28,8 @@ export default function ChartSection({
     setSelectedYear,
     years,
     apiTradeData,
-    prevYearData,
     hsCode
 }: ChartSectionProps) {
-    const chartRef = useRef<HTMLDivElement>(null);
-    
     const apiExportTotal = apiTradeData.reduce((sum, item) => sum + item.exportValue, 0);
     const apiImportTotal = apiTradeData.reduce((sum, item) => sum + item.importValue, 0);
     const totalTradeAmount = apiExportTotal + apiImportTotal;
@@ -42,8 +37,7 @@ export default function ChartSection({
     const currentYearNum = parseInt(selectedYear);
     const now = new Date();
     const isCurrentYear = currentYearNum === now.getFullYear();
-    const currentMonth = now.getMonth() + 1;
-    const dataLength = isCurrentYear ? currentMonth : 12;
+    const dataLength = isCurrentYear ? apiTradeData.length : 12;
 
     return (
         <div className="rounded-2xl bg-white w-full">
@@ -60,7 +54,7 @@ export default function ChartSection({
                     years={years}
                 />
 
-                <div className="flex flex-col lg:flex-row items-start gap-6">
+                <div className="flex items-start gap-6">
                     <DataSummary
                         hsCode={hsCode}
                         apiExportTotal={apiExportTotal}
@@ -72,8 +66,8 @@ export default function ChartSection({
                         apiTradeData={apiTradeData}
                     />
                     
-                    <div className="w-full lg:w-3/4 min-w-0 flex-1">
-                        <div ref={chartRef} className="relative w-full h-[400px]">
+                    <div className="w-3/4 min-w-0 flex-1">
+                        <div className="relative w-full h-[400px]">
                             {selectedChart === "bar" && (
                                 <BarChart
                                     className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
@@ -91,7 +85,7 @@ export default function ChartSection({
                             {selectedChart === "combined" && (
                                 <MixedChart 
                                     className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
-                                    data={generateMixedData(apiTradeData, selectedYear, prevYearData)}
+                                    data={generateMixedData(apiTradeData, selectedYear, [])}
                                     options={mixedChartOptions}
                                 />
                             )}

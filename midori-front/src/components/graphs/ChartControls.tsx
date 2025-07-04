@@ -1,27 +1,40 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { chartTypes, DEFAULT_COUNTRIES } from "../../data/constants";
+import { useNavigate } from 'react-router-dom';
 
 interface ChartControlsProps {
     selectedChart: string;
     setSelectedChart: (chart: string) => void;
+    selectedProduct: string;
+    setSelectedProduct: (product: string) => void;
+    productOptions: { label: string; value: string }[];
     selectedCountry: string;
     setSelectedCountry: (country: string) => void;
     selectedYear: string;
     setSelectedYear: (year: string) => void;
     years: string[];
-    rightButton?: React.ReactNode;
 }
 
 export default function ChartControls({
     selectedChart,
     setSelectedChart,
+    selectedProduct,
+    setSelectedProduct,
+    productOptions,
     selectedCountry,
     setSelectedCountry,
     selectedYear,
     setSelectedYear,
-    years,
-    rightButton
+    years
 }: ChartControlsProps) {
+    const navigate = useNavigate();
+    const handleProductChange = (productLabel: string) => {
+        setSelectedProduct(productLabel);
+        const hsCode = productOptions.find(option => option.label === productLabel)?.value;
+        if (hsCode) {
+            navigate(`/graphs/${hsCode}`);
+        }
+    };
     return (
         <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6 w-full">
             <div className="flex gap-2">
@@ -43,6 +56,16 @@ export default function ChartControls({
                     );
                 })}
             </div>
+            <Select value={selectedProduct} onValueChange={handleProductChange}>
+                <SelectTrigger className="h-10 w-60 bg-white border border-gray-200 rounded-lg">
+                    <SelectValue placeholder="품목 선택" />
+                </SelectTrigger>
+                <SelectContent>
+                    {productOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.label}>{option.label}</SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
             <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                 <SelectTrigger className="h-10 w-40 bg-white border border-gray-200 rounded-lg">
                     <SelectValue placeholder="나라 선택" />
@@ -63,7 +86,6 @@ export default function ChartControls({
                     ))}
                 </SelectContent>
             </Select>
-            {rightButton && <div className="flex-1 flex justify-end">{rightButton}</div>}
         </div>
     );
 } 

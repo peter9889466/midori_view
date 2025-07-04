@@ -177,31 +177,38 @@ export default function ChartSection({
         setIsGeneratingPDF(false);
     };
 
+    // 품목(HS코드) 선택 상태 및 옵션
+    const productOptions = Object.keys(hsCodeMap).map(label => ({ label, value: hsCodeMap[label].code }));
+    const currentProductLabel = Object.keys(hsCodeMap).find(label => hsCodeMap[label].code === hsCode) || '';
+    const [selectedProduct, setSelectedProduct] = useState(currentProductLabel);
+
     return (
-        <div className="rounded-2xl bg-white w-full">
-            <div className="pt-6 pb-2 px-6">
+        <div className="rounded-2xl bg-white w-full p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+            <div>
                 <div className="text-base font-semibold mb-4">그래프</div>
-                
-                <ChartControls
-                    selectedChart={selectedChart}
-                    setSelectedChart={setSelectedChart}
-                    selectedCountry={selectedCountry}
-                    setSelectedCountry={setSelectedCountry}
-                    selectedYear={selectedYear}
-                    setSelectedYear={setSelectedYear}
-                    years={years}
-                    rightButton={
-                        <div className="flex items-center">
-                            <SimplePDFButton onClick={handlePDFDownload} />
-                            {isGeneratingPDF && (
-                                <div className="text-xs text-[#9AD970] ml-2 flex items-center gap-2">
-                                    <div className="w-3 h-3 border-2 border-[#9AD970] border-t-transparent rounded-full animate-spin"></div>
-                                    PDF 생성 중...
-                                </div>
-                            )}
-                        </div>
-                    }
-                />
+                <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6 w-full">
+                    <ChartControls
+                        selectedChart={selectedChart}
+                        setSelectedChart={setSelectedChart}
+                        selectedProduct={selectedProduct}
+                        setSelectedProduct={setSelectedProduct}
+                        productOptions={productOptions}
+                        selectedCountry={selectedCountry}
+                        setSelectedCountry={setSelectedCountry}
+                        selectedYear={selectedYear}
+                        setSelectedYear={setSelectedYear}
+                        years={years}
+                    />
+                    <div className="w-full md:w-auto mt-2 md:mt-0 flex md:justify-end justify-start order-last md:order-none">
+                        <SimplePDFButton onClick={handlePDFDownload} />
+                        {isGeneratingPDF && (
+                            <div className="text-xs text-[#9AD970] ml-2 flex items-center gap-2">
+                                <div className="w-3 h-3 border-2 border-[#9AD970] border-t-transparent rounded-full animate-spin"></div>
+                                PDF 생성 중...
+                            </div>
+                        )}
+                    </div>
+                </div>
 
                 <div className="flex items-start gap-6">
                     <DataSummary
@@ -216,24 +223,23 @@ export default function ChartSection({
                     />
                     
                     <div className="w-3/4 min-w-0 flex-1">
-                        <div className="relative w-full h-[400px]">
+                        <div className="relative w-full h-[400px] rounded-xl ">
                             {selectedChart === "bar" && (
                                 <BarChart
-                                    className="absolute inset-0 w-full h-full bg-[#e9ecef] border border-[#adb5bd]"
+                                    className="absolute inset-0 w-full h-full bg-[#e9ecef]  rounded-xl"
                                     data={generateBarData(apiTradeData, selectedYear)}
                                     options={chartOptions}
                                 />
                             )}
-                            {selectedChart === "line" && (
-                                <LineChart
-                                    className="absolute inset-0 w-full h-full bg-[#e9ecef] border border-[#adb5bd]"
+                            {selectedChart === "line" && (          <LineChart
+                                    className="absolute inset-0 w-full h-full bg-[#e9ecef]  rounded-xl"
                                     data={generateLineData(apiTradeData, selectedYear)}
                                     options={chartOptions}
                                 />
                             )}
                             {selectedChart === "combined" && (
                                 <MixedChart 
-                                    className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+                                    className="absolute inset-0 w-full h-full bg-[#e9ecef]  rounded-xl"
                                     data={generateMixedData(apiTradeData, selectedYear, prevYearData)}
                                     options={mixedChartOptions}
                                 />

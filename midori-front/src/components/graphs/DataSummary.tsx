@@ -213,7 +213,7 @@ export default function DataSummary({
                         </p>
                     </div>
 
-                    {/* 버튼 영역 */}
+                    {/* 버튼 영역
                     <div className="mt-auto pt-3 border-t border-gray-100">
                         <div className="w-full">
                             <SimplePDFButton
@@ -226,7 +226,7 @@ export default function DataSummary({
                                 PDF 생성 중...
                             </div>
                         )}
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

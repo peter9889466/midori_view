@@ -20,6 +20,7 @@ export default function GraphsPage() {
     const [selectedYear, setSelectedYear] = useState(years[0]);
     const [selectedCountry, setSelectedCountry] = useState("미국");
     const [apiTradeData, setApiTradeData] = useState<ApiTradeData[]>([]);
+    const [prevYearData, setPrevYearData] = useState<ApiTradeData[]>([]);
     const [loading, setLoading] = useState(false);
     const [apiError, setApiError] = useState('');
 
@@ -36,11 +37,17 @@ export default function GraphsPage() {
             setLoading(true);
             setApiError('');
             setApiTradeData([]);
+            setPrevYearData([]);
 
             try {
+                // 올해 데이터
                 const data = await fetchTradeDataByHsCode(hsCode, selectedCountry, selectedYear);
+                // 전년도 데이터
+                const prevYear = (parseInt(selectedYear) - 1).toString();
+                const prevData = await fetchTradeDataByHsCode(hsCode, selectedCountry, prevYear);
                 if (!ignore) {
                     setApiTradeData(data);
+                    setPrevYearData(prevData);
                     if (data.length === 0) {
                         setApiError('선택된 조건으로 조회된 데이터가 없습니다.');
                     }
@@ -49,6 +56,7 @@ export default function GraphsPage() {
                 if (!ignore) {
                     setApiError('데이터를 불러오는 데 실패했습니다.');
                     setApiTradeData([]);
+                    setPrevYearData([]);
                 }
             } finally {
                 if (!ignore) {
@@ -93,6 +101,7 @@ export default function GraphsPage() {
                 setSelectedYear={setSelectedYear}
                 years={years}
                 apiTradeData={apiTradeData}
+                prevYearData={prevYearData}
                 hsCode={hsCode}
             />
         </div>

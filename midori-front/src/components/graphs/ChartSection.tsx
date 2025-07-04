@@ -17,6 +17,7 @@ interface ChartSectionProps {
     setSelectedYear: (year: string) => void;
     years: string[];
     apiTradeData: ApiTradeData[];
+    prevYearData: ApiTradeData[];
     hsCode: string;
 }
 
@@ -29,6 +30,7 @@ export default function ChartSection({
     setSelectedYear,
     years,
     apiTradeData,
+    prevYearData,
     hsCode
 }: ChartSectionProps) {
     const chartRef = useRef<HTMLDivElement>(null);
@@ -58,7 +60,7 @@ export default function ChartSection({
                     years={years}
                 />
 
-                <div className="flex items-start gap-6">
+                <div className="flex flex-col lg:flex-row items-start gap-6">
                     <DataSummary
                         hsCode={hsCode}
                         apiExportTotal={apiExportTotal}
@@ -66,13 +68,11 @@ export default function ChartSection({
                         totalTradeAmount={totalTradeAmount}
                         dataLength={dataLength}
                         selectedYear={selectedYear}
-                        selectedCountry={selectedCountry}  // 추가
-                        apiTradeData={apiTradeData}        // 추가
-                        chartRef={chartRef}                // 차트 참조 전달
-                        selectedChart={selectedChart}      // 차트 타입 전달
+                        selectedCountry={selectedCountry}
+                        apiTradeData={apiTradeData}
                     />
                     
-                    <div className="w-3/4 min-w-0 flex-1">
+                    <div className="w-full lg:w-3/4 min-w-0 flex-1">
                         <div ref={chartRef} className="relative w-full h-[400px]">
                             {selectedChart === "bar" && (
                                 <BarChart
@@ -91,7 +91,7 @@ export default function ChartSection({
                             {selectedChart === "combined" && (
                                 <MixedChart 
                                     className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
-                                    data={generateMixedData(apiTradeData, selectedYear)}
+                                    data={generateMixedData(apiTradeData, selectedYear, prevYearData)}
                                     options={mixedChartOptions}
                                 />
                             )}

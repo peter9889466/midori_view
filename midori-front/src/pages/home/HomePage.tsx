@@ -432,10 +432,6 @@ export default function HomePage() {
 
                                 {/* 하단 장식 요소 */}
                                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#6AAE4A] to-[#9AD970] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-
-                                {/* 코너 장식 */}
-                                <div className="absolute top-6 right-6 w-8 h-8 border-2 border-[#9AD970]/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                <div className="absolute top-8 right-8 w-4 h-4 bg-[#9AD970]/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                             </Card>
                         ))}
 

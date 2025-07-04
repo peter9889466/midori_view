@@ -16,6 +16,7 @@ interface ChartSectionProps {
     setSelectedYear: (year: string) => void;
     years: string[];
     apiTradeData: ApiTradeData[];
+    prevYearData: ApiTradeData[];
     hsCode: string;
 }
 
@@ -28,6 +29,7 @@ export default function ChartSection({
     setSelectedYear,
     years,
     apiTradeData,
+    prevYearData,
     hsCode
 }: ChartSectionProps) {
     const apiExportTotal = apiTradeData.reduce((sum, item) => sum + item.exportValue, 0);
@@ -70,14 +72,14 @@ export default function ChartSection({
                         <div className="relative w-full h-[400px]">
                             {selectedChart === "bar" && (
                                 <BarChart
-                                    className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+                                    className="absolute inset-0 w-full h-full bg-[#e9ecef] border border-[#adb5bd]"
                                     data={generateBarData(apiTradeData, selectedYear)}
                                     options={chartOptions}
                                 />
                             )}
                             {selectedChart === "line" && (
                                 <LineChart
-                                    className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
+                                    className="absolute inset-0 w-full h-full bg-[#e9ecef] border border-[#adb5bd]"
                                     data={generateLineData(apiTradeData, selectedYear)}
                                     options={chartOptions}
                                 />
@@ -85,7 +87,7 @@ export default function ChartSection({
                             {selectedChart === "combined" && (
                                 <MixedChart 
                                     className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
-                                    data={generateMixedData(apiTradeData, selectedYear, [])}
+                                    data={generateMixedData(apiTradeData, selectedYear, prevYearData)}
                                     options={mixedChartOptions}
                                 />
                             )}

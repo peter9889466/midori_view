@@ -19,7 +19,7 @@ export default function GraphsPage() {
     const [selectedYear, setSelectedYear] = useState(years[0]);
     const [selectedCountry, setSelectedCountry] = useState("미국");
     const [apiTradeData, setApiTradeData] = useState<ApiTradeData[]>([]);
-    const [, setPrevYearData] = useState<ApiTradeData[]>([]);
+    const [prevYearData, setPrevYearData] = useState<ApiTradeData[]>([]);
     const [loading, setLoading] = useState(false);
     const [apiError, setApiError] = useState('');
 
@@ -75,7 +75,7 @@ export default function GraphsPage() {
     }
 
     return (
-        <div className="container mx-auto px-4 py-12 space-y-8 pt-0">
+        <div className="container mx-auto px-4 py-12 space-y-8 pt-0 border border-[#adb5bd] bg-[#e9ecef] rounded-2xl">
             {loading && <LoadingState />}
             
             {apiError && <ErrorState message={apiError} />}
@@ -94,6 +94,7 @@ export default function GraphsPage() {
                 setSelectedYear={setSelectedYear}
                 years={years}
                 apiTradeData={apiTradeData}
+                prevYearData={prevYearData}
                 hsCode={hsCode}
             />
         </div>

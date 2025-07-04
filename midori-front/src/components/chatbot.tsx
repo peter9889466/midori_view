@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ChatbotIcon } from "./chatbot-icon";
-import { ChatbotWindow } from "./chatbot-test";
+import { ChatbotWindow } from "./chatbot-window";
 import { useLocation } from "react-router-dom";
 
 export function Chatbot() {

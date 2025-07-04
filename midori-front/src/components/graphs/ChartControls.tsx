@@ -9,6 +9,7 @@ interface ChartControlsProps {
     selectedYear: string;
     setSelectedYear: (year: string) => void;
     years: string[];
+    rightButton?: React.ReactNode;
 }
 
 export default function ChartControls({
@@ -18,10 +19,11 @@ export default function ChartControls({
     setSelectedCountry,
     selectedYear,
     setSelectedYear,
-    years
+    years,
+    rightButton
 }: ChartControlsProps) {
     return (
-        <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
+        <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6 w-full">
             <div className="flex gap-2">
                 {chartTypes.map((type) => {
                     const Icon = type.icon;
@@ -61,6 +63,7 @@ export default function ChartControls({
                     ))}
                 </SelectContent>
             </Select>
+            {rightButton && <div className="flex-1 flex justify-end">{rightButton}</div>}
         </div>
     );
 } 

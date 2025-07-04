@@ -28,7 +28,9 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
         },
     ]);
     const [inputValue, setInputValue] = useState("");
-    const [isTyping, setIsTyping] = useState(false); // ✅ 추가
+    const [isTyping, setIsTyping] = useState(false);
+    const [typingMessage, setTypingMessage] = useState("답변을 작성중입니다...");
+    const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -46,8 +48,33 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
         }
     }, [messages, isOpen]);
 
-    const handleSendMessage = () => {
+    // API 호출 함수
+    const fetchBotResponse = async (userInput: string): Promise<string> => {
+        try {
+            const response = await fetch("http://localhost:8088/MV/api/chat/message", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ message: userInput }),
+            });
+
+            if (!response.ok) {
+                throw new Error("서버 응답 오류");
+            }
+
+            const data = await response.json();
+            return data.message || "⚠️ 응답이 비어 있습니다.";
+        } catch (error) {
+            console.error("❌ 오류:", error);
+            return "⚠️ 서버와의 연결에 실패했습니다.";
+        }
+    };
+
+    // 메시지 전송 함수
+    const handleSendMessage = async () => {
         if (!inputValue.trim()) return;
+
         const userMessage: Message = {
             id: Date.now().toString(),
             text: inputValue,
@@ -56,29 +83,29 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
         };
         setMessages((prev) => [...prev, userMessage]);
         setInputValue("");
-        setIsTyping(true); // ✅ 시작
+        setIsTyping(true);
+        setTypingMessage("답변을 작성중입니다...");
 
-        setTimeout(() => {
-            const botMessage: Message = {
-                id: (Date.now() + 1).toString(),
-                text: getBotResponse(inputValue),
-                sender: "bot",
-                timestamp: new Date(),
-            };
-            setMessages((prev) => [...prev, botMessage]);
-            setIsTyping(false); // ✅ 끝
-        }, 1000);
-    };
+        // 20초 뒤 안내 메시지 변경
+        if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+        typingTimeoutRef.current = setTimeout(() => {
+            setTypingMessage("데이터를 분석하는데 시간이 추가로 필요합니다. 조금만 기다려주세요...");
+        }, 20000);
 
-    const getBotResponse = (userInput: string): string => {
-        const input = userInput.toLowerCase();
-        if (input.includes("안녕") || input.includes("hello")) {
-            return "안녕하세요! 무엇을 도와드릴까요?";
-        } else if (input.includes("도움") || input.includes("help")) {
-            return "MidoriView는 데이터 시각화 및 분석 플랫폼입니다. 그래프, 순위 페이지에서 무역 데이터를 확인할 수 있습니다.";
-        } else {
-            return "죄송합니다. 잘 이해하지 못했습니다. 다시 말씀해주시거나 '도움'이라고 입력해주세요.";
-        }
+        const aiReply = await fetchBotResponse(userMessage.text);
+
+        const botMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            text: aiReply,
+            sender: "bot",
+            timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, botMessage]);
+        setIsTyping(false);
+
+        // 타이머 초기화
+        if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+        setTypingMessage("답변을 작성중입니다...");
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -133,26 +160,28 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
                                 <Bot className="h-4 w-4 text-white" />
                             )}
                         </div>
+
                         <div
                             className={`max-w-[70%] p-3 rounded-lg text-sm ${
                                 message.sender === "user"
                                     ? "bg-blue-500 text-white rounded-br-none"
                                     : "bg-gray-100 text-gray-900 rounded-bl-none"
                             }`}
+                            style={{ whiteSpace: "pre-wrap" }}
                         >
                             {message.text}
                         </div>
                     </div>
                 ))}
 
-                {/* ✅ 답변중... 메시지 */}
+                {/* 답변 작성중 메시지 */}
                 {isTyping && (
                     <div className="flex items-start gap-2 flex-row">
                         <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center bg-[#9AD970]">
                             <Bot className="h-4 w-4 text-white" />
                         </div>
-                        <div className="max-w-[70%] p-3 rounded-lg text-sm bg-gray-100 text-gray-900 rounded-bl-none italic">
-                            답변중...
+                        <div className="max-w-[70%] p-3 rounded-lg text-sm bg-gray-100 text-gray-900 rounded-bl-none italic animate-pulse">
+                            {typingMessage}
                         </div>
                     </div>
                 )}
@@ -170,10 +199,11 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
                         onKeyPress={handleKeyPress}
                         placeholder="메시지를 입력하세요..."
                         className="flex-1 text-sm"
+                        disabled={isTyping}
                     />
                     <Button
                         onClick={handleSendMessage}
-                        disabled={!inputValue.trim()}
+                        disabled={!inputValue.trim() || isTyping}
                         size="icon"
                         className="bg-[#9AD970] hover:bg-[#8BC766] flex-shrink-0"
                     >

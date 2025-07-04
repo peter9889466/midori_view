@@ -39,26 +39,31 @@ export const fetchTradeDataByHsCode = async (hsCodeParam: string, country: strin
 
         const transformedData: ApiTradeData[] = [];
         
-        extractedDataArray.forEach((item: any, index: number) => {
+        // 제품별로 그룹화하여 순서대로 월 할당
+        const productGroups: { [key: string]: any[] } = {};
+        
+        extractedDataArray.forEach((item: any) => {
             const trimmedItemStatKor = String(item.statKor || '').trim();
             const trimmedApiStatKorName = String(productInfo.statKorName || '').trim();
 
             if (item.statKor && item.statKor !== '-' && item.statKor !== '총계' && 
                 (productInfo.statKorName ? trimmedItemStatKor === trimmedApiStatKorName : true)) {
                 
-                let monthExtracted = index + 1;
-                if (item.year) {
-                    const yearStr = String(item.year);
-                    const dotIndex = yearStr.indexOf('.');
-                    if (dotIndex !== -1 && dotIndex < yearStr.length - 1) {
-                        monthExtracted = parseInt(yearStr.slice(dotIndex + 1), 10);
-                    }
+                if (!productGroups[item.statKor]) {
+                    productGroups[item.statKor] = [];
                 }
+                productGroups[item.statKor].push(item);
+            }
+        });
+        
+        // 각 제품별로 월 순서대로 처리
+        Object.keys(productGroups).forEach(productKey => {
+            const items = productGroups[productKey];
+            
+            items.forEach((item: any, index: number) => {
+                // 순서대로 월 할당 (1월부터 12월까지)
+                const monthExtracted = index + 1;
                 
-                if (isNaN(monthExtracted) || monthExtracted < 1 || monthExtracted > 12) {
-                    monthExtracted = index + 1;
-                }
-
                 transformedData.push({
                     month: monthExtracted,
                     exportValue: parseFloat(item.expDlr?.toString() || '0'),
@@ -68,7 +73,7 @@ export const fetchTradeDataByHsCode = async (hsCodeParam: string, country: strin
                     country: country,
                     product: productInfo.statKorName || hsCodeParam
                 });
-            }
+            });
         });
         
         return transformedData;
@@ -76,4 +81,4 @@ export const fetchTradeDataByHsCode = async (hsCodeParam: string, country: strin
         console.error('API 호출 에러:', error);
         throw error;
     }
-}; 
+};

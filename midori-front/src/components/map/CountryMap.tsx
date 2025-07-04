@@ -22,7 +22,7 @@ const CountryMap = ({ allowedCountries, selectedCountryName, onCountrySelect }: 
 
     // ---  디버깅 1: 선택된 국가가 바뀔 때마다 로그 출력 ---
     useEffect(() => {
-        console.log("✅ [상태 변경] 선택된 국가:", selectedCountry?.properties?.name_ko || "없음");
+        
     }, [selectedCountry]);
 
     // 외부에서 선택된 국가명 변경 시 내부 상태도 동기화 (name_ko 기준)
@@ -38,7 +38,7 @@ const CountryMap = ({ allowedCountries, selectedCountryName, onCountrySelect }: 
     }, [selectedCountryName, geoData]);
 
     useEffect(() => {
-        console.log("... 1. GeoJSON 데이터 로딩 시도 ...");
+        
         fetch('/countries.geo.json')
             .then((res) => {
                 if (!res.ok) {
@@ -47,11 +47,11 @@ const CountryMap = ({ allowedCountries, selectedCountryName, onCountrySelect }: 
                 return res.json();
             })
             .then((data: FeatureCollection) => {
-                console.log("✅ 2. GeoJSON 데이터 로딩 성공!", data);
+                
                 setGeoData(data);
                 // 1. GeoJSON의 모든 국가명(admin) 리스트 출력
                 const geoAdminList = data.features.map(f => f.properties?.admin);
-                console.log('[GeoJSON 국가명(admin) 전체]', geoAdminList);
+                
                 // 3. 매핑 테이블 예시(실제 프로젝트에서는 수동으로 보정 필요)
                 // const countryNameMap = { "미국": "United States of America", ... };
             })
@@ -111,7 +111,7 @@ const CountryMap = ({ allowedCountries, selectedCountryName, onCountrySelect }: 
                     const bounds = geoLayer.getBounds();
                     center = [bounds.getCenter().lat, bounds.getCenter().lng];
                 } catch (e) { }
-                console.log(`[국가 클릭]`, nameKo, '좌표:', center);
+                
                 setSelectedCountry((prev: SelectedCountry) =>
                     prev?.properties?.name_ko === nameKo ? null : feature
                 );

@@ -2,9 +2,9 @@ import { BarChart3, LineChart as LineChartIcon, Layers } from "lucide-react";
 import type { ChartType, HsCodeInfo } from "../types/types";
 
 export const chartTypes: ChartType[] = [
-    { id: "bar", icon: BarChart3, label: "Bar" },
-    { id: "line", icon: LineChartIcon, label: "Line" },
-    { id: "combined", icon: Layers, label: "Combined" },
+    { id: "bar", icon: BarChart3, label: "막대" },
+    { id: "line", icon: LineChartIcon, label: "선형" },
+    { id: "combined", icon: Layers, label: "혼합" },
 ];
 
 export const DEFAULT_COUNTRIES = ['미국', '중국', '일본', '베트남', '영국', '독일', '프랑스', '인도', '대만', '태국', '호주'];
@@ -72,6 +72,25 @@ export const mixedChartOptions = {
     ...chartOptions,
     plugins: {
         ...chartOptions.plugins,
-        title: { display: true, text: '월별 수출입액 (혼합)' },
+        title: { display: true, text: '월별 수출입액 및 전년대비증감률' },
+    },
+    scales: {
+        x: { grid: { display: false } },
+        y: { 
+            type: 'linear' as const,
+            display: true,
+            position: 'left' as const,
+            beginAtZero: true,
+            title: { display: true, text: '금액 ($)' },
+            grid: { drawOnChartArea: true },
+        },
+        y1: {
+            type: 'linear' as const,
+            display: true,
+            position: 'right' as const,
+            beginAtZero: false,
+            title: { display: true, text: '증감률 (%)' },
+            grid: { drawOnChartArea: false },
+        },
     },
 }; 

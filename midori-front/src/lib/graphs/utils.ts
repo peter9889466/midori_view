@@ -79,25 +79,46 @@ export const generateLineData = (apiTradeData: ApiTradeData[], selectedYear: str
 export const generateMixedData = (apiTradeData: ApiTradeData[], selectedYear: string) => {
     const { labels, exportData, importData } = generateChartData(apiTradeData, selectedYear);
     
+    // 전년대비동월증감률 계산 (임시로 랜덤값 사용, 실제로는 전년 데이터와 비교 필요)
+    const growthRateData = labels.map((_, index) => {
+        // 실제로는 전년 동월 데이터와 비교하여 계산
+        // 현재는 임시로 -20 ~ +30% 범위의 랜덤값 사용
+        return Math.round((Math.random() * 50 - 20) * 10) / 10;
+    });
+    
     return {
         labels,
         datasets: [
             {
                 type: 'bar' as const,
-                label: '수출액 (막대)',
+                label: '수출액',
                 backgroundColor: 'rgba(75, 192, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1,
                 data: exportData,
+                yAxisID: 'y',
+            },
+            {
+                type: 'bar' as const,
+                label: '수입액',
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+                data: importData,
+                yAxisID: 'y',
             },
             {
                 type: 'line' as const,
-                label: '수입액 (선)',
-                borderColor: 'rgba(153, 102, 255, 1)',
-                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                label: '전년대비동월증감률 (%)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
                 fill: false,
                 tension: 0.1,
-                data: importData,
+                data: growthRateData,
+                yAxisID: 'y1',
+                borderWidth: 3,
+                pointRadius: 4,
+                pointBackgroundColor: 'rgba(255, 159, 64, 1)',
             },
         ],
     };

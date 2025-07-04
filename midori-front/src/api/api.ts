@@ -37,34 +37,47 @@ export const fetchTradeDataByHsCode = async (hsCodeParam: string, country: strin
             extractedDataArray = responseData.item;
         }
 
-        const transformedData: ApiTradeData[] = [];
-        
-        // 제품별로 그룹화하여 순서대로 월 할당
-        const productGroups: { [key: string]: any[] } = {};
-        
-        extractedDataArray.forEach((item: any) => {
+        // 유효한 데이터만 필터링
+        const validItems = extractedDataArray.filter((item: any) => {
             const trimmedItemStatKor = String(item.statKor || '').trim();
             const trimmedApiStatKorName = String(productInfo.statKorName || '').trim();
 
-            if (item.statKor && item.statKor !== '-' && item.statKor !== '총계' && 
-                (productInfo.statKorName ? trimmedItemStatKor === trimmedApiStatKorName : true)) {
-                
-                if (!productGroups[item.statKor]) {
-                    productGroups[item.statKor] = [];
-                }
-                productGroups[item.statKor].push(item);
-            }
+            return item.statKor && item.statKor !== '-' && item.statKor !== '총계' && 
+                   (productInfo.statKorName ? trimmedItemStatKor === trimmedApiStatKorName : true);
         });
-        
-        // 각 제품별로 월 순서대로 처리
-        Object.keys(productGroups).forEach(productKey => {
-            const items = productGroups[productKey];
-            
-            items.forEach((item: any, index: number) => {
-                // 순서대로 월 할당 (1월부터 12월까지)
-                const monthExtracted = index + 1;
-                
-                transformedData.push({
+
+        // 월별로 그룹화 (같은 월의 여러 제품 데이터를 합치기)
+        const monthlyData: { [key: number]: any } = {};
+
+        validItems.forEach((item: any) => {
+            // year 필드에서 월 추출
+            let monthExtracted = 1;
+            if (item.year) {
+                const yearStr = String(item.year);
+                const dotIndex = yearStr.indexOf('.');
+                if (dotIndex !== -1 && dotIndex < yearStr.length - 1) {
+                    const monthStr = yearStr.slice(dotIndex + 1);
+                    let parsedMonth = parseInt(monthStr, 10);
+                    
+                    // 한 자리 숫자이면서 실제로는 10, 11, 12월인 경우 처리
+                    // (데이터 순서를 보고 판단 - 이 부분은 실제 데이터에 따라 조정 필요)
+                    if (monthStr.length === 1 && parsedMonth >= 1 && parsedMonth <= 3) {
+                        // 10, 11, 12월 처리 로직이 필요하다면 여기에 추가
+                        // 예: 순서상 10월 이후라면 parsedMonth += 9
+                    }
+                    
+                    if (!isNaN(parsedMonth) && parsedMonth >= 1 && parsedMonth <= 12) {
+                        monthExtracted = parsedMonth;
+                    }
+                }
+            }
+
+            // 해당 월의 데이터가 이미 있으면 누적, 없으면 새로 생성
+            if (monthlyData[monthExtracted]) {
+                monthlyData[monthExtracted].exportValue += parseFloat(item.expDlr?.toString() || '0');
+                monthlyData[monthExtracted].importValue += parseFloat(item.impDlr?.toString() || '0');
+            } else {
+                monthlyData[monthExtracted] = {
                     month: monthExtracted,
                     exportValue: parseFloat(item.expDlr?.toString() || '0'),
                     importValue: parseFloat(item.impDlr?.toString() || '0'),
@@ -72,9 +85,12 @@ export const fetchTradeDataByHsCode = async (hsCodeParam: string, country: strin
                     year: parseInt(year),
                     country: country,
                     product: productInfo.statKorName || hsCodeParam
-                });
-            });
+                };
+            }
         });
+
+        // 월별 데이터를 배열로 변환하고 정렬
+        const transformedData: ApiTradeData[] = Object.values(monthlyData).sort((a, b) => a.month - b.month);
         
         return transformedData;
     } catch (error) {

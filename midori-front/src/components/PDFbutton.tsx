@@ -1,6 +1,5 @@
 import React from 'react';
 import { Download } from 'lucide-react';
-// import { useCookies } from 'react-cookie'; // 예시: 쿠키 사용 시
 
 // TypeScript 인터페이스 정의
 interface PDFExportOptions {
@@ -11,7 +10,7 @@ interface PDFExportOptions {
     includeMetadata: boolean;
 }
 
-// 1. 간단한 PDF 버튼 컴포넌트
+// 1. 간단한 PDF 버튼 컴포넌트 (원래 구조 유지)
 const SimplePDFButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     return (
         <button
@@ -27,4 +26,4 @@ const SimplePDFButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     );
 };
 
-export default SimplePDFButton; 
+export default SimplePDFButton;

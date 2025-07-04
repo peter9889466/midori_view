@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import MixedChart from '../../chart/MixedChart';
 import BarChart from '../../chart/BarChart';
 import LineChart from '../../chart/LineChart';
@@ -30,6 +31,8 @@ export default function ChartSection({
     apiTradeData,
     hsCode
 }: ChartSectionProps) {
+    const chartRef = useRef<HTMLDivElement>(null);
+    
     const apiExportTotal = apiTradeData.reduce((sum, item) => sum + item.exportValue, 0);
     const apiImportTotal = apiTradeData.reduce((sum, item) => sum + item.importValue, 0);
     const totalTradeAmount = apiExportTotal + apiImportTotal;
@@ -63,10 +66,14 @@ export default function ChartSection({
                         totalTradeAmount={totalTradeAmount}
                         dataLength={dataLength}
                         selectedYear={selectedYear}
+                        selectedCountry={selectedCountry}  // 추가
+                        apiTradeData={apiTradeData}        // 추가
+                        chartRef={chartRef}                // 차트 참조 전달
+                        selectedChart={selectedChart}      // 차트 타입 전달
                     />
                     
                     <div className="w-3/4 min-w-0 flex-1">
-                        <div className="relative w-full h-[400px]">
+                        <div ref={chartRef} className="relative w-full h-[400px]">
                             {selectedChart === "bar" && (
                                 <BarChart
                                     className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
@@ -94,4 +101,4 @@ export default function ChartSection({
             </div>
         </div>
     );
-} 
+}

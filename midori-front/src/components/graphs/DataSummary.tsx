@@ -1,5 +1,5 @@
 import SimplePDFButton from "../PDFbutton";
-import { formatNumber } from "../../pages/graphs/utils";
+import { formatNumber } from "../../lib/graphs/utils";
 import { productDescriptions, hsCodeMap } from "../../data/constants";
 
 interface DataSummaryProps {

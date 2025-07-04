@@ -2,8 +2,8 @@ import MixedChart from '../../chart/MixedChart';
 import BarChart from '../../chart/BarChart';
 import LineChart from '../../chart/LineChart';
 import { chartOptions, mixedChartOptions } from "../../data/constants";
-import { generateBarData, generateLineData, generateMixedData } from "../../pages/graphs/utils";
-import type { ApiTradeData } from "../../pages/graphs/types";
+import { generateBarData, generateLineData, generateMixedData } from "../../lib/graphs/utils";
+import type { ApiTradeData } from "../../types/types";
 import ChartControls from "./ChartControls";
 import DataSummary from "./DataSummary";
 

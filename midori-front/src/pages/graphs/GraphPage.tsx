@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { fetchTradeDataByHsCode } from "./api";
-import type { ApiTradeData } from "./types";
+import { fetchTradeDataByHsCode } from "../../api/api";
+import type { ApiTradeData } from "../../types/types";
 import { 
     CountryMapSection, 
     ChartSection, 

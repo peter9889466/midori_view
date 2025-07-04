@@ -1,4 +1,4 @@
-import type { ApiTradeData } from "./types";
+import type { ApiTradeData } from "../../types/types";
 
 export const formatNumber = (num: number): string => num.toLocaleString();
 

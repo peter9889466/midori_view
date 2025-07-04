@@ -1,5 +1,5 @@
 import { BarChart3, LineChart as LineChartIcon, Layers } from "lucide-react";
-import type { ChartType, HsCodeInfo } from "../pages/graphs/types";
+import type { ChartType, HsCodeInfo } from "../types/types";
 
 export const chartTypes: ChartType[] = [
     { id: "bar", icon: BarChart3, label: "Bar" },

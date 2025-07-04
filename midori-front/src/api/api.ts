@@ -1,6 +1,6 @@
 import axios from 'axios';
-import type { ApiTradeData } from "./types";
-import { countryCodeMap, hsCodeMap } from "../../data/constants";
+import type { ApiTradeData } from "../types/types";
+import { countryCodeMap, hsCodeMap } from "../data/constants";
 
 export const fetchTradeDataByHsCode = async (hsCodeParam: string, country: string, year: string): Promise<ApiTradeData[]> => {
     try {

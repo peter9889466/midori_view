@@ -82,7 +82,7 @@ export default function ChartSection({
                                 />
                             )}
                             {selectedChart === "combined" && (
-                                <MixedChart
+                                <MixedChart 
                                     className="absolute inset-0 w-full h-full bg-gray-50 rounded-lg border-2 border-dashed border-gray-200"
                                     data={generateMixedData(apiTradeData, selectedYear)}
                                     options={mixedChartOptions}

@@ -17,7 +17,7 @@ export default function DataSummary({
     apiImportTotal,
     totalTradeAmount,
     dataLength,
-    selectedYear
+    selectedYear 
 }: DataSummaryProps) {
     const currentProductInfo = Object.values(hsCodeMap).find(item => item.code === hsCode);
     const displayProductName = currentProductInfo?.statKorName || 

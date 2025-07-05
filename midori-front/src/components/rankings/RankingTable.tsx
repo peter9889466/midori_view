@@ -156,7 +156,7 @@ const RankingTable: React.FC<RankingTableProps> = ({
                                     백엔드 API에서 데이터를 가져오는 중입니다
                                 </div>
                                 <div className="text-gray-500 text-sm">
-                                    백엔드 서버가 실행 중인지 확인해주세요: http://localhost:3001
+                                    백엔드 서버가 실행 중인지 확인해주세요: http://49.50.134.156:3001
                                 </div>
                             </div>
                         ) : (

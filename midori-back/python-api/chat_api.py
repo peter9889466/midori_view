@@ -24,7 +24,7 @@ app = FastAPI(title="GPT-4o mini CSV ChatBot", version="3.0.0")
 # CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8088", "http://localhost:5173"],
+    allow_origins=["http://49.50.134.156:8088", "http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -13,7 +13,7 @@ export default defineConfig({
     server: {
         proxy: {
             '/MV/api': {
-            target: 'http://localhost:8088',
+            target: 'http://49.50.134.156:8088',
             changeOrigin: true,
             },
         },

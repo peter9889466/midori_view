@@ -52,7 +52,7 @@ export function ChatbotWindow({ isOpen, onClose }: ChatbotWindowProps) {
     // API 호출 함수
     const fetchBotResponse = async (userInput: string): Promise<string> => {
         try {
-            const response = await fetch("http://localhost:8088/MV/api/chat/message", {
+            const response = await fetch("http://49.50.134.156:8088/MV/api/chat/message", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

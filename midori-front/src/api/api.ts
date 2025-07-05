@@ -12,7 +12,7 @@ export const fetchTradeDataByHsCode = async (hsCodeParam: string, country: strin
             return [];
         }
 
-        const response = await axios.get('http://localhost:8088/MV/api/data', {
+        const response = await axios.get('http://49.50.134.156:8088/MV/api/data', {
             params: {
                 start: `${year}01`,
                 end: `${year}12`,

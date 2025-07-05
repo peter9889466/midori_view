@@ -30,7 +30,7 @@ export default function RankingsPage() {
         try {
             setApiStatus(`🔄 ${yearMonth} 데이터 요청 중...`);
 
-            const apiResponse = await fetch('http://localhost:3001/api/trade/bulk', {
+            const apiResponse = await fetch('http://49.50.134.156:3001/api/trade/bulk', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

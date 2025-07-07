@@ -13,7 +13,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                     "http://49.50.134.156:5173",
                     "http://49.50.134.156:5174",
-                    "http://49.50.134.156:3000"
+                    "http://49.50.134.156:3000",
+                    "http://49.50.134.156:8000"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")

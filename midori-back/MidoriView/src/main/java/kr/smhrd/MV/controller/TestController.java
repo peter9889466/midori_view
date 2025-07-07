@@ -26,7 +26,7 @@ public class TestController {
         Map<String, Object> status = new HashMap<>();
         status.put("server", "Spring Boot");
         status.put("port", 8088);
-        status.put("python_api_url", "http://localhost:8000");
+        status.put("python_api_url", "http://49.50.134.156:8000");
         status.put("status", "running");
         status.put("timestamp", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         

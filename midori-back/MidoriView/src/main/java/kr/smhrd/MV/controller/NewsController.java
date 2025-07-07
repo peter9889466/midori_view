@@ -8,7 +8,7 @@ import kr.smhrd.MV.service.NewsService;
 
 @RestController
 @RequestMapping("/api/news")
-@CrossOrigin(origins = "http://localhost:5173") // 프론트엔드 포트 맞게
+@CrossOrigin(origins = "http://49.50.134.156:5173") // 프론트엔드 포트 맞게
 public class NewsController {
 
     @Autowired

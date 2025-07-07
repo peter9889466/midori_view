@@ -8,7 +8,7 @@ const PORT = 3001;
 
 // CORS 설정 수정 - 여러 포트 허용
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
+  origin: ['http://49.50.134.156:5173', 'http://49.50.134.156:5174', 'http://49.50.134.156:3000'],
   credentials: true
 }));
 app.use(express.json());
@@ -79,9 +79,9 @@ const parser = new xml2js.Parser();
 // ranking.json 데이터를 가져오는 함수 - 유연한 URL 처리
 const getEcoData = async () => {
   const urls = [
-    'http://localhost:5173/ranking.json',
-    'http://localhost:5174/ranking.json',
-    'http://localhost:3000/ranking.json'
+    'http://49.50.134.156:5173/ranking.json',
+    'http://49.50.134.156:5174/ranking.json',
+    'http://49.50.134.156:3000/ranking.json'
   ];
 
   for (const url of urls) {
@@ -119,7 +119,7 @@ app.get('/api/status', async (req, res) => {
       timestamp: new Date().toISOString(),
       fetchAvailable: !!fetch,
       apiConfigured: !!API_CONFIG.serviceKey,
-      corsEnabled: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'],
+      corsEnabled: ['http://49.50.134.156:5173', 'http://49.50.134.156:5174', 'http://49.50.134.156:3000'],
       database: {
         connected: !!connection,
         totalRecords: totalRecords,
@@ -660,9 +660,9 @@ const startServer = async () => {
   app.listen(PORT, () => {
     console.log('\n🎉==================================🎉');
     console.log('🐬 MySQL DB 연동 백엔드 서버 시작!');
-    console.log(`📡 서버 주소: http://localhost:${PORT}`);
+    console.log(`📡 서버 주소: http://49.50.134.156:${PORT}`);
     console.log(`🗄️ 데이터베이스: ${dbConfig.database}@${dbConfig.host}:${dbConfig.port}`);
-    console.log(`🌐 CORS 허용: http://localhost:5173, http://localhost:5174, http://localhost:3000`);
+    console.log(`🌐 CORS 허용: http://49.50.134.156:5173, http://49.50.134.156:5174, http://49.50.134.156:3000`);
     console.log('📊 API 엔드포인트:');
     console.log(`   - GET  /api/status`);
     console.log(`   - POST /api/trade/bulk`);

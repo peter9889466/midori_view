@@ -19,7 +19,9 @@ export default function DataSummary({
     apiImportTotal,
     totalTradeAmount,
     dataLength,
-    selectedYear}: DataSummaryProps) {
+    selectedYear,
+    selectedCountry,
+    apiTradeData}: DataSummaryProps) {
     const [] = useState(false);
 
     const currentProductInfo = Object.values(hsCodeMap).find(item => item.code === hsCode);
@@ -40,10 +42,7 @@ export default function DataSummary({
                 <div className="flex flex-col space-y-3">
                     {/* 헤더 섹션 */}
                     <div className="pb-3 border-b border-gray-100">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2 leading-tight">{displayProductName}</h3>
-                        <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#9AD970]/10 text-[#9AD970] text-xs font-medium">
-                            총 수출입
-                        </div>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2 leading-tight truncate min-w-0 max-w-[70%]">{displayProductName}</h3>
                     </div>
 
                     {/* 메인 수치 */}
@@ -78,7 +77,7 @@ export default function DataSummary({
 
                     {/* 제품 설명 */}
                     <div className="flex-1 pt-1 min-h-0">
-                        <p className="text-xs text-gray-600 leading-relaxed line-clamp-3 overflow-hidden">
+                        <p className="text-xs text-gray-600 leading-relaxed line-clamp-3 overflow-hidden max-w-full break-words">
                             {productDescription}
                         </p>
                     </div>

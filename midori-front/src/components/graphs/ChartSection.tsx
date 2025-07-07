@@ -66,11 +66,11 @@ export default function ChartSection({
         }
 
         const currentProductInfo = Object.values(hsCodeMap).find(item => item.code === code);
-        const displayProductName = currentProductInfo?.statKorName || 
-            Object.keys(hsCodeMap).find(key => hsCodeMap[key].code === code) || 
+        const displayProductName = currentProductInfo?.statKorName ||
+            Object.keys(hsCodeMap).find(key => hsCodeMap[key].code === code) ||
             (code ? `HS코드 ${code}` : "품목");
-        const productDescription = productDescriptions[Object.keys(hsCodeMap).find(key => hsCodeMap[key].code === code) || ''] || 
-            productDescriptions[code || ''] || 
+        const productDescription = productDescriptions[Object.keys(hsCodeMap).find(key => hsCodeMap[key].code === code) || ''] ||
+            productDescriptions[code || ''] ||
             `${displayProductName}의 무역 데이터를 분석하고 있습니다.`;
         const 기간표현 = `${year}년 1월~${len}월 누적`;
         const tradeBalance = exportTotal - importTotal;
@@ -163,15 +163,15 @@ export default function ChartSection({
                     </thead>
                     <tbody>
                         ${data.slice(0, len).map((item, index) => {
-                            const exportValue = item.exportValue || 0;
-                            const importValue = item.importValue || 0;
-                            const monthBalance = exportValue - importValue;
-                            
-                            const prevYearItemForMonth = prevData.find(prev => prev.month === item.month) || { exportValue: 0, importValue: 0 };
-                            
-                            const importGrowthRate = calculateGrowthRate(importValue, prevYearItemForMonth.importValue);
-                            
-                            return `
+            const exportValue = item.exportValue || 0;
+            const importValue = item.importValue || 0;
+            const monthBalance = exportValue - importValue;
+
+            const prevYearItemForMonth = prevData.find(prev => prev.month === item.month) || { exportValue: 0, importValue: 0 };
+
+            const importGrowthRate = calculateGrowthRate(importValue, prevYearItemForMonth.importValue);
+
+            return `
                                 <tr>
                                     <td>${item.month || (index + 1)}월</td>
                                     <td style="color: #1565c0; font-weight: bold;">${formatNumber(exportValue)}</td>
@@ -182,7 +182,7 @@ export default function ChartSection({
                                     </td>
                                 </tr>
                             `;
-                        }).join('')}
+        }).join('')}
                     </tbody>
                 </table>
 
@@ -237,7 +237,7 @@ export default function ChartSection({
         <div className="rounded-2xl bg-white w-full p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
             <div>
                 <div className="text-base font-semibold mb-4">그래프</div>
-                <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6 w-full">
+                <div className="flex flex-wrap items-center gap-2 mb-6">
                     <ChartControls
                         selectedChart={selectedChart}
                         setSelectedChart={setSelectedChart}
@@ -250,18 +250,15 @@ export default function ChartSection({
                         setSelectedYear={setSelectedYear}
                         years={years}
                     />
-                    <div className="w-full md:w-auto mt-2 md:mt-0 flex md:justify-end justify-start order-last md:order-none">
-                        <SimplePDFButton onClick={handlePDFDownload} />
-                        {isGeneratingPDF && (
-                            <div className="text-xs text-[#9AD970] ml-2 flex items-center gap-2">
-                                <div className="w-3 h-3 border-2 border-[#9AD970] border-t-transparent rounded-full animate-spin"></div>
-                                PDF 생성 중...
-                            </div>
-                        )}
-                    </div>
+                    <SimplePDFButton onClick={handlePDFDownload} className="my-auto" />
+                    {isGeneratingPDF && (
+                        <div className="text-xs text-[#9AD970] ml-2 flex items-center gap-2">
+                            <div className="w-3 h-3 border-2 border-[#9AD970] border-t-transparent rounded-full animate-spin"></div>
+                            PDF 생성 중...
+                        </div>
+                    )}
                 </div>
-
-                <div className="flex items-start gap-6">
+                <div className="flex flex-col lg:flex-row items-start gap-6">
                     <DataSummary
                         hsCode={hsCode}
                         apiExportTotal={apiExportTotal}
@@ -272,8 +269,8 @@ export default function ChartSection({
                         selectedCountry={selectedCountry}
                         apiTradeData={apiTradeData}
                     />
-                    
-                    <div className="w-3/4 min-w-0 flex-1">
+
+                    <div className="w-full lg:w-3/4 min-w-0 flex-1">
                         <div className="relative w-full h-[400px] rounded-xl ">
                             {selectedChart === "bar" && (
                                 <BarChart
@@ -282,14 +279,14 @@ export default function ChartSection({
                                     options={chartOptions}
                                 />
                             )}
-                            {selectedChart === "line" && (         <LineChart
-                                    className="absolute inset-0 w-full h-full bg-[#e9ecef]  rounded-xl"
-                                    data={generateLineData(apiTradeData, selectedYear)}
-                                    options={chartOptions}
-                                />
+                            {selectedChart === "line" && (<LineChart
+                                className="absolute inset-0 w-full h-full bg-[#e9ecef]  rounded-xl"
+                                data={generateLineData(apiTradeData, selectedYear)}
+                                options={chartOptions}
+                            />
                             )}
                             {selectedChart === "combined" && (
-                                <MixedChart 
+                                <MixedChart
                                     className="absolute inset-0 w-full h-full bg-[#e9ecef]  rounded-xl"
                                     data={generateMixedData(apiTradeData, selectedYear, prevYearData)}
                                     options={mixedChartOptions}

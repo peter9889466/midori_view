@@ -30,6 +30,10 @@ export const hsCodeMap: { [key: string]: HsCodeInfo } = {
     '태양광 패널': { code: '854140', statKorName: undefined },
     '전기자동차': { code: '870380', statKorName: undefined },
     '전기 이륜차': { code: '871160', statKorName: undefined },
+    'ESS배터리': { code: '8507603000', statKorName: '에너지 저장장치용' },
+    '기타배터리': { code: '8507609000', statKorName: '기타' },
+    '반도체': { code: '854211', statKorName: '반도체' },
+    '컴퓨터': { code: '847130', statKorName: '컴퓨터' },
 };
 
 // 제품 설명 데이터

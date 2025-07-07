@@ -2,6 +2,41 @@ import axios from 'axios';
 import type { ApiTradeData } from "../types/types";
 import { countryCodeMap, hsCodeMap } from "../data/constants";
 
+// 환경별 API URL 설정
+const getApiUrls = () => {
+    if (process.env.NODE_ENV === 'development') {
+        // 개발환경: 외부 서버 우선, 실패시 로컬 서버
+        return [
+            'http://49.50.134.156:8088/MV/api/data',
+            'http://localhost:8088/MV/api/data'
+        ];
+    } else {
+        // 배포환경: 실제 서버만 사용
+        return ['http://49.50.134.156:8088/MV/api/data'];
+    }
+};
+
+// API 호출 시도 함수
+const tryApiCall = async (urls: string[], params: any): Promise<any> => {
+    for (const url of urls) {
+        try {
+            const response = await axios.get(url, {
+                params,
+                timeout: 5000, // 5초 타임아웃으로 빠른 전환
+            });
+            return response;
+        } catch (error) {
+            console.log(`${url} 연결 실패, 다음 서버 시도 중...`);
+            // 마지막 URL이 아니면 계속 시도
+            if (url !== urls[urls.length - 1]) {
+                continue;
+            }
+            // 모든 URL 실패시 에러 throw
+            throw error;
+        }
+    }
+};
+
 export const fetchTradeDataByHsCode = async (hsCodeParam: string, country: string, year: string): Promise<ApiTradeData[]> => {
     try {
         const countryCode = countryCodeMap[country] || 'US';
@@ -12,15 +47,15 @@ export const fetchTradeDataByHsCode = async (hsCodeParam: string, country: strin
             return [];
         }
 
-        const response = await axios.get('http://49.50.134.156:8088/MV/api/data', {
-            params: {
-                start: `${year}01`,
-                end: `${year}12`,
-                country: countryCode,
-                hs: productInfo.code
-            },
-            timeout: 10000,
-        });
+        const apiUrls = getApiUrls();
+        const params = {
+            start: `${year}01`,
+            end: `${year}12`,
+            country: countryCode,
+            hs: productInfo.code
+        };
+
+        const response = await tryApiCall(apiUrls, params);
         
         let responseData = response.data;
         if (typeof responseData === 'string') {
@@ -98,7 +133,7 @@ export const fetchTradeDataByHsCode = async (hsCodeParam: string, country: strin
         
         return transformedData;
     } catch (error) {
-        console.error('API 호출 에러:', error);
+        console.error('모든 API 서버 연결 실패:', error);
         throw error;
     }
 };

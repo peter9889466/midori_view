@@ -1,10 +1,10 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table";
-import type { SortField } from "../../types/rankings";
+import type { SortField, TradeData } from "../../types/rankings";
 
 interface RankingTableProps {
-    filteredData: any[];
+    filteredData: TradeData[];
     sortConfig: any;
     handleSort: (field: SortField) => void;
     formatCurrency: (amount: number) => string;
@@ -29,7 +29,7 @@ const RankingTable: React.FC<RankingTableProps> = ({
                     <div>
                         <CardTitle className="text-2xl font-bold mb-2">무역 품목별 순위</CardTitle>
                         <CardDescription className="text-green-100 text-base">
-                            실시간 API 데이터 기반 글로벌 무역 성과 분석 (단위: USD)
+                            글로벌 무역 성과 분석 대시보드 (단위: USD)
                         </CardDescription>
                     </div>
                     <div className="text-right">
@@ -144,20 +144,11 @@ const RankingTable: React.FC<RankingTableProps> = ({
                     </Table>
                 </div>
 
-                {/* Enhanced No Data Message */}
+                {/* 데이터 없을 때 메시지 */}
                 {filteredData.length === 0 && (
                     <div className="text-center py-16">
                         {tradeDataLength === 0 ? (
                             <div className="space-y-4">
-                                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-                                    <span className="text-2xl">📡</span>
-                                </div>
-                                <div className="text-gray-600 text-lg">
-                                    백엔드 API에서 데이터를 가져오는 중입니다
-                                </div>
-                                <div className="text-gray-500 text-sm">
-                                    백엔드 서버가 실행 중인지 확인해주세요: http://49.50.134.156:3001
-                                </div>
                             </div>
                         ) : (
                             <div className="space-y-4">
@@ -179,4 +170,4 @@ const RankingTable: React.FC<RankingTableProps> = ({
     );
 };
 
-export default RankingTable; 
+export default RankingTable;

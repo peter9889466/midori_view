@@ -1,0 +1,1102 @@
+[
+  {
+    "RANK_ID": "CN-850760-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "전기차용 리튬이온 배터리",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 11794883,
+    "IMPORT_VALUE": 262863758,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "US-850760-2025.01",
+    "RANK_COUNTRY": "미국",
+    "RANK_PRODUCT": "전기차용 리튬이온 배터리",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 177292158,
+    "IMPORT_VALUE": 2272374,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "CN-850440-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "전력 변환장치 (인버터)",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 9668120,
+    "IMPORT_VALUE": 99670908,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "DE-870380-2025.01",
+    "RANK_COUNTRY": "독일",
+    "RANK_PRODUCT": "전기자동차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 78536425,
+    "IMPORT_VALUE": 17339105,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "GB-870380-2025.01",
+    "RANK_COUNTRY": "영국",
+    "RANK_PRODUCT": "전기자동차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 87282595,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "CN-870380-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "전기자동차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 50000,
+    "IMPORT_VALUE": 66399295,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "US-870380-2025.01",
+    "RANK_COUNTRY": "미국",
+    "RANK_PRODUCT": "전기자동차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 51613720,
+    "IMPORT_VALUE": 3826749,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "DE-850440-2025.01",
+    "RANK_COUNTRY": "독일",
+    "RANK_PRODUCT": "전력 변환장치 (인버터)",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 1115493,
+    "IMPORT_VALUE": 47176215,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "US-850440-2025.01",
+    "RANK_COUNTRY": "미국",
+    "RANK_PRODUCT": "전력 변환장치 (인버터)",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 18333668,
+    "IMPORT_VALUE": 12619715,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "JP-850760-2025.01",
+    "RANK_COUNTRY": "일본",
+    "RANK_PRODUCT": "전기차용 리튬이온 배터리",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 24356824,
+    "IMPORT_VALUE": 603126,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "GB-850440-2025.01",
+    "RANK_COUNTRY": "영국",
+    "RANK_PRODUCT": "전력 변환장치 (인버터)",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 291072,
+    "IMPORT_VALUE": 22540990,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "FR-870380-2025.01",
+    "RANK_COUNTRY": "프랑스",
+    "RANK_PRODUCT": "전기자동차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 22644768,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "AU-870380-2025.01",
+    "RANK_COUNTRY": "호주",
+    "RANK_PRODUCT": "전기자동차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 21850548,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "VN-850440-2025.01",
+    "RANK_COUNTRY": "베트남",
+    "RANK_PRODUCT": "전력 변환장치 (인버터)",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 5529131,
+    "IMPORT_VALUE": 15964624,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "VN-850760-2025.01",
+    "RANK_COUNTRY": "베트남",
+    "RANK_PRODUCT": "전기차용 리튬이온 배터리",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 11382178,
+    "IMPORT_VALUE": 2647118,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "CN-392490-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "실리콘 식기/빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 87986,
+    "IMPORT_VALUE": 11268063,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "JP-850440-2025.01",
+    "RANK_COUNTRY": "일본",
+    "RANK_PRODUCT": "전력 변환장치 (인버터)",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 2327570,
+    "IMPORT_VALUE": 8321209,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "IN-870380-2025.01",
+    "RANK_COUNTRY": "인도",
+    "RANK_PRODUCT": "전기자동차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 9287484,
+    "IMPORT_VALUE": 166951,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "IN-850760-2025.01",
+    "RANK_COUNTRY": "인도",
+    "RANK_PRODUCT": "전기차용 리튬이온 배터리",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 9212010,
+    "IMPORT_VALUE": 19987,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "CN-340290-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "천연 성분 세제",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 5715086,
+    "IMPORT_VALUE": 2470792,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "TW-850440-2025.01",
+    "RANK_COUNTRY": "대만",
+    "RANK_PRODUCT": "전력 변환장치 (인버터)",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 1576749,
+    "IMPORT_VALUE": 3812665,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "IN-850440-2025.01",
+    "RANK_COUNTRY": "인도",
+    "RANK_PRODUCT": "전력 변환장치 (인버터)",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 1440811,
+    "IMPORT_VALUE": 3161582,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "TW-340290-2025.01",
+    "RANK_COUNTRY": "대만",
+    "RANK_PRODUCT": "천연 성분 세제",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 4304023,
+    "IMPORT_VALUE": 105915,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "CN-871160-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "전기 이륜차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 4388368,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "CN-482390-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "종이 빨대, 포장재",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 1001841,
+    "IMPORT_VALUE": 2463839,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "FR-850760-2025.01",
+    "RANK_COUNTRY": "프랑스",
+    "RANK_PRODUCT": "전기차용 리튬이온 배터리",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 3188481,
+    "IMPORT_VALUE": 241525,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "FR-850440-2025.01",
+    "RANK_COUNTRY": "프랑스",
+    "RANK_PRODUCT": "전력 변환장치 (인버터)",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 155847,
+    "IMPORT_VALUE": 3134881,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "CN-821599-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "금속 빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 6041,
+    "IMPORT_VALUE": 2859408,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "TH-870380-2025.01",
+    "RANK_COUNTRY": "태국",
+    "RANK_PRODUCT": "전기자동차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 2752904,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "JP-680610-2025.01",
+    "RANK_COUNTRY": "일본",
+    "RANK_PRODUCT": "슬래그 울, 단열재",
+    "RANK_CATEGORY": "친환경건축",
+    "EXPORT_VALUE": 240724,
+    "IMPORT_VALUE": 2450400,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "US-520100-2025.01",
+    "RANK_COUNTRY": "미국",
+    "RANK_PRODUCT": "유기농 면화",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 2124570,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "US-392490-2025.01",
+    "RANK_COUNTRY": "미국",
+    "RANK_PRODUCT": "실리콘 식기/빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 1977694,
+    "IMPORT_VALUE": 108207,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "DE-850760-2025.01",
+    "RANK_COUNTRY": "독일",
+    "RANK_PRODUCT": "전기차용 리튬이온 배터리",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 1463661,
+    "IMPORT_VALUE": 536531,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "TH-400110-2025.01",
+    "RANK_COUNTRY": "태국",
+    "RANK_PRODUCT": "천연 고무 라텍스",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 1887232,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "US-340290-2025.01",
+    "RANK_COUNTRY": "미국",
+    "RANK_PRODUCT": "천연 성분 세제",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 145924,
+    "IMPORT_VALUE": 1639880,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "JP-340290-2025.01",
+    "RANK_COUNTRY": "일본",
+    "RANK_PRODUCT": "천연 성분 세제",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 597289,
+    "IMPORT_VALUE": 1084020,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "VN-340290-2025.01",
+    "RANK_COUNTRY": "베트남",
+    "RANK_PRODUCT": "천연 성분 세제",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 1571098,
+    "IMPORT_VALUE": 41119,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "TH-850440-2025.01",
+    "RANK_COUNTRY": "태국",
+    "RANK_PRODUCT": "전력 변환장치 (인버터)",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 359966,
+    "IMPORT_VALUE": 971867,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "DE-340290-2025.01",
+    "RANK_COUNTRY": "독일",
+    "RANK_PRODUCT": "천연 성분 세제",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 8237,
+    "IMPORT_VALUE": 1281300,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "CN-680610-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "슬래그 울, 단열재",
+    "RANK_CATEGORY": "친환경건축",
+    "EXPORT_VALUE": 51724,
+    "IMPORT_VALUE": 866060,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "TH-850760-2025.01",
+    "RANK_COUNTRY": "태국",
+    "RANK_PRODUCT": "전기차용 리튬이온 배터리",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 840122,
+    "IMPORT_VALUE": 373,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "VN-392490-2025.01",
+    "RANK_COUNTRY": "베트남",
+    "RANK_PRODUCT": "실리콘 식기/빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 118483,
+    "IMPORT_VALUE": 653869,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "VN-310100-2025.01",
+    "RANK_COUNTRY": "베트남",
+    "RANK_PRODUCT": "천연 비료",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 688605,
+    "IMPORT_VALUE": 14,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "AU-850760-2025.01",
+    "RANK_COUNTRY": "호주",
+    "RANK_PRODUCT": "전기차용 리튬이온 배터리",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 621011,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "TW-870380-2025.01",
+    "RANK_COUNTRY": "대만",
+    "RANK_PRODUCT": "전기자동차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 602407,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "GB-680610-2025.01",
+    "RANK_COUNTRY": "영국",
+    "RANK_PRODUCT": "슬래그 울, 단열재",
+    "RANK_CATEGORY": "친환경건축",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 571858,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "JP-392490-2025.01",
+    "RANK_COUNTRY": "일본",
+    "RANK_PRODUCT": "실리콘 식기/빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 230674,
+    "IMPORT_VALUE": 316828,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "JP-482390-2025.01",
+    "RANK_COUNTRY": "일본",
+    "RANK_PRODUCT": "종이 빨대, 포장재",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 174826,
+    "IMPORT_VALUE": 291070,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "VN-680610-2025.01",
+    "RANK_COUNTRY": "베트남",
+    "RANK_PRODUCT": "슬래그 울, 단열재",
+    "RANK_CATEGORY": "친환경건축",
+    "EXPORT_VALUE": 443597,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "US-680610-2025.01",
+    "RANK_COUNTRY": "미국",
+    "RANK_PRODUCT": "슬래그 울, 단열재",
+    "RANK_CATEGORY": "친환경건축",
+    "EXPORT_VALUE": 167364,
+    "IMPORT_VALUE": 243375,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "FR-482390-2025.01",
+    "RANK_COUNTRY": "프랑스",
+    "RANK_PRODUCT": "종이 빨대, 포장재",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 355567,
+    "IMPORT_VALUE": 30738,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "US-482390-2025.01",
+    "RANK_COUNTRY": "미국",
+    "RANK_PRODUCT": "종이 빨대, 포장재",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 326614,
+    "IMPORT_VALUE": 51734,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "DE-392490-2025.01",
+    "RANK_COUNTRY": "독일",
+    "RANK_PRODUCT": "실리콘 식기/빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 126794,
+    "IMPORT_VALUE": 195366,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "JP-310100-2025.01",
+    "RANK_COUNTRY": "일본",
+    "RANK_PRODUCT": "천연 비료",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 262900,
+    "IMPORT_VALUE": 57898,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "TH-392490-2025.01",
+    "RANK_COUNTRY": "태국",
+    "RANK_PRODUCT": "실리콘 식기/빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 24186,
+    "IMPORT_VALUE": 294604,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "TW-392490-2025.01",
+    "RANK_COUNTRY": "대만",
+    "RANK_PRODUCT": "실리콘 식기/빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 273717,
+    "IMPORT_VALUE": 24022,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "TH-340290-2025.01",
+    "RANK_COUNTRY": "태국",
+    "RANK_PRODUCT": "천연 성분 세제",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 225664,
+    "IMPORT_VALUE": 56307,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "IN-680610-2025.01",
+    "RANK_COUNTRY": "인도",
+    "RANK_PRODUCT": "슬래그 울, 단열재",
+    "RANK_CATEGORY": "친환경건축",
+    "EXPORT_VALUE": 195856,
+    "IMPORT_VALUE": 85085,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "IN-482390-2025.01",
+    "RANK_COUNTRY": "인도",
+    "RANK_PRODUCT": "종이 빨대, 포장재",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 83666,
+    "IMPORT_VALUE": 195847,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "JP-821599-2025.01",
+    "RANK_COUNTRY": "일본",
+    "RANK_PRODUCT": "금속 빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 856,
+    "IMPORT_VALUE": 257964,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "VN-821599-2025.01",
+    "RANK_COUNTRY": "베트남",
+    "RANK_PRODUCT": "금속 빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 2483,
+    "IMPORT_VALUE": 251328,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "US-821599-2025.01",
+    "RANK_COUNTRY": "미국",
+    "RANK_PRODUCT": "금속 빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 241129,
+    "IMPORT_VALUE": 5735,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "DE-482390-2025.01",
+    "RANK_COUNTRY": "독일",
+    "RANK_PRODUCT": "종이 빨대, 포장재",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 8773,
+    "IMPORT_VALUE": 232464,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "TW-850760-2025.01",
+    "RANK_COUNTRY": "대만",
+    "RANK_PRODUCT": "전기차용 리튬이온 배터리",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 67936,
+    "IMPORT_VALUE": 149310,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "IN-392490-2025.01",
+    "RANK_COUNTRY": "인도",
+    "RANK_PRODUCT": "실리콘 식기/빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 40395,
+    "IMPORT_VALUE": 138484,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "IN-340290-2025.01",
+    "RANK_COUNTRY": "인도",
+    "RANK_PRODUCT": "천연 성분 세제",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 121196,
+    "IMPORT_VALUE": 51242,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "VN-482390-2025.01",
+    "RANK_COUNTRY": "베트남",
+    "RANK_PRODUCT": "종이 빨대, 포장재",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 131559,
+    "IMPORT_VALUE": 25093,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "FR-340290-2025.01",
+    "RANK_COUNTRY": "프랑스",
+    "RANK_PRODUCT": "천연 성분 세제",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 2007,
+    "IMPORT_VALUE": 137870,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "US-841919-2025.01",
+    "RANK_COUNTRY": "미국",
+    "RANK_PRODUCT": "태양열 집열기",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 116424,
+    "IMPORT_VALUE": 17374,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "TW-680610-2025.01",
+    "RANK_COUNTRY": "대만",
+    "RANK_PRODUCT": "슬래그 울, 단열재",
+    "RANK_CATEGORY": "친환경건축",
+    "EXPORT_VALUE": 91815,
+    "IMPORT_VALUE": 35723,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "AU-850440-2025.01",
+    "RANK_COUNTRY": "호주",
+    "RANK_PRODUCT": "전력 변환장치 (인버터)",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 115674,
+    "IMPORT_VALUE": 1469,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "AU-340290-2025.01",
+    "RANK_COUNTRY": "호주",
+    "RANK_PRODUCT": "천연 성분 세제",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 65153,
+    "IMPORT_VALUE": 47531,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "VN-400110-2025.01",
+    "RANK_COUNTRY": "베트남",
+    "RANK_PRODUCT": "천연 고무 라텍스",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 8337,
+    "IMPORT_VALUE": 96592,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "JP-870380-2025.01",
+    "RANK_COUNTRY": "일본",
+    "RANK_PRODUCT": "전기자동차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 102048,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "JP-520100-2025.01",
+    "RANK_COUNTRY": "일본",
+    "RANK_PRODUCT": "유기농 면화",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 95764,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "FR-821599-2025.01",
+    "RANK_COUNTRY": "프랑스",
+    "RANK_PRODUCT": "금속 빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 94614,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "VN-520100-2025.01",
+    "RANK_COUNTRY": "베트남",
+    "RANK_PRODUCT": "유기농 면화",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 88453,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "AU-392490-2025.01",
+    "RANK_COUNTRY": "호주",
+    "RANK_PRODUCT": "실리콘 식기/빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 79660,
+    "IMPORT_VALUE": 4385,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "FR-392490-2025.01",
+    "RANK_COUNTRY": "프랑스",
+    "RANK_PRODUCT": "실리콘 식기/빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 1948,
+    "IMPORT_VALUE": 73743,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "GB-340290-2025.01",
+    "RANK_COUNTRY": "영국",
+    "RANK_PRODUCT": "천연 성분 세제",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 1940,
+    "IMPORT_VALUE": 52032,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "AU-482390-2025.01",
+    "RANK_COUNTRY": "호주",
+    "RANK_PRODUCT": "종이 빨대, 포장재",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 49295,
+    "IMPORT_VALUE": 7,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "GB-850760-2025.01",
+    "RANK_COUNTRY": "영국",
+    "RANK_PRODUCT": "전기차용 리튬이온 배터리",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 33122,
+    "IMPORT_VALUE": 5739,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "TW-482390-2025.01",
+    "RANK_COUNTRY": "대만",
+    "RANK_PRODUCT": "종이 빨대, 포장재",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 29304,
+    "IMPORT_VALUE": 5144,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "CN-850231-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "풍력 터빈용 발전기",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 28174,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "CN-310100-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "천연 비료",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 24972,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "TW-841919-2025.01",
+    "RANK_COUNTRY": "대만",
+    "RANK_PRODUCT": "태양열 집열기",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 23770,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "AU-680610-2025.01",
+    "RANK_COUNTRY": "호주",
+    "RANK_PRODUCT": "슬래그 울, 단열재",
+    "RANK_CATEGORY": "친환경건축",
+    "EXPORT_VALUE": 22055,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "GB-392490-2025.01",
+    "RANK_COUNTRY": "영국",
+    "RANK_PRODUCT": "실리콘 식기/빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 18793,
+    "IMPORT_VALUE": 276,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "CN-841919-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "태양열 집열기",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 5740,
+    "IMPORT_VALUE": 12429,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "IN-310100-2025.01",
+    "RANK_COUNTRY": "인도",
+    "RANK_PRODUCT": "천연 비료",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 12061,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "VN-871160-2025.01",
+    "RANK_COUNTRY": "베트남",
+    "RANK_PRODUCT": "전기 이륜차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 7245,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "AU-821599-2025.01",
+    "RANK_COUNTRY": "호주",
+    "RANK_PRODUCT": "금속 빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 6450,
+    "IMPORT_VALUE": 282,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "JP-871160-2025.01",
+    "RANK_COUNTRY": "일본",
+    "RANK_PRODUCT": "전기 이륜차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 6622,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "TH-482390-2025.01",
+    "RANK_COUNTRY": "태국",
+    "RANK_PRODUCT": "종이 빨대, 포장재",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 6131,
+    "IMPORT_VALUE": 433,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "DE-821599-2025.01",
+    "RANK_COUNTRY": "독일",
+    "RANK_PRODUCT": "금속 빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 6159,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "CN-400110-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "천연 고무 라텍스",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 4927,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "GB-482390-2025.01",
+    "RANK_COUNTRY": "영국",
+    "RANK_PRODUCT": "종이 빨대, 포장재",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 4274,
+    "IMPORT_VALUE": 583,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "GB-821599-2025.01",
+    "RANK_COUNTRY": "영국",
+    "RANK_PRODUCT": "금속 빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 4853,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "US-310100-2025.01",
+    "RANK_COUNTRY": "미국",
+    "RANK_PRODUCT": "천연 비료",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 3376,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "TH-680610-2025.01",
+    "RANK_COUNTRY": "태국",
+    "RANK_PRODUCT": "슬래그 울, 단열재",
+    "RANK_CATEGORY": "친환경건축",
+    "EXPORT_VALUE": 3311,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "TW-821599-2025.01",
+    "RANK_COUNTRY": "대만",
+    "RANK_PRODUCT": "금속 빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 764,
+    "IMPORT_VALUE": 1041,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "IN-821599-2025.01",
+    "RANK_COUNTRY": "인도",
+    "RANK_PRODUCT": "금속 빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 1422,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "TH-821599-2025.01",
+    "RANK_COUNTRY": "태국",
+    "RANK_PRODUCT": "금속 빨대",
+    "RANK_CATEGORY": "친환경생활",
+    "EXPORT_VALUE": 384,
+    "IMPORT_VALUE": 781,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "GB-310100-2025.01",
+    "RANK_COUNTRY": "영국",
+    "RANK_PRODUCT": "천연 비료",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 927,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "GB-841919-2025.01",
+    "RANK_COUNTRY": "영국",
+    "RANK_PRODUCT": "태양열 집열기",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 604,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "US-400110-2025.01",
+    "RANK_COUNTRY": "미국",
+    "RANK_PRODUCT": "천연 고무 라텍스",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 560,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "AU-871160-2025.01",
+    "RANK_COUNTRY": "호주",
+    "RANK_PRODUCT": "전기 이륜차",
+    "RANK_CATEGORY": "친환경운송",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 318,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  },
+  {
+    "RANK_ID": "DE-310100-2025.01",
+    "RANK_COUNTRY": "독일",
+    "RANK_PRODUCT": "천연 비료",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 269,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:26:00.000Z"
+  },
+  {
+    "RANK_ID": "CN-520100-2025.01",
+    "RANK_COUNTRY": "중국",
+    "RANK_PRODUCT": "유기농 면화",
+    "RANK_CATEGORY": "천연소재",
+    "EXPORT_VALUE": 0,
+    "IMPORT_VALUE": 59,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:59.000Z"
+  },
+  {
+    "RANK_ID": "VN-841919-2025.01",
+    "RANK_COUNTRY": "베트남",
+    "RANK_PRODUCT": "태양열 집열기",
+    "RANK_CATEGORY": "신재생에너지",
+    "EXPORT_VALUE": 13,
+    "IMPORT_VALUE": 0,
+    "RANK_PERIOD": "2025.01",
+    "CREATED_AT": "2025-07-01T03:25:58.000Z"
+  }
+]

@@ -36,6 +36,7 @@ const DEFAULT_ECO_DATA = {
         { code: "FR", name: "프랑스", flag: "🇫🇷" },
         { code: "IN", name: "인도", flag: "🇮🇳" },
         { code: "TW", name: "대만", flag: "🇹🇼" },
+        { code: "TH", name: "태국", flag: "🇹🇭" },
         { code: "AU", name: "호주", flag: "🇦🇺" },
     ],
     ecoProducts: []
@@ -56,7 +57,7 @@ export default function RankingsPage() {
         "2025.01", "2025.02", "2025.03", "2025.04", "2025.05"
     ];
 
-    // 데이터 로딩 함수
+    // 데이터 로딩 함수 (JSON 파일 전용)
     const fetchData = async (yearMonth: string): Promise<TradeData[]> => {
         const staticFilePath = STATIC_DATA_FILES[yearMonth as keyof typeof STATIC_DATA_FILES];
         if (!staticFilePath) return [];
@@ -107,15 +108,13 @@ export default function RankingsPage() {
                         const data = await jsonResponse.json();
                         setEcoData(data);
                     } else {
-                        // 파일이 없으면 기본값 사용
                         setEcoData(DEFAULT_ECO_DATA);
                     }
                 } catch (error) {
-                    // 파일 로드 실패 시 기본값 사용
                     setEcoData(DEFAULT_ECO_DATA);
                 }
 
-                // 실제 무역 데이터 로드
+                // JSON 파일에서 직접 데이터 로드
                 const data = await fetchData(filter.yearMonth);
                 setTradeData(data);
 
@@ -158,7 +157,7 @@ export default function RankingsPage() {
     const getCountryFlag = (country: string) => {
         const flags: Record<string, string> = {
             "미국": "🇺🇸", "중국": "🇨🇳", "일본": "🇯🇵", "베트남": "🇻🇳", "영국": "🇬🇧",
-            "독일": "🇩🇪", "프랑스": "🇫🇷", "인도": "🇮🇳", "대만": "🇹🇼", "호주": "🇦🇺",
+            "독일": "🇩🇪", "프랑스": "🇫🇷", "인도": "🇮🇳", "대만": "🇹🇼", "태국": "🇹🇭", "호주": "🇦🇺",
         };
         return flags[country] || "🌐";
     };

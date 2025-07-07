@@ -9,7 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/chat")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://49.50.134.156:3000",
+    "http://49.50.134.156:5173", 
+    "http://49.50.134.156:5174",
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:5174"
+})
 public class ChatController {
 
     @Autowired

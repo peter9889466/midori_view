@@ -29,7 +29,7 @@ const RankingTable: React.FC<RankingTableProps> = ({
                     <div>
                         <CardTitle className="text-2xl font-bold mb-2">무역 품목별 순위</CardTitle>
                         <CardDescription className="text-green-100 text-base">
-                            글로벌 무역 성과 분석 대시보드 (단위: USD)
+                            글로벌 무역 추세 분석 대시보드 (단위: USD)
                         </CardDescription>
                     </div>
                     <div className="text-right">

@@ -178,10 +178,10 @@ export default function RankingsPage() {
                         </div>
                         <div className="space-y-3">
                             <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                                무역 순위 및 성과
+                                무역 순위 및 추이
                             </h1>
                             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                                글로벌 무역 성과 분석 대시보드
+                                글로벌 무역 추이 분석 대시보드
                             </p>
                         </div>
                     </div>

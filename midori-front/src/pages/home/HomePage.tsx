@@ -17,15 +17,15 @@ const homeCards = [
         id: "visualization",
         name: "데이터 \n 시각화",
         icon: BarChart3,
-        description: "아름다운 차트와 그래프를 생성하세요",
+        description: "다양한 차트와 그래프를 확인하세요",
         detail: "강력한 그래프 도구와 대화형 시각화를 통해 데이터 패턴을 더 깊이 이해하고 인사이트를 발견하세요."
     },
     {
         id: "ranking",
         name: "순위",
         icon: Trophy,
-        description: "종합 순위 및 성과 지표를 확인하세요",
-        detail: "다양한 카테고리와 기간에 걸쳐 성과 지표를 추적하고, 경쟁 현황을 분석하여 전략을 수립하세요."
+        description: "종합 순위 및 추이 지표를 확인하세요",
+        detail: "다양한 카테고리와 기간에 걸쳐 추이 지표를 추적하고, 경쟁 현황을 분석하여 전략을 수립하세요."
     },
     {
         id: "news",
@@ -385,7 +385,7 @@ export default function HomePage() {
                             MidoriView 핵심 기능
                         </h2>
                         <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                            농산물 시장 분석을 위한 강력하고 직관적인 도구들을 만나보세요
+                            친환경 시장 분석을 위한 강력하고 직관적인 도구들을 만나보세요
                         </p>
                     </div>
 

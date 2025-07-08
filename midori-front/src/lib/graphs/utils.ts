@@ -14,7 +14,7 @@ export const generateChartData = (apiTradeData: ApiTradeData[], selectedYear: st
     const currentYearNum = parseInt(selectedYear);
     const now = new Date();
     // 2025년 6월까지의 데이터만 있다고 가정 (예시)
-    const dataLength = currentYearNum === 2025 ? 6 : (currentYearNum === now.getFullYear() ? now.getMonth() + 1 : 12);
+    const dataLength = currentYearNum === 2025 ? 5 : (currentYearNum === now.getFullYear() ? now.getMonth() + 1 : 12);
 
     const labels = [];
     for (let i = 1; i <= dataLength; i++) {

@@ -101,7 +101,7 @@ export const generateMixedData = (
     // };
 
     // 🐛 수정: 전년동월대비 수입 증감률을 올바르게 계산
-    const importGrowthRateData = apiTradeData.map((item, idx) => {
+    const importGrowthRateData = apiTradeData.map((item) => {
         const prev = prevYearData.find(prevItem => prevItem.month === item.month); // 월을 기준으로 정확히 찾기
         const prevImportValue = prev ? prev.importValue : 0;
         return calculateGrowthRate(item.importValue, prevImportValue);

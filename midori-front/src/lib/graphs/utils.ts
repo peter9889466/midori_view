@@ -14,7 +14,7 @@ export const generateChartData = (apiTradeData: ApiTradeData[], selectedYear: st
     const currentYearNum = parseInt(selectedYear);
     const now = new Date();
     // 2025년 6월까지의 데이터만 있다고 가정 (예시)
-    const dataLength = currentYearNum === 2025 ? 6 : (currentYearNum === now.getFullYear() ? now.getMonth() + 1 : 12);
+    const dataLength = currentYearNum === 2025 ? 5 : (currentYearNum === now.getFullYear() ? now.getMonth() + 1 : 12);
 
     const labels = [];
     for (let i = 1; i <= dataLength; i++) {
@@ -101,7 +101,7 @@ export const generateMixedData = (
     // };
 
     // 🐛 수정: 전년동월대비 수입 증감률을 올바르게 계산
-    const importGrowthRateData = apiTradeData.map((item, idx) => {
+    const importGrowthRateData = apiTradeData.map((item) => {
         const prev = prevYearData.find(prevItem => prevItem.month === item.month); // 월을 기준으로 정확히 찾기
         const prevImportValue = prev ? prev.importValue : 0;
         return calculateGrowthRate(item.importValue, prevImportValue);

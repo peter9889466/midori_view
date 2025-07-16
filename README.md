@@ -77,7 +77,7 @@
 <img width="320" height="427" alt="챗봇_답변완료" src="https://github.com/user-attachments/assets/22190669-da74-4ec3-b502-d4a2f29d8fa0" />
 
 ## 🎦 시연 영상
-<iframe width="895" height="503" src="https://www.youtube.com/embed/VX0kKITzhjc" title="미도리 뷰(Midori View) 시연영상" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[![Video Label](http://img.youtube.com/vi/VX0kKITzhjc/0.jpg)](https://youtu.be/VX0kKITzhjc)
 
 ## 👥 팀원 소개
 

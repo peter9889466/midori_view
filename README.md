@@ -10,7 +10,7 @@
   - AI 챗봇을 통한 자연어 기반 질의응답과 세부 리포트 습득 가능
  
 ## 🗓️ 프로젝트 기간
-**2025.06.21~2025.07.08**
+**2025.06.02~2025.07.08**
 
 ## ✨ 주요 기능
 <img width="565" height="461" alt="image" src="https://github.com/user-attachments/assets/98c7020e-0775-424f-a6fd-117cbee463cb" />

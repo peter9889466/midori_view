@@ -1,4 +1,4 @@
-# 🌱 Midori View
+# 🌱 Midori View (Team:네잎클로버)
 
 <img width="1919" height="918" alt="미도리뷰_메인 " src="https://github.com/user-attachments/assets/1e6572a6-233c-4d7e-87cf-1a1c1c17c89f" />
 

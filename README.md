@@ -67,6 +67,8 @@
 ### 대시보드
 <img width="1215" height="495" alt="그래프_상단 지도" src="https://github.com/user-attachments/assets/b2c593a4-f523-479e-afef-b87981d0525c" />
 <img width="1217" height="522" alt="그래프_그래프" src="https://github.com/user-attachments/assets/5da2bf8d-c7c0-4d0e-99f7-3bec80063caa" />
+
+### PDF 보고서
 <img width="915" height="664" alt="pdf" src="https://github.com/user-attachments/assets/6da29953-d376-4243-9f54-95e367240849" />
 
 ### 뉴스 페이지

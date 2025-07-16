@@ -14,6 +14,7 @@
 
 ## ✨ 주요 기능
 <img width="565" height="461" alt="image" src="https://github.com/user-attachments/assets/98c7020e-0775-424f-a6fd-117cbee463cb" />
+
 ### 🏆 친환경 무역 순위
 - 월별 친환경 인증 제품 수출입 순위 제공
 - 국가별, 기간별, 카테고리별 맞춤형 필터링

@@ -50,6 +50,9 @@
 - **IDE**: Visual Studio Code, STS, Cursor
 - **Collaboration**: GitHub, Notion
 
+## 시스템 아키텍쳐
+<img width="750" height="276" alt="MidoriView_시스템_아키텍쳐" src="https://github.com/user-attachments/assets/2d071822-50a1-47b3-b33a-19518a0c3f53" />
+
 ## 유스케이스 다이어그램
 <img width="799" height="610" alt="image" src="https://github.com/user-attachments/assets/0f16eca8-dc9c-425f-8e70-23061f86ded7" />
 
